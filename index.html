@@ -1,176 +1,398 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
   <title>QRify - Advanced QR Generator</title>
 
   <!-- QR Code Library -->
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
+
   <style>
+
     * {
       box-sizing: border-box;
     }
 
+
     body {
+
       margin: 0;
+
       padding: 20px;
+
       font-family: Arial, sans-serif;
+
       background: #f4f6f8;
+
       color: #111;
+
+      transition: 0.3s;
+
     }
+
+
+    /* MAIN CONTAINER */
 
     .container {
+
       max-width: 550px;
+
       margin: 20px auto;
+
       padding: 25px;
+
       background: white;
+
       border-radius: 20px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+
+      box-shadow:
+        0 5px 20px rgba(0,0,0,0.12);
+
     }
+
+
+    /* LOGO */
+
+    .logo {
+
+      text-align: center;
+
+      margin-bottom: 5px;
+
+    }
+
+
+    .logo img {
+
+      width: 130px;
+
+      height: 130px;
+
+      object-fit: contain;
+
+      border-radius: 20px;
+
+    }
+
 
     h1 {
+
       text-align: center;
-      margin-bottom: 5px;
+
+      margin: 5px 0;
+
+      font-size: 34px;
+
     }
+
 
     .subtitle {
+
       text-align: center;
+
       color: #777;
+
       margin-bottom: 25px;
+
     }
 
+
     label {
+
       display: block;
+
       margin-top: 15px;
+
       margin-bottom: 7px;
+
       font-weight: bold;
+
     }
+
 
     select,
     input,
     textarea {
+
       width: 100%;
+
       padding: 13px;
+
       border: 1px solid #ccc;
+
       border-radius: 10px;
+
       font-size: 16px;
+
+      outline: none;
+
     }
+
 
     textarea {
+
       height: 110px;
+
       resize: vertical;
+
     }
+
 
     button {
+
       width: 100%;
+
       padding: 14px;
+
       margin-top: 14px;
+
       border: none;
+
       border-radius: 10px;
+
       background: #111;
+
       color: white;
+
       font-size: 16px;
+
       cursor: pointer;
+
     }
+
+
+    button:hover {
+
+      opacity: 0.9;
+
+    }
+
 
     .download {
+
       background: #16803c;
+
     }
+
 
     .clear {
+
       background: #666;
+
     }
+
 
     .dark {
+
       background: #222;
+
     }
+
 
     .field {
+
       display: none;
+
     }
+
 
     #qr {
+
       display: flex;
+
       justify-content: center;
+
       align-items: center;
+
       margin-top: 25px;
+
       min-height: 20px;
+
     }
+
 
     #message {
+
       text-align: center;
+
       color: #666;
+
     }
+
 
     #actions {
+
       display: none;
+
     }
+
+
+    /* HISTORY */
 
     .history {
+
       margin-top: 30px;
+
       border-top: 1px solid #ddd;
+
       padding-top: 20px;
+
     }
+
 
     .history-item {
+
       background: #f1f1f1;
+
       padding: 10px;
+
       margin-top: 8px;
+
       border-radius: 8px;
+
       word-break: break-word;
+
     }
+
+
+    /* DARK MODE */
 
     body.dark-mode {
+
       background: #121212;
+
       color: white;
+
     }
 
+
     body.dark-mode .container {
+
       background: #1e1e1e;
+
     }
+
 
     body.dark-mode input,
     body.dark-mode textarea,
     body.dark-mode select {
+
       background: #2b2b2b;
+
       color: white;
+
       border-color: #555;
+
     }
 
-    body.dark-mode .history-item {
-      background: #2b2b2b;
+
+    body.dark-mode .history {
+
+      border-color: #444;
+
     }
+
+
+    body.dark-mode .history-item {
+
+      background: #2b2b2b;
+
+    }
+
+
+    body.dark-mode .subtitle {
+
+      color: #bbb;
+
+    }
+
   </style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
+
+
+  <!-- QRIFY LOGO -->
+
+  <div class="logo">
+
+    <img
+      src="logo.png"
+      alt="QRify Logo"
+    >
+
+  </div>
+
 
   <h1>QRify</h1>
 
+
   <p class="subtitle">
+
     Advanced QR Code Generator
+
   </p>
+
+
+  <!-- QR TYPE -->
 
   <label>QR Type</label>
 
-  <select id="type" onchange="changeType()">
-    <option value="text">📝 Text</option>
-    <option value="url">🌐 Website</option>
-    <option value="phone">📞 Phone</option>
-    <option value="email">📧 Email</option>
-    <option value="wifi">📶 Wi-Fi</option>
-    <option value="contact">👤 Contact</option>
-    <option value="location">📍 Location</option>
+
+  <select
+    id="type"
+    onchange="changeType()"
+  >
+
+    <option value="text">
+      📝 Text
+    </option>
+
+    <option value="url">
+      🌐 Website
+    </option>
+
+    <option value="phone">
+      📞 Phone
+    </option>
+
+    <option value="email">
+      📧 Email
+    </option>
+
+    <option value="wifi">
+      📶 Wi-Fi
+    </option>
+
+    <option value="contact">
+      👤 Contact
+    </option>
+
+    <option value="location">
+      📍 Location
+    </option>
+
   </select>
+
 
   <!-- TEXT -->
 
-  <div id="textField" class="field">
+  <div
+    id="textField"
+    class="field"
+  >
 
     <label>Text</label>
 
@@ -181,9 +403,13 @@
 
   </div>
 
+
   <!-- WEBSITE -->
 
-  <div id="urlField" class="field">
+  <div
+    id="urlField"
+    class="field"
+  >
 
     <label>Website URL</label>
 
@@ -195,9 +421,13 @@
 
   </div>
 
+
   <!-- PHONE -->
 
-  <div id="phoneField" class="field">
+  <div
+    id="phoneField"
+    class="field"
+  >
 
     <label>Phone Number</label>
 
@@ -209,9 +439,13 @@
 
   </div>
 
+
   <!-- EMAIL -->
 
-  <div id="emailField" class="field">
+  <div
+    id="emailField"
+    class="field"
+  >
 
     <label>Email</label>
 
@@ -221,6 +455,7 @@
       placeholder="example@email.com"
     >
 
+
     <label>Subject</label>
 
     <input
@@ -228,6 +463,7 @@
       type="text"
       placeholder="Email subject"
     >
+
 
     <label>Message</label>
 
@@ -238,9 +474,13 @@
 
   </div>
 
+
   <!-- WIFI -->
 
-  <div id="wifiField" class="field">
+  <div
+    id="wifiField"
+    class="field"
+  >
 
     <label>Wi-Fi Name</label>
 
@@ -248,6 +488,7 @@
       id="wifiName"
       placeholder="Wi-Fi name"
     >
+
 
     <label>Wi-Fi Password</label>
 
@@ -257,19 +498,34 @@
       placeholder="Wi-Fi password"
     >
 
+
     <label>Security</label>
 
     <select id="wifiSecurity">
-      <option value="WPA">WPA/WPA2</option>
-      <option value="WEP">WEP</option>
-      <option value="nopass">No Password</option>
+
+      <option value="WPA">
+        WPA/WPA2
+      </option>
+
+      <option value="WEP">
+        WEP
+      </option>
+
+      <option value="nopass">
+        No Password
+      </option>
+
     </select>
 
   </div>
 
+
   <!-- CONTACT -->
 
-  <div id="contactField" class="field">
+  <div
+    id="contactField"
+    class="field"
+  >
 
     <label>Name</label>
 
@@ -278,12 +534,14 @@
       placeholder="Your name"
     >
 
+
     <label>Phone</label>
 
     <input
       id="contactPhone"
       placeholder="+91 9876543210"
     >
+
 
     <label>Email</label>
 
@@ -294,9 +552,13 @@
 
   </div>
 
+
   <!-- LOCATION -->
 
-  <div id="locationField" class="field">
+  <div
+    id="locationField"
+    class="field"
+  >
 
     <label>Latitude</label>
 
@@ -304,6 +566,7 @@
       id="latitude"
       placeholder="12.9716"
     >
+
 
     <label>Longitude</label>
 
@@ -314,17 +577,32 @@
 
   </div>
 
+
   <!-- SIZE -->
 
   <label>QR Size</label>
 
   <select id="size">
-    <option value="180">Small</option>
-    <option value="250" selected>Medium</option>
-    <option value="320">Large</option>
+
+    <option value="180">
+      Small
+    </option>
+
+    <option
+      value="250"
+      selected
+    >
+      Medium
+    </option>
+
+    <option value="320">
+      Large
+    </option>
+
   </select>
 
-  <!-- COLORS -->
+
+  <!-- QR COLOR -->
 
   <label>QR Color</label>
 
@@ -334,6 +612,9 @@
     value="#000000"
   >
 
+
+  <!-- BACKGROUND COLOR -->
+
   <label>Background Color</label>
 
   <input
@@ -342,37 +623,51 @@
     value="#ffffff"
   >
 
+
   <!-- GENERATE -->
 
   <button onclick="generateQR()">
+
     Generate QR Code
+
   </button>
 
-  <!-- QR -->
+
+  <!-- QR RESULT -->
 
   <div id="qr"></div>
 
+
   <p id="message"></p>
 
-  <!-- ACTIONS -->
+
+  <!-- ACTION BUTTONS -->
 
   <div id="actions">
+
 
     <button
       class="download"
       onclick="downloadQR()"
     >
+
       📥 Download QR
+
     </button>
+
 
     <button
       class="clear"
       onclick="clearQR()"
     >
+
       🗑️ Clear
+
     </button>
 
+
   </div>
+
 
   <!-- DARK MODE -->
 
@@ -380,39 +675,50 @@
     class="dark"
     onclick="toggleDarkMode()"
   >
+
     🌙 Dark Mode
+
   </button>
+
 
   <!-- HISTORY -->
 
   <div class="history">
 
-    <h3>🕘 Recent QR History</h3>
+    <h3>
+      🕘 Recent QR History
+    </h3>
 
     <div id="historyList"></div>
 
   </div>
 
+
 </div>
+
 
 <script>
 
-  // Show Text field when page loads
+
+  /* START */
+
   changeType();
+
   showHistory();
 
 
-  // -------------------------
-  // CHANGE QR TYPE
-  // -------------------------
+  /* CHANGE TYPE */
 
   function changeType() {
+
 
     const type =
       document.getElementById("type").value;
 
+
     const fields =
       document.querySelectorAll(".field");
+
 
     fields.forEach(function(field) {
 
@@ -420,8 +726,12 @@
 
     });
 
+
     const selected =
-      document.getElementById(type + "Field");
+      document.getElementById(
+        type + "Field"
+      );
+
 
     if (selected) {
 
@@ -432,14 +742,14 @@
   }
 
 
-  // -------------------------
-  // GET QR CONTENT
-  // -------------------------
+  /* GET CONTENT */
 
   function getQRContent() {
 
+
     const type =
       document.getElementById("type").value;
+
 
     let content = "";
 
@@ -447,7 +757,10 @@
     if (type === "text") {
 
       content =
-        document.getElementById("text").value.trim();
+        document
+          .getElementById("text")
+          .value
+          .trim();
 
     }
 
@@ -455,19 +768,28 @@
     else if (type === "url") {
 
       content =
-        document.getElementById("url").value.trim();
+        document
+          .getElementById("url")
+          .value
+          .trim();
 
     }
 
 
     else if (type === "phone") {
 
+
       const phone =
-        document.getElementById("phone").value.trim();
+        document
+          .getElementById("phone")
+          .value
+          .trim();
+
 
       if (phone !== "") {
 
-        content = "tel:" + phone;
+        content =
+          "tel:" + phone;
 
       }
 
@@ -476,16 +798,30 @@
 
     else if (type === "email") {
 
+
       const email =
-        document.getElementById("email").value.trim();
+        document
+          .getElementById("email")
+          .value
+          .trim();
+
 
       const subject =
-        document.getElementById("subject").value.trim();
+        document
+          .getElementById("subject")
+          .value
+          .trim();
+
 
       const message =
-        document.getElementById("emailMessage").value.trim();
+        document
+          .getElementById("emailMessage")
+          .value
+          .trim();
+
 
       if (email !== "") {
+
 
         content =
           "mailto:" +
@@ -502,16 +838,27 @@
 
     else if (type === "wifi") {
 
+
       const name =
-        document.getElementById("wifiName").value;
+        document
+          .getElementById("wifiName")
+          .value;
+
 
       const password =
-        document.getElementById("wifiPassword").value;
+        document
+          .getElementById("wifiPassword")
+          .value;
+
 
       const security =
-        document.getElementById("wifiSecurity").value;
+        document
+          .getElementById("wifiSecurity")
+          .value;
+
 
       if (name !== "") {
+
 
         content =
           "WIFI:T:" +
@@ -529,14 +876,24 @@
 
     else if (type === "contact") {
 
+
       const name =
-        document.getElementById("contactName").value;
+        document
+          .getElementById("contactName")
+          .value;
+
 
       const phone =
-        document.getElementById("contactPhone").value;
+        document
+          .getElementById("contactPhone")
+          .value;
+
 
       const email =
-        document.getElementById("contactEmail").value;
+        document
+          .getElementById("contactEmail")
+          .value;
+
 
       content =
         "BEGIN:VCARD\n" +
@@ -551,13 +908,24 @@
 
     else if (type === "location") {
 
+
       const latitude =
-        document.getElementById("latitude").value;
+        document
+          .getElementById("latitude")
+          .value;
+
 
       const longitude =
-        document.getElementById("longitude").value;
+        document
+          .getElementById("longitude")
+          .value;
 
-      if (latitude !== "" && longitude !== "") {
+
+      if (
+        latitude !== "" &&
+        longitude !== ""
+      ) {
+
 
         content =
           "https://maps.google.com/?q=" +
@@ -575,20 +943,22 @@
   }
 
 
-  // -------------------------
-  // GENERATE QR
-  // -------------------------
+  /* GENERATE QR */
 
   function generateQR() {
+
 
     const content =
       getQRContent();
 
+
     const qr =
       document.getElementById("qr");
 
+
     const message =
       document.getElementById("message");
+
 
     const actions =
       document.getElementById("actions");
@@ -603,18 +973,24 @@
 
     if (content === "") {
 
+
       message.innerHTML =
         "⚠️ Please enter some information.";
+
 
       return;
 
     }
 
 
-    if (typeof QRCode === "undefined") {
+    if (
+      typeof QRCode === "undefined"
+    ) {
+
 
       message.innerHTML =
-        "❌ QR library could not load. Please refresh the page.";
+        "❌ QR library could not load. Refresh the page.";
+
 
       return;
 
@@ -623,31 +999,44 @@
 
     const size =
       parseInt(
-        document.getElementById("size").value
+        document
+          .getElementById("size")
+          .value
       );
 
 
     const color =
-      document.getElementById("qrColor").value;
+      document
+        .getElementById("qrColor")
+        .value;
 
 
     const background =
-      document.getElementById("bgColor").value;
+      document
+        .getElementById("bgColor")
+        .value;
 
 
     try {
 
+
       new QRCode(qr, {
+
 
         text: content,
 
+
         width: size,
+
 
         height: size,
 
+
         colorDark: color,
 
+
         colorLight: background,
+
 
         correctLevel:
           QRCode.CorrectLevel.H
@@ -667,43 +1056,57 @@
 
     }
 
+
     catch (error) {
+
 
       console.error(error);
 
+
       message.innerHTML =
-        "❌ Something went wrong. Please try again.";
+        "❌ Something went wrong.";
 
     }
 
   }
 
 
-  // -------------------------
-  // DOWNLOAD QR
-  // -------------------------
+  /* DOWNLOAD */
 
   function downloadQR() {
 
+
     const canvas =
-      document.querySelector("#qr canvas");
+      document.querySelector(
+        "#qr canvas"
+      );
+
 
     const image =
-      document.querySelector("#qr img");
+      document.querySelector(
+        "#qr img"
+      );
 
 
     if (canvas) {
 
+
       const link =
         document.createElement("a");
+
 
       link.download =
         "QRify-QR-Code.png";
 
+
       link.href =
-        canvas.toDataURL("image/png");
+        canvas.toDataURL(
+          "image/png"
+        );
+
 
       link.click();
+
 
       return;
 
@@ -712,16 +1115,21 @@
 
     if (image) {
 
+
       const link =
         document.createElement("a");
+
 
       link.download =
         "QRify-QR-Code.png";
 
+
       link.href =
         image.src;
 
+
       link.click();
+
 
       return;
 
@@ -735,46 +1143,55 @@
   }
 
 
-  // -------------------------
-  // CLEAR
-  // -------------------------
+  /* CLEAR */
 
   function clearQR() {
 
-    document.getElementById("qr").innerHTML = "";
 
-    document.getElementById("message").innerHTML = "";
+    document.getElementById(
+      "qr"
+    ).innerHTML = "";
 
-    document.getElementById("actions").style.display =
-      "none";
+
+    document.getElementById(
+      "message"
+    ).innerHTML = "";
+
+
+    document.getElementById(
+      "actions"
+    ).style.display = "none";
 
   }
 
 
-  // -------------------------
-  // DARK MODE
-  // -------------------------
+  /* DARK MODE */
 
   function toggleDarkMode() {
 
-    document.body.classList.toggle("dark-mode");
+
+    document.body.classList.toggle(
+      "dark-mode"
+    );
 
   }
 
 
-  // -------------------------
-  // HISTORY
-  // -------------------------
+  /* SAVE HISTORY */
 
   function saveHistory(content) {
 
+
     let history =
       JSON.parse(
-        localStorage.getItem("qrifyHistory") || "[]"
+        localStorage.getItem(
+          "qrifyHistory"
+        ) || "[]"
       );
 
 
     history.unshift(content);
+
 
     history =
       history.slice(0, 5);
@@ -791,15 +1208,22 @@
   }
 
 
+  /* SHOW HISTORY */
+
   function showHistory() {
 
+
     const list =
-      document.getElementById("historyList");
+      document.getElementById(
+        "historyList"
+      );
 
 
     let history =
       JSON.parse(
-        localStorage.getItem("qrifyHistory") || "[]"
+        localStorage.getItem(
+          "qrifyHistory"
+        ) || "[]"
       );
 
 
@@ -808,8 +1232,10 @@
 
     if (history.length === 0) {
 
+
       list.innerHTML =
         "<p>No QR history yet.</p>";
+
 
       return;
 
@@ -818,8 +1244,11 @@
 
     history.forEach(function(item) {
 
+
       const div =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
 
       div.className =
@@ -836,7 +1265,10 @@
 
   }
 
+
 </script>
 
+
 </body>
-        </html>
+
+    </html>
