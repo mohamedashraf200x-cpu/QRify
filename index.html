@@ -3,11 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QRify</title>
 
+  <title>QRify - QR Code Generator</title>
+
+  <!-- QR Code Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Arial, sans-serif;
       background: #f4f6f8;
@@ -17,30 +23,43 @@
 
     .container {
       max-width: 500px;
-      margin: auto;
+      margin: 40px auto;
       background: white;
       padding: 25px;
       border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
     h1 {
       text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 25px;
     }
 
     textarea {
       width: 100%;
       height: 120px;
       padding: 12px;
-      box-sizing: border-box;
       border-radius: 10px;
       border: 1px solid #ccc;
-      margin-bottom: 15px;
+      font-size: 16px;
+      resize: vertical;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: #111;
     }
 
     button {
       width: 100%;
-      padding: 13px;
+      padding: 14px;
+      margin-top: 15px;
       border: none;
       border-radius: 10px;
       background: #111;
@@ -49,9 +68,22 @@
       cursor: pointer;
     }
 
+    button:hover {
+      opacity: 0.9;
+    }
+
     #qr {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 25px;
+      min-height: 20px;
+    }
+
+    .message {
       text-align: center;
-      margin-top: 20px;
+      color: #777;
+      margin-top: 15px;
     }
   </style>
 </head>
@@ -59,41 +91,56 @@
 <body>
 
   <div class="container">
+
     <h1>QRify</h1>
 
-    <p>Enter your information:</p>
+    <p class="subtitle">
+      Turn your information into a QR code
+    </p>
 
-    <textarea id="text" placeholder="Type text, link, phone number, etc..."></textarea>
+    <textarea
+      id="text"
+      placeholder="Enter text, website link, phone number, email, etc..."
+    ></textarea>
 
-    <button onclick="generateQR()">Generate QR Code</button>
+    <button onclick="generateQR()">
+      Generate QR Code
+    </button>
 
     <div id="qr"></div>
+
+    <p id="message" class="message"></p>
+
   </div>
 
   <script>
     function generateQR() {
-      const text = document.getElementById("text").value;
+
+      const text = document.getElementById("text").value.trim();
       const qr = document.getElementById("qr");
+      const message = document.getElementById("message");
 
+      // Clear previous QR code
       qr.innerHTML = "";
+      message.innerHTML = "";
 
-      if (text.trim() === "") {
-        alert("Please enter some information!");
+      // Check empty input
+      if (text === "") {
+        message.innerHTML = "Please enter some information first.";
         return;
       }
 
-      const canvas = document.createElement("canvas");
-
-      QRCode.toCanvas(canvas, text, function(error) {
-        if (error) {
-          console.error(error);
-          return;
-        }
-
-        qr.appendChild(canvas);
+      // Generate QR code
+      new QRCode(qr, {
+        text: text,
+        width: 220,
+        height: 220,
+        correctLevel: QRCode.CorrectLevel.H
       });
+
+      message.innerHTML = "QR Code generated successfully!";
     }
   </script>
 
 </body>
-  </html>
+</html>
