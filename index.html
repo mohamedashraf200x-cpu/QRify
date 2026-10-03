@@ -7,14 +7,18 @@
   <title>QRify</title>
 
   <link rel="icon" type="image/png" href="logo.png">
-
   <link rel="manifest" href="manifest.json">
+
   <meta name="theme-color" content="#111827">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="QRify">
 
+  <!-- QR Generator -->
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+  <!-- QR Scanner -->
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
   <style>
     * {
@@ -37,17 +41,16 @@
     .container {
       max-width: 600px;
       margin: auto;
-      padding: 20px;
+      padding: 18px;
     }
 
     .logo {
       text-align: center;
-      margin-bottom: 5px;
     }
 
     .logo img {
-      width: 130px;
-      height: 130px;
+      width: 120px;
+      height: 120px;
       object-fit: contain;
       border-radius: 20px;
     }
@@ -85,19 +88,20 @@
       font-weight: bold;
     }
 
-    select,
     input,
-    textarea {
+    textarea,
+    select {
       width: 100%;
       padding: 12px;
       border: 1px solid #d1d5db;
       border-radius: 10px;
       font-size: 16px;
+      background: white;
     }
 
     textarea {
-      resize: vertical;
       min-height: 100px;
+      resize: vertical;
     }
 
     .row {
@@ -125,6 +129,11 @@
       color: white;
     }
 
+    .scan {
+      background: #7c3aed;
+      color: white;
+    }
+
     .download {
       background: #16a34a;
       color: white;
@@ -145,19 +154,68 @@
       justify-content: center;
       align-items: center;
       margin-top: 25px;
-      min-height: 20px;
       background: white;
     }
 
-    #history {
-      margin-top: 25px;
+    #scannerBox {
+      margin-top: 20px;
+    }
+
+    #reader {
+      width: 100%;
+      max-width: 450px;
+      margin: auto;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: 15px;
+      background: #eef2ff;
+      word-break: break-word;
+    }
+
+    body.dark .result {
+      background: #374151;
+    }
+
+    .result-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .result-text {
+      padding: 12px;
+      background: white;
+      color: #111827;
+      border-radius: 10px;
+      word-break: break-word;
+    }
+
+    .open-link {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      padding: 12px;
+      margin-top: 12px;
+      border-radius: 10px;
+      background: #2563eb;
+      color: white;
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none;
     }
 
     .history-item {
-      background: #f3f4f6;
-      padding: 10px;
-      border-radius: 8px;
       margin-top: 8px;
+      padding: 10px;
+      background: #f3f4f6;
+      border-radius: 8px;
       word-break: break-word;
     }
 
@@ -165,15 +223,11 @@
       background: #374151;
     }
 
-    .hidden {
-      display: none;
-    }
-
     footer {
       text-align: center;
       margin-top: 25px;
-      font-size: 13px;
       color: #6b7280;
+      font-size: 13px;
     }
 
     body.dark footer {
@@ -181,22 +235,13 @@
     }
 
     @media (max-width: 500px) {
-      .container {
-        padding: 12px;
-      }
-
-      .card {
-        padding: 15px;
-      }
-
       .row {
         flex-direction: column;
         gap: 0;
       }
 
-      .logo img {
-        width: 110px;
-        height: 110px;
+      .container {
+        padding: 12px;
       }
     }
   </style>
@@ -204,746 +249,1013 @@
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <div class="logo">
-      <img src="logo.png" alt="QRify Logo">
+  <div class="logo">
+    <img src="logo.png" alt="QRify Logo">
+  </div>
+
+  <h1>QRify</h1>
+
+  <p class="subtitle">
+    Generate • Scan • Simplify
+  </p>
+
+  <div class="card">
+
+    <!-- QR TYPE -->
+
+    <label>QR Type</label>
+
+    <select id="type" onchange="changeType()">
+      <option value="text">Text</option>
+      <option value="website">Website</option>
+      <option value="phone">Phone</option>
+      <option value="email">Email</option>
+      <option value="wifi">Wi-Fi</option>
+      <option value="contact">Contact</option>
+      <option value="location">Location</option>
+    </select>
+
+
+    <!-- INPUT AREA -->
+
+    <div id="inputs">
+
+      <label>Enter Text</label>
+
+      <textarea
+        id="text"
+        placeholder="Type your text here..."
+      ></textarea>
+
     </div>
 
-    <h1>QRify</h1>
-    <p class="subtitle">Generate • Scan • Simplify</p>
 
-    <div class="card">
+    <!-- SIZE + COLOR -->
 
-      <label>QR Type</label>
+    <div class="row">
 
-      <select id="type" onchange="changeType()">
-        <option value="text">Text</option>
-        <option value="website">Website</option>
-        <option value="phone">Phone</option>
-        <option value="email">Email</option>
-        <option value="wifi">Wi-Fi</option>
-        <option value="contact">Contact</option>
-        <option value="location">Location</option>
-      </select>
+      <div>
 
-      <div id="inputs">
+        <label>QR Size</label>
 
-        <label>Enter Text</label>
-
-        <textarea
-          id="text"
-          placeholder="Type your text here..."
-        ></textarea>
+        <select id="size">
+          <option value="150">Small</option>
+          <option value="200" selected>Medium</option>
+          <option value="300">Large</option>
+        </select>
 
       </div>
 
-      <div class="row">
+      <div>
 
-        <div>
-          <label>QR Size</label>
+        <label>QR Color</label>
 
-          <select id="size">
-            <option value="150">Small</option>
-            <option value="200" selected>Medium</option>
-            <option value="300">Large</option>
-          </select>
-        </div>
-
-        <div>
-          <label>QR Color</label>
-
-          <input
-            type="color"
-            id="qrColor"
-            value="#000000"
-          >
-        </div>
+        <input
+          type="color"
+          id="qrColor"
+          value="#000000"
+        >
 
       </div>
 
-      <label>Background Color</label>
+    </div>
 
-      <input
-        type="color"
-        id="bgColor"
-        value="#ffffff"
-      >
 
-      <button
-        class="generate"
-        onclick="generateQR()"
-      >
-        Generate QR
-      </button>
+    <label>Background Color</label>
 
-      <div id="qrBox"></div>
+    <input
+      type="color"
+      id="bgColor"
+      value="#ffffff"
+    >
 
-      <button
-        class="download hidden"
-        id="downloadBtn"
-        onclick="downloadQR()"
-      >
-        Download QR
-      </button>
+
+    <!-- GENERATE -->
+
+    <button
+      class="generate"
+      onclick="generateQR()"
+    >
+      Generate QR
+    </button>
+
+
+    <!-- SCAN -->
+
+    <button
+      class="scan"
+      onclick="openScanner()"
+    >
+      📷 Scan QR
+    </button>
+
+
+    <!-- QR -->
+
+    <div id="qrBox"></div>
+
+
+    <button
+      id="downloadBtn"
+      class="download hidden"
+      onclick="downloadQR()"
+    >
+      Download QR
+    </button>
+
+
+    <!-- SCANNER -->
+
+    <div
+      id="scannerBox"
+      class="hidden"
+    >
+
+      <h3>Scan QR Code</h3>
+
+      <div id="reader"></div>
 
       <button
         class="clear"
-        onclick="clearQR()"
+        onclick="closeScanner()"
       >
-        Clear
+        Close Scanner
       </button>
-
-      <button
-        class="dark-btn"
-        onclick="toggleDarkMode()"
-      >
-        🌙 Dark Mode
-      </button>
-
-      <div id="history">
-
-        <h3>Recent History</h3>
-
-        <div id="historyList"></div>
-
-      </div>
 
     </div>
 
-    <footer>
-      QRify • Generate your QR instantly
-      <br>
-      By Ashraf
-    </footer>
+
+    <!-- RESULT -->
+
+    <div
+      id="resultBox"
+      class="result hidden"
+    >
+
+      <div class="result-title">
+        QR Result
+      </div>
+
+      <div
+        id="resultText"
+        class="result-text"
+      ></div>
+
+      <a
+        id="openLink"
+        class="open-link hidden"
+        target="_blank"
+        rel="noopener"
+      >
+        Open Link
+      </a>
+
+    </div>
+
+
+    <!-- OTHER BUTTONS -->
+
+    <button
+      class="clear"
+      onclick="clearQR()"
+    >
+      Clear
+    </button>
+
+    <button
+      class="dark-btn"
+      onclick="toggleDarkMode()"
+    >
+      🌙 Dark Mode
+    </button>
+
+
+    <!-- HISTORY -->
+
+    <div id="history">
+
+      <h3>Recent History</h3>
+
+      <div id="historyList"></div>
+
+    </div>
 
   </div>
 
 
-  <script>
+  <footer>
+    QRify • Generate your QR instantly
+    <br>
+    By Ashraf
+  </footer>
 
-    let currentData = "";
-
-
-    /* CHANGE QR TYPE */
-
-    function changeType() {
-
-      const type =
-        document.getElementById("type").value;
-
-      const inputs =
-        document.getElementById("inputs");
+</div>
 
 
-      if (type === "text") {
+<script>
 
-        inputs.innerHTML = `
-          <label>Enter Text</label>
+let currentData = "";
+let scanner = null;
 
-          <textarea
-            id="text"
-            placeholder="Type your text here..."
-          ></textarea>
-        `;
 
+/* =========================
+   CHANGE QR TYPE
+========================= */
+
+function changeType() {
+
+  const type =
+    document.getElementById("type").value;
+
+  const inputs =
+    document.getElementById("inputs");
+
+
+  if (type === "text") {
+
+    inputs.innerHTML = `
+      <label>Enter Text</label>
+
+      <textarea
+        id="text"
+        placeholder="Type your text here..."
+      ></textarea>
+    `;
+
+  }
+
+
+  else if (type === "website") {
+
+    inputs.innerHTML = `
+      <label>Website URL</label>
+
+      <input
+        id="text"
+        type="url"
+        placeholder="https://example.com"
+      >
+    `;
+
+  }
+
+
+  else if (type === "phone") {
+
+    inputs.innerHTML = `
+      <label>Phone Number</label>
+
+      <input
+        id="text"
+        type="tel"
+        placeholder="+91 9876543210"
+      >
+    `;
+
+  }
+
+
+  else if (type === "email") {
+
+    inputs.innerHTML = `
+      <label>Email Address</label>
+
+      <input
+        id="text"
+        type="email"
+        placeholder="example@email.com"
+      >
+
+      <label>Subject</label>
+
+      <input
+        id="subject"
+        placeholder="Subject"
+      >
+
+      <label>Message</label>
+
+      <textarea
+        id="message"
+        placeholder="Message"
+      ></textarea>
+    `;
+
+  }
+
+
+  else if (type === "wifi") {
+
+    inputs.innerHTML = `
+      <label>Wi-Fi Name</label>
+
+      <input
+        id="ssid"
+        placeholder="Wi-Fi name"
+      >
+
+      <label>Password</label>
+
+      <input
+        id="password"
+        type="text"
+        placeholder="Wi-Fi password"
+      >
+
+      <label>Security</label>
+
+      <select id="security">
+        <option value="WPA">WPA/WPA2</option>
+        <option value="WEP">WEP</option>
+        <option value="nopass">No Password</option>
+      </select>
+    `;
+
+  }
+
+
+  else if (type === "contact") {
+
+    inputs.innerHTML = `
+      <label>Name</label>
+
+      <input
+        id="name"
+        placeholder="Full name"
+      >
+
+      <label>Phone</label>
+
+      <input
+        id="phone"
+        placeholder="+91 9876543210"
+      >
+
+      <label>Email</label>
+
+      <input
+        id="email"
+        type="email"
+        placeholder="email@example.com"
+      >
+
+      <label>Organization</label>
+
+      <input
+        id="org"
+        placeholder="Organization"
+      >
+    `;
+
+  }
+
+
+  else if (type === "location") {
+
+    inputs.innerHTML = `
+      <label>Google Maps Link</label>
+
+      <input
+        id="text"
+        placeholder="Paste Google Maps link"
+      >
+    `;
+
+  }
+
+}
+
+
+/* =========================
+   WIFI ESCAPE
+========================= */
+
+function escapeWifi(value) {
+
+  return value
+    .replace(/\\/g, "\\\\")
+    .replace(/;/g, "\\;")
+    .replace(/,/g, "\\,")
+    .replace(/:/g, "\\:");
+
+}
+
+
+/* =========================
+   GET QR DATA
+========================= */
+
+function getQRData() {
+
+  const type =
+    document.getElementById("type").value;
+
+  let data = "";
+
+
+  if (
+    type === "text" ||
+    type === "website" ||
+    type === "phone" ||
+    type === "location"
+  ) {
+
+    data =
+      document.getElementById("text")
+      .value
+      .trim();
+
+  }
+
+
+  else if (type === "email") {
+
+    const email =
+      document.getElementById("text")
+      .value
+      .trim();
+
+    const subject =
+      document.getElementById("subject")
+      .value
+      .trim();
+
+    const message =
+      document.getElementById("message")
+      .value
+      .trim();
+
+
+    data =
+      "mailto:" +
+      email +
+      "?subject=" +
+      encodeURIComponent(subject) +
+      "&body=" +
+      encodeURIComponent(message);
+
+  }
+
+
+  else if (type === "wifi") {
+
+    const ssid =
+      document.getElementById("ssid").value;
+
+    const password =
+      document.getElementById("password").value;
+
+    const security =
+      document.getElementById("security").value;
+
+
+    data =
+      "WIFI:T:" +
+      security +
+      ";S:" +
+      escapeWifi(ssid) +
+      ";P:" +
+      escapeWifi(password) +
+      ";;";
+
+  }
+
+
+  else if (type === "contact") {
+
+    const name =
+      document.getElementById("name").value;
+
+    const phone =
+      document.getElementById("phone").value;
+
+    const email =
+      document.getElementById("email").value;
+
+    const org =
+      document.getElementById("org").value;
+
+
+    data =
+      "BEGIN:VCARD\n" +
+      "VERSION:3.0\n" +
+      "FN:" + name + "\n" +
+      "TEL:" + phone + "\n" +
+      "EMAIL:" + email + "\n" +
+      "ORG:" + org + "\n" +
+      "END:VCARD";
+
+  }
+
+
+  return data;
+
+}
+
+
+/* =========================
+   GENERATE QR
+========================= */
+
+function generateQR() {
+
+  const data =
+    getQRData();
+
+
+  if (!data) {
+
+    alert(
+      "Please enter the required information."
+    );
+
+    return;
+
+  }
+
+
+  currentData = data;
+
+
+  const size =
+    parseInt(
+      document.getElementById("size").value
+    );
+
+
+  const qrColor =
+    document.getElementById("qrColor").value;
+
+
+  const bgColor =
+    document.getElementById("bgColor").value;
+
+
+  const qrBox =
+    document.getElementById("qrBox");
+
+
+  qrBox.innerHTML = "";
+
+
+  new QRCode(qrBox, {
+
+    text: data,
+
+    width: size,
+
+    height: size,
+
+    colorDark: qrColor,
+
+    colorLight: bgColor,
+
+    correctLevel:
+      QRCode.CorrectLevel.H
+
+  });
+
+
+  document
+    .getElementById("downloadBtn")
+    .classList
+    .remove("hidden");
+
+
+  saveHistory(data);
+
+}
+
+
+/* =========================
+   DOWNLOAD QR
+========================= */
+
+function downloadQR() {
+
+  const canvas =
+    document
+      .getElementById("qrBox")
+      .querySelector("canvas");
+
+
+  if (!canvas) {
+
+    alert(
+      "Please generate a QR first."
+    );
+
+    return;
+
+  }
+
+
+  const border = 40;
+
+
+  const output =
+    document.createElement("canvas");
+
+
+  output.width =
+    canvas.width + border * 2;
+
+
+  output.height =
+    canvas.height + border * 2;
+
+
+  const ctx =
+    output.getContext("2d");
+
+
+  ctx.fillStyle = "#ffffff";
+
+
+  ctx.fillRect(
+    0,
+    0,
+    output.width,
+    output.height
+  );
+
+
+  ctx.drawImage(
+    canvas,
+    border,
+    border
+  );
+
+
+  const link =
+    document.createElement("a");
+
+
+  link.download =
+    "QRify-QR.png";
+
+
+  link.href =
+    output.toDataURL(
+      "image/png"
+    );
+
+
+  document.body.appendChild(link);
+
+  link.click();
+
+  document.body.removeChild(link);
+
+}
+
+
+/* =========================
+   OPEN SCANNER
+========================= */
+
+function openScanner() {
+
+  document
+    .getElementById("scannerBox")
+    .classList
+    .remove("hidden");
+
+
+  document
+    .getElementById("resultBox")
+    .classList
+    .add("hidden");
+
+
+  scanner =
+    new Html5Qrcode("reader");
+
+
+  scanner.start(
+
+    {
+      facingMode: "environment"
+    },
+
+    {
+      fps: 10,
+      qrbox: {
+        width: 250,
+        height: 250
       }
+    },
 
+    function(decodedText) {
 
-      else if (type === "website") {
+      showResult(decodedText);
 
-        inputs.innerHTML = `
-          <label>Website URL</label>
+      closeScanner();
 
-          <input
-            id="text"
-            type="url"
-            placeholder="https://example.com"
-          >
-        `;
+    },
 
-      }
+    function(errorMessage) {
 
-
-      else if (type === "phone") {
-
-        inputs.innerHTML = `
-          <label>Phone Number</label>
-
-          <input
-            id="text"
-            type="tel"
-            placeholder="+91 9876543210"
-          >
-        `;
-
-      }
-
-
-      else if (type === "email") {
-
-        inputs.innerHTML = `
-          <label>Email Address</label>
-
-          <input
-            id="text"
-            type="email"
-            placeholder="example@email.com"
-          >
-
-          <label>Subject</label>
-
-          <input
-            id="subject"
-            type="text"
-            placeholder="Subject"
-          >
-
-          <label>Message</label>
-
-          <textarea
-            id="message"
-            placeholder="Message"
-          ></textarea>
-        `;
-
-      }
-
-
-      else if (type === "wifi") {
-
-        inputs.innerHTML = `
-          <label>Wi-Fi Name</label>
-
-          <input
-            id="ssid"
-            placeholder="Wi-Fi name"
-          >
-
-          <label>Password</label>
-
-          <input
-            id="password"
-            type="text"
-            placeholder="Wi-Fi password"
-          >
-
-          <label>Security</label>
-
-          <select id="security">
-            <option value="WPA">WPA/WPA2</option>
-            <option value="WEP">WEP</option>
-            <option value="nopass">No Password</option>
-          </select>
-        `;
-
-      }
-
-
-      else if (type === "contact") {
-
-        inputs.innerHTML = `
-          <label>Name</label>
-
-          <input
-            id="name"
-            placeholder="Full name"
-          >
-
-          <label>Phone</label>
-
-          <input
-            id="phone"
-            placeholder="+91 9876543210"
-          >
-
-          <label>Email</label>
-
-          <input
-            id="email"
-            type="email"
-            placeholder="email@example.com"
-          >
-
-          <label>Organization</label>
-
-          <input
-            id="org"
-            placeholder="Organization"
-          >
-        `;
-
-      }
-
-
-      else if (type === "location") {
-
-        inputs.innerHTML = `
-          <label>Google Maps Location / Link</label>
-
-          <input
-            id="text"
-            placeholder="Paste Google Maps link"
-          >
-        `;
-
-      }
+      /* Scanning continues */
 
     }
 
+  )
+  .catch(function(error) {
 
-    /* GET DATA */
+    alert(
+      "Camera permission is required to scan QR codes."
+    );
 
-    function getQRData() {
+  });
 
-      const type =
-        document.getElementById("type").value;
+}
 
-      let data = "";
 
+/* =========================
+   CLOSE SCANNER
+========================= */
 
-      if (
-        type === "text" ||
-        type === "website" ||
-        type === "phone" ||
-        type === "location"
-      ) {
+function closeScanner() {
 
-        data =
-          document.getElementById("text")
-          .value
-          .trim();
+  if (scanner) {
 
-      }
+    scanner.stop()
+      .then(function() {
 
+        scanner.clear();
 
-      else if (type === "email") {
+        scanner = null;
 
-        const email =
-          document.getElementById("text")
-          .value
-          .trim();
+      })
+      .catch(function() {
 
-        const subject =
-          document.getElementById("subject")
-          .value
-          .trim();
-
-        const message =
-          document.getElementById("message")
-          .value
-          .trim();
-
-
-        data =
-          "mailto:" +
-          email +
-          "?subject=" +
-          encodeURIComponent(subject) +
-          "&body=" +
-          encodeURIComponent(message);
-
-      }
-
-
-      else if (type === "wifi") {
-
-        const ssid =
-          document.getElementById("ssid").value;
-
-        const password =
-          document.getElementById("password").value;
-
-        const security =
-          document.getElementById("security").value;
-
-
-        data =
-          "WIFI:T:" +
-          security +
-          ";S:" +
-          escapeWifi(ssid) +
-          ";P:" +
-          escapeWifi(password) +
-          ";;";
-
-      }
-
-
-      else if (type === "contact") {
-
-        const name =
-          document.getElementById("name").value;
-
-        const phone =
-          document.getElementById("phone").value;
-
-        const email =
-          document.getElementById("email").value;
-
-        const org =
-          document.getElementById("org").value;
-
-
-        data =
-          "BEGIN:VCARD\n" +
-          "VERSION:3.0\n" +
-          "FN:" + name + "\n" +
-          "TEL:" + phone + "\n" +
-          "EMAIL:" + email + "\n" +
-          "ORG:" + org + "\n" +
-          "END:VCARD";
-
-      }
-
-
-      return data;
-
-    }
-
-
-    /* WIFI ESCAPE */
-
-    function escapeWifi(value) {
-
-      return value
-        .replace(/\\/g, "\\\\")
-        .replace(/;/g, "\\;")
-        .replace(/,/g, "\\,")
-        .replace(/:/g, "\\:");
-
-    }
-
-
-    /* GENERATE */
-
-    function generateQR() {
-
-      const data = getQRData();
-
-
-      if (!data) {
-
-        alert(
-          "Please enter the required information."
-        );
-
-        return;
-
-      }
-
-
-      currentData = data;
-
-
-      const size =
-        parseInt(
-          document.getElementById("size").value
-        );
-
-
-      const qrColor =
-        document.getElementById("qrColor").value;
-
-
-      const bgColor =
-        document.getElementById("bgColor").value;
-
-
-      const qrBox =
-        document.getElementById("qrBox");
-
-
-      qrBox.innerHTML = "";
-
-
-      new QRCode(qrBox, {
-
-        text: data,
-
-        width: size,
-
-        height: size,
-
-        colorDark: qrColor,
-
-        colorLight: bgColor,
-
-        correctLevel:
-          QRCode.CorrectLevel.H
+        scanner = null;
 
       });
 
+  }
 
-      document
-        .getElementById("downloadBtn")
-        .classList
-        .remove("hidden");
 
+  document
+    .getElementById("scannerBox")
+    .classList
+    .add("hidden");
 
-      saveHistory(data);
+}
 
-    }
 
+/* =========================
+   SHOW SCAN RESULT
+========================= */
 
-    /* DOWNLOAD HIGH QUALITY QR */
+function showResult(data) {
 
-    function downloadQR() {
+  const resultBox =
+    document.getElementById("resultBox");
 
-      const qrBox =
-        document.getElementById("qrBox");
 
+  const resultText =
+    document.getElementById("resultText");
 
-      const canvas =
-        qrBox.querySelector("canvas");
 
+  const openLink =
+    document.getElementById("openLink");
 
-      if (!canvas) {
 
-        alert(
-          "Please generate a QR first."
-        );
+  resultBox
+    .classList
+    .remove("hidden");
 
-        return;
 
-      }
+  resultText.textContent =
+    data;
 
 
-      const border = 30;
+  openLink
+    .classList
+    .add("hidden");
 
 
-      const output =
-        document.createElement("canvas");
+  let url = "";
 
 
-      output.width =
-        canvas.width + border * 2;
+  if (
+    data.startsWith("http://") ||
+    data.startsWith("https://")
+  ) {
 
+    url = data;
 
-      output.height =
-        canvas.height + border * 2;
+  }
 
 
-      const ctx =
-        output.getContext("2d");
+  else if (
+    data.startsWith("www.")
+  ) {
 
+    url = "https://" + data;
 
-      /* White background */
+  }
 
-      ctx.fillStyle = "#ffffff";
 
-      ctx.fillRect(
-        0,
-        0,
-        output.width,
-        output.height
-      );
+  if (url) {
 
+    openLink.href = url;
 
-      /* QR */
+    openLink
+      .classList
+      .remove("hidden");
 
-      ctx.drawImage(
-        canvas,
-        border,
-        border
-      );
+  }
 
 
-      const link =
-        document.createElement("a");
+  resultBox.scrollIntoView({
+    behavior: "smooth"
+  });
 
+}
 
-      link.download =
-        "QRify-QR.png";
 
+/* =========================
+   CLEAR
+========================= */
 
-      link.href =
-        output.toDataURL(
-          "image/png"
-        );
+function clearQR() {
 
+  document
+    .getElementById("qrBox")
+    .innerHTML = "";
 
-      document.body.appendChild(link);
 
-      link.click();
+  document
+    .getElementById("downloadBtn")
+    .classList
+    .add("hidden");
 
-      document.body.removeChild(link);
 
-    }
+  document
+    .getElementById("resultBox")
+    .classList
+    .add("hidden");
 
 
-    /* CLEAR */
+  currentData = "";
 
-    function clearQR() {
+}
 
-      document
-        .getElementById("qrBox")
-        .innerHTML = "";
 
+/* =========================
+   DARK MODE
+========================= */
 
-      document
-        .getElementById("downloadBtn")
-        .classList
-        .add("hidden");
+function toggleDarkMode() {
 
+  document.body
+    .classList
+    .toggle("dark");
 
-      currentData = "";
 
-    }
+  const isDark =
+    document.body
+      .classList
+      .contains("dark");
 
 
-    /* DARK MODE */
+  localStorage.setItem(
+    "qrifyDark",
+    isDark
+  );
 
-    function toggleDarkMode() {
+}
 
-      document.body
-        .classList
-        .toggle("dark");
 
+if (
+  localStorage.getItem(
+    "qrifyDark"
+  ) === "true"
+) {
 
-      const isDark =
-        document.body
-        .classList
-        .contains("dark");
+  document.body
+    .classList
+    .add("dark");
 
+}
 
-      localStorage.setItem(
-        "qrifyDark",
-        isDark
-      );
 
-    }
+/* =========================
+   HISTORY
+========================= */
 
+function saveHistory(data) {
 
-    /* LOAD DARK MODE */
-
-    if (
+  let history =
+    JSON.parse(
       localStorage.getItem(
-        "qrifyDark"
-      ) === "true"
-    ) {
-
-      document.body
-        .classList
-        .add("dark");
-
-    }
+        "qrifyHistory"
+      )
+    ) || [];
 
 
-    /* HISTORY */
+  if (
+    history.length === 0 ||
+    history[0] !== data
+  ) {
 
-    function saveHistory(data) {
+    history.unshift(data);
 
-      let history =
-        JSON.parse(
-          localStorage.getItem(
-            "qrifyHistory"
-          )
-        ) || [];
+  }
 
 
-      if (
-        history.length === 0 ||
-        history[0] !== data
-      ) {
-
-        history.unshift(data);
-
-      }
+  history =
+    history.slice(0, 5);
 
 
-      history =
-        history.slice(0, 5);
+  localStorage.setItem(
+    "qrifyHistory",
+    JSON.stringify(history)
+  );
 
 
-      localStorage.setItem(
-        "qrifyHistory",
-        JSON.stringify(history)
-      );
+  displayHistory();
+
+}
 
 
-      displayHistory();
+function displayHistory() {
 
-    }
-
-
-    /* DISPLAY HISTORY */
-
-    function displayHistory() {
-
-      const list =
-        document.getElementById(
-          "historyList"
-        );
+  const list =
+    document.getElementById(
+      "historyList"
+    );
 
 
-      const history =
-        JSON.parse(
-          localStorage.getItem(
-            "qrifyHistory"
-          )
-        ) || [];
+  const history =
+    JSON.parse(
+      localStorage.getItem(
+        "qrifyHistory"
+      )
+    ) || [];
 
 
-      list.innerHTML = "";
+  list.innerHTML = "";
 
 
-      history.forEach(function(item) {
+  history.forEach(function(item) {
 
-        const div =
-          document.createElement("div");
-
-
-        div.className =
-          "history-item";
+    const div =
+      document.createElement("div");
 
 
-        div.textContent =
-          item;
+    div.className =
+      "history-item";
 
 
-        list.appendChild(div);
-
-      });
-
-    }
+    div.textContent =
+      item;
 
 
-    displayHistory();
+    list.appendChild(div);
+
+  });
+
+}
 
 
-    /* SERVICE WORKER */
+displayHistory();
 
-    if ("serviceWorker" in navigator) {
 
-      window.addEventListener(
-        "load",
-        function() {
+/* =========================
+   SERVICE WORKER
+========================= */
 
-          navigator.serviceWorker
-            .register("./sw.js")
-            .then(function() {
+if (
+  "serviceWorker" in navigator
+) {
 
-              console.log(
-                "QRify is ready"
-              );
+  window.addEventListener(
+    "load",
+    function() {
 
-            })
-            .catch(function(error) {
+      navigator.serviceWorker
+        .register("./sw.js")
+        .catch(function(error) {
 
-              console.log(
-                "Service Worker error:",
-                error
-              );
+          console.log(
+            "Service Worker error:",
+            error
+          );
 
-            });
-
-        }
-      );
+        });
 
     }
+  );
 
-  </script>
+}
+
+</script>
 
 </body>
-    </html>
+  </html>
