@@ -6,15 +6,12 @@
 
   <title>QRify</title>
 
-  <!-- App icon -->
   <link rel="icon" type="image/png" href="logo.png">
 
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#111827">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="QRify">
 
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
@@ -146,8 +143,10 @@
     #qrBox {
       display: flex;
       justify-content: center;
+      align-items: center;
       margin-top: 25px;
       min-height: 20px;
+      background: white;
     }
 
     #history {
@@ -180,385 +179,771 @@
     body.dark footer {
       color: #d1d5db;
     }
+
+    @media (max-width: 500px) {
+      .container {
+        padding: 12px;
+      }
+
+      .card {
+        padding: 15px;
+      }
+
+      .row {
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .logo img {
+        width: 110px;
+        height: 110px;
+      }
+    }
   </style>
 </head>
 
 <body>
 
-<div class="container">
+  <div class="container">
 
-  <div class="logo">
-    <img src="logo.png" alt="QRify Logo">
-  </div>
-
-  <h1>QRify</h1>
-  <p class="subtitle">Generate • Scan • Simplify</p>
-
-  <div class="card">
-
-    <label>QR Type</label>
-
-    <select id="type" onchange="changeType()">
-      <option value="text">Text</option>
-      <option value="website">Website</option>
-      <option value="phone">Phone</option>
-      <option value="email">Email</option>
-      <option value="wifi">Wi-Fi</option>
-      <option value="contact">Contact</option>
-      <option value="location">Location</option>
-    </select>
-
-    <div id="inputs">
-
-      <label>Enter Text</label>
-      <textarea id="text" placeholder="Type your text here..."></textarea>
-
+    <div class="logo">
+      <img src="logo.png" alt="QRify Logo">
     </div>
 
-    <div class="row">
+    <h1>QRify</h1>
+    <p class="subtitle">Generate • Scan • Simplify</p>
 
-      <div>
-        <label>QR Size</label>
-        <select id="size">
-          <option value="150">Small</option>
-          <option value="200" selected>Medium</option>
-          <option value="300">Large</option>
-        </select>
-      </div>
+    <div class="card">
 
-      <div>
-        <label>QR Color</label>
-        <input type="color" id="qrColor" value="#000000">
-      </div>
+      <label>QR Type</label>
 
-    </div>
-
-    <label>Background Color</label>
-    <input type="color" id="bgColor" value="#ffffff">
-
-    <button class="generate" onclick="generateQR()">
-      Generate QR
-    </button>
-
-    <div id="qrBox"></div>
-
-    <button class="download hidden" id="downloadBtn" onclick="downloadQR()">
-      Download QR
-    </button>
-
-    <button class="clear" onclick="clearQR()">
-      Clear
-    </button>
-
-    <button class="dark-btn" onclick="toggleDarkMode()">
-      🌙 Dark Mode
-    </button>
-
-    <div id="history">
-      <h3>Recent History</h3>
-      <div id="historyList"></div>
-    </div>
-
-  </div>
-
-  <footer>
-    QRify • Generate your QR instantly<br>
-    By Ashraf
-  </footer>
-
-</div>
-
-<script>
-
-let currentQR = null;
-
-/* Change input based on QR type */
-function changeType() {
-
-  const type = document.getElementById("type").value;
-  const inputs = document.getElementById("inputs");
-
-  if (type === "text") {
-
-    inputs.innerHTML = `
-      <label>Enter Text</label>
-      <textarea id="text" placeholder="Type your text here..."></textarea>
-    `;
-
-  }
-
-  else if (type === "website") {
-
-    inputs.innerHTML = `
-      <label>Website URL</label>
-      <input id="text" type="url" placeholder="https://example.com">
-    `;
-
-  }
-
-  else if (type === "phone") {
-
-    inputs.innerHTML = `
-      <label>Phone Number</label>
-      <input id="text" type="tel" placeholder="+91 9876543210">
-    `;
-
-  }
-
-  else if (type === "email") {
-
-    inputs.innerHTML = `
-      <label>Email Address</label>
-      <input id="text" type="email" placeholder="example@email.com">
-      <label>Subject</label>
-      <input id="subject" type="text" placeholder="Subject">
-      <label>Message</label>
-      <textarea id="message" placeholder="Message"></textarea>
-    `;
-
-  }
-
-  else if (type === "wifi") {
-
-    inputs.innerHTML = `
-      <label>Wi-Fi Name</label>
-      <input id="ssid" placeholder="Wi-Fi name">
-
-      <label>Password</label>
-      <input id="password" type="text" placeholder="Wi-Fi password">
-
-      <label>Security</label>
-      <select id="security">
-        <option value="WPA">WPA/WPA2</option>
-        <option value="WEP">WEP</option>
-        <option value="nopass">No Password</option>
+      <select id="type" onchange="changeType()">
+        <option value="text">Text</option>
+        <option value="website">Website</option>
+        <option value="phone">Phone</option>
+        <option value="email">Email</option>
+        <option value="wifi">Wi-Fi</option>
+        <option value="contact">Contact</option>
+        <option value="location">Location</option>
       </select>
-    `;
 
-  }
+      <div id="inputs">
 
-  else if (type === "contact") {
+        <label>Enter Text</label>
 
-    inputs.innerHTML = `
-      <label>Name</label>
-      <input id="name" placeholder="Full name">
+        <textarea
+          id="text"
+          placeholder="Type your text here..."
+        ></textarea>
 
-      <label>Phone</label>
-      <input id="phone" placeholder="+91 9876543210">
+      </div>
 
-      <label>Email</label>
-      <input id="email" type="email" placeholder="email@example.com">
+      <div class="row">
 
-      <label>Organization</label>
-      <input id="org" placeholder="Organization">
-    `;
+        <div>
+          <label>QR Size</label>
 
-  }
+          <select id="size">
+            <option value="150">Small</option>
+            <option value="200" selected>Medium</option>
+            <option value="300">Large</option>
+          </select>
+        </div>
 
-  else if (type === "location") {
+        <div>
+          <label>QR Color</label>
 
-    inputs.innerHTML = `
-      <label>Google Maps Location / Link</label>
-      <input id="text" placeholder="Paste Google Maps link">
-    `;
-  }
-}
+          <input
+            type="color"
+            id="qrColor"
+            value="#000000"
+          >
+        </div>
 
+      </div>
 
-/* Generate QR */
-function generateQR() {
+      <label>Background Color</label>
 
-  const type = document.getElementById("type").value;
-  const size = parseInt(document.getElementById("size").value);
-  const qrColor = document.getElementById("qrColor").value;
-  const bgColor = document.getElementById("bgColor").value;
+      <input
+        type="color"
+        id="bgColor"
+        value="#ffffff"
+      >
 
-  let data = "";
+      <button
+        class="generate"
+        onclick="generateQR()"
+      >
+        Generate QR
+      </button>
 
-  if (type === "text" ||
-      type === "website" ||
-      type === "phone" ||
-      type === "location") {
+      <div id="qrBox"></div>
 
-    data = document.getElementById("text").value.trim();
+      <button
+        class="download hidden"
+        id="downloadBtn"
+        onclick="downloadQR()"
+      >
+        Download QR
+      </button>
 
-  }
+      <button
+        class="clear"
+        onclick="clearQR()"
+      >
+        Clear
+      </button>
 
-  else if (type === "email") {
+      <button
+        class="dark-btn"
+        onclick="toggleDarkMode()"
+      >
+        🌙 Dark Mode
+      </button>
 
-    const email = document.getElementById("text").value.trim();
-    const subject = document.getElementById("subject").value.trim();
-    const message = document.getElementById("message").value.trim();
+      <div id="history">
 
-    data =
-      "mailto:" + email +
-      "?subject=" + encodeURIComponent(subject) +
-      "&body=" + encodeURIComponent(message);
+        <h3>Recent History</h3>
 
-  }
+        <div id="historyList"></div>
 
-  else if (type === "wifi") {
+      </div>
 
-    const ssid = document.getElementById("ssid").value;
-    const password = document.getElementById("password").value;
-    const security = document.getElementById("security").value;
+    </div>
 
-    data =
-      `WIFI:T:${security};S:${ssid};P:${password};;`;
+    <footer>
+      QRify • Generate your QR instantly
+      <br>
+      By Ashraf
+    </footer>
 
-  }
+  </div>
 
-  else if (type === "contact") {
 
-    const name = document.getElementById("name").value;
-    const phone = document.getElementById("phone").value;
-    const email = document.getElementById("email").value;
-    const org = document.getElementById("org").value;
+  <script>
 
-    data =
-      `BEGIN:VCARD
-VERSION:3.0
-FN:${name}
-TEL:${phone}
-EMAIL:${email}
-ORG:${org}
-END:VCARD`;
+    let currentData = "";
 
-  }
 
-  if (!data) {
-    alert("Please enter the required information.");
-    return;
-  }
+    /* CHANGE QR TYPE */
 
-  const qrBox = document.getElementById("qrBox");
+    function changeType() {
 
-  qrBox.innerHTML = "";
+      const type =
+        document.getElementById("type").value;
 
-  currentQR = new QRCode(qrBox, {
-    text: data,
-    width: size,
-    height: size,
-    colorDark: qrColor,
-    colorLight: bgColor,
-    correctLevel: QRCode.CorrectLevel.H
-  });
+      const inputs =
+        document.getElementById("inputs");
 
-  document.getElementById("downloadBtn").classList.remove("hidden");
 
-  saveHistory(data);
-}
+      if (type === "text") {
 
+        inputs.innerHTML = `
+          <label>Enter Text</label>
 
-/* Download QR */
-function downloadQR() {
+          <textarea
+            id="text"
+            placeholder="Type your text here..."
+          ></textarea>
+        `;
 
-  const qrBox = document.getElementById("qrBox");
-  const canvas = qrBox.querySelector("canvas");
+      }
 
-  if (!canvas) {
-    alert("Generate a QR first.");
-    return;
-  }
 
-  const link = document.createElement("a");
+      else if (type === "website") {
 
-  link.download = "QRify-QR.png";
-  link.href = canvas.toDataURL("image/png");
+        inputs.innerHTML = `
+          <label>Website URL</label>
 
-  link.click();
-}
+          <input
+            id="text"
+            type="url"
+            placeholder="https://example.com"
+          >
+        `;
 
+      }
 
-/* Clear */
-function clearQR() {
 
-  document.getElementById("qrBox").innerHTML = "";
+      else if (type === "phone") {
 
-  document.getElementById("downloadBtn").classList.add("hidden");
-}
+        inputs.innerHTML = `
+          <label>Phone Number</label>
 
+          <input
+            id="text"
+            type="tel"
+            placeholder="+91 9876543210"
+          >
+        `;
 
-/* Dark mode */
-function toggleDarkMode() {
+      }
 
-  document.body.classList.toggle("dark");
 
-  const isDark =
-    document.body.classList.contains("dark");
+      else if (type === "email") {
 
-  localStorage.setItem("qrifyDark", isDark);
-}
+        inputs.innerHTML = `
+          <label>Email Address</label>
 
+          <input
+            id="text"
+            type="email"
+            placeholder="example@email.com"
+          >
 
-/* Load dark mode */
-if (localStorage.getItem("qrifyDark") === "true") {
-  document.body.classList.add("dark");
-}
+          <label>Subject</label>
 
+          <input
+            id="subject"
+            type="text"
+            placeholder="Subject"
+          >
 
-/* History */
-function saveHistory(data) {
+          <label>Message</label>
 
-  let history =
-    JSON.parse(localStorage.getItem("qrifyHistory")) || [];
+          <textarea
+            id="message"
+            placeholder="Message"
+          ></textarea>
+        `;
 
-  history.unshift(data);
+      }
 
-  history = history.slice(0, 5);
 
-  localStorage.setItem(
-    "qrifyHistory",
-    JSON.stringify(history)
-  );
+      else if (type === "wifi") {
 
-  displayHistory();
-}
+        inputs.innerHTML = `
+          <label>Wi-Fi Name</label>
 
+          <input
+            id="ssid"
+            placeholder="Wi-Fi name"
+          >
 
-/* Display history */
-function displayHistory() {
+          <label>Password</label>
 
-  const list =
-    document.getElementById("historyList");
+          <input
+            id="password"
+            type="text"
+            placeholder="Wi-Fi password"
+          >
 
-  let history =
-    JSON.parse(localStorage.getItem("qrifyHistory")) || [];
+          <label>Security</label>
 
-  list.innerHTML = "";
+          <select id="security">
+            <option value="WPA">WPA/WPA2</option>
+            <option value="WEP">WEP</option>
+            <option value="nopass">No Password</option>
+          </select>
+        `;
 
-  history.forEach(item => {
+      }
 
-    const div =
-      document.createElement("div");
 
-    div.className = "history-item";
+      else if (type === "contact") {
 
-    div.textContent = item;
+        inputs.innerHTML = `
+          <label>Name</label>
 
-    list.appendChild(div);
+          <input
+            id="name"
+            placeholder="Full name"
+          >
 
-  });
-}
+          <label>Phone</label>
 
+          <input
+            id="phone"
+            placeholder="+91 9876543210"
+          >
 
-displayHistory();
+          <label>Email</label>
 
+          <input
+            id="email"
+            type="email"
+            placeholder="email@example.com"
+          >
 
-/* Register Service Worker */
-if ("serviceWorker" in navigator) {
+          <label>Organization</label>
 
-  window.addEventListener("load", () => {
+          <input
+            id="org"
+            placeholder="Organization"
+          >
+        `;
 
-    navigator.serviceWorker.register("sw.js")
-      .then(() => console.log("QRify app ready"))
-      .catch(() => console.log("Service worker failed"));
+      }
 
-  });
 
-}
+      else if (type === "location") {
 
-</script>
+        inputs.innerHTML = `
+          <label>Google Maps Location / Link</label>
+
+          <input
+            id="text"
+            placeholder="Paste Google Maps link"
+          >
+        `;
+
+      }
+
+    }
+
+
+    /* GET DATA */
+
+    function getQRData() {
+
+      const type =
+        document.getElementById("type").value;
+
+      let data = "";
+
+
+      if (
+        type === "text" ||
+        type === "website" ||
+        type === "phone" ||
+        type === "location"
+      ) {
+
+        data =
+          document.getElementById("text")
+          .value
+          .trim();
+
+      }
+
+
+      else if (type === "email") {
+
+        const email =
+          document.getElementById("text")
+          .value
+          .trim();
+
+        const subject =
+          document.getElementById("subject")
+          .value
+          .trim();
+
+        const message =
+          document.getElementById("message")
+          .value
+          .trim();
+
+
+        data =
+          "mailto:" +
+          email +
+          "?subject=" +
+          encodeURIComponent(subject) +
+          "&body=" +
+          encodeURIComponent(message);
+
+      }
+
+
+      else if (type === "wifi") {
+
+        const ssid =
+          document.getElementById("ssid").value;
+
+        const password =
+          document.getElementById("password").value;
+
+        const security =
+          document.getElementById("security").value;
+
+
+        data =
+          "WIFI:T:" +
+          security +
+          ";S:" +
+          escapeWifi(ssid) +
+          ";P:" +
+          escapeWifi(password) +
+          ";;";
+
+      }
+
+
+      else if (type === "contact") {
+
+        const name =
+          document.getElementById("name").value;
+
+        const phone =
+          document.getElementById("phone").value;
+
+        const email =
+          document.getElementById("email").value;
+
+        const org =
+          document.getElementById("org").value;
+
+
+        data =
+          "BEGIN:VCARD\n" +
+          "VERSION:3.0\n" +
+          "FN:" + name + "\n" +
+          "TEL:" + phone + "\n" +
+          "EMAIL:" + email + "\n" +
+          "ORG:" + org + "\n" +
+          "END:VCARD";
+
+      }
+
+
+      return data;
+
+    }
+
+
+    /* WIFI ESCAPE */
+
+    function escapeWifi(value) {
+
+      return value
+        .replace(/\\/g, "\\\\")
+        .replace(/;/g, "\\;")
+        .replace(/,/g, "\\,")
+        .replace(/:/g, "\\:");
+
+    }
+
+
+    /* GENERATE */
+
+    function generateQR() {
+
+      const data = getQRData();
+
+
+      if (!data) {
+
+        alert(
+          "Please enter the required information."
+        );
+
+        return;
+
+      }
+
+
+      currentData = data;
+
+
+      const size =
+        parseInt(
+          document.getElementById("size").value
+        );
+
+
+      const qrColor =
+        document.getElementById("qrColor").value;
+
+
+      const bgColor =
+        document.getElementById("bgColor").value;
+
+
+      const qrBox =
+        document.getElementById("qrBox");
+
+
+      qrBox.innerHTML = "";
+
+
+      new QRCode(qrBox, {
+
+        text: data,
+
+        width: size,
+
+        height: size,
+
+        colorDark: qrColor,
+
+        colorLight: bgColor,
+
+        correctLevel:
+          QRCode.CorrectLevel.H
+
+      });
+
+
+      document
+        .getElementById("downloadBtn")
+        .classList
+        .remove("hidden");
+
+
+      saveHistory(data);
+
+    }
+
+
+    /* DOWNLOAD HIGH QUALITY QR */
+
+    function downloadQR() {
+
+      const qrBox =
+        document.getElementById("qrBox");
+
+
+      const canvas =
+        qrBox.querySelector("canvas");
+
+
+      if (!canvas) {
+
+        alert(
+          "Please generate a QR first."
+        );
+
+        return;
+
+      }
+
+
+      const border = 30;
+
+
+      const output =
+        document.createElement("canvas");
+
+
+      output.width =
+        canvas.width + border * 2;
+
+
+      output.height =
+        canvas.height + border * 2;
+
+
+      const ctx =
+        output.getContext("2d");
+
+
+      /* White background */
+
+      ctx.fillStyle = "#ffffff";
+
+      ctx.fillRect(
+        0,
+        0,
+        output.width,
+        output.height
+      );
+
+
+      /* QR */
+
+      ctx.drawImage(
+        canvas,
+        border,
+        border
+      );
+
+
+      const link =
+        document.createElement("a");
+
+
+      link.download =
+        "QRify-QR.png";
+
+
+      link.href =
+        output.toDataURL(
+          "image/png"
+        );
+
+
+      document.body.appendChild(link);
+
+      link.click();
+
+      document.body.removeChild(link);
+
+    }
+
+
+    /* CLEAR */
+
+    function clearQR() {
+
+      document
+        .getElementById("qrBox")
+        .innerHTML = "";
+
+
+      document
+        .getElementById("downloadBtn")
+        .classList
+        .add("hidden");
+
+
+      currentData = "";
+
+    }
+
+
+    /* DARK MODE */
+
+    function toggleDarkMode() {
+
+      document.body
+        .classList
+        .toggle("dark");
+
+
+      const isDark =
+        document.body
+        .classList
+        .contains("dark");
+
+
+      localStorage.setItem(
+        "qrifyDark",
+        isDark
+      );
+
+    }
+
+
+    /* LOAD DARK MODE */
+
+    if (
+      localStorage.getItem(
+        "qrifyDark"
+      ) === "true"
+    ) {
+
+      document.body
+        .classList
+        .add("dark");
+
+    }
+
+
+    /* HISTORY */
+
+    function saveHistory(data) {
+
+      let history =
+        JSON.parse(
+          localStorage.getItem(
+            "qrifyHistory"
+          )
+        ) || [];
+
+
+      if (
+        history.length === 0 ||
+        history[0] !== data
+      ) {
+
+        history.unshift(data);
+
+      }
+
+
+      history =
+        history.slice(0, 5);
+
+
+      localStorage.setItem(
+        "qrifyHistory",
+        JSON.stringify(history)
+      );
+
+
+      displayHistory();
+
+    }
+
+
+    /* DISPLAY HISTORY */
+
+    function displayHistory() {
+
+      const list =
+        document.getElementById(
+          "historyList"
+        );
+
+
+      const history =
+        JSON.parse(
+          localStorage.getItem(
+            "qrifyHistory"
+          )
+        ) || [];
+
+
+      list.innerHTML = "";
+
+
+      history.forEach(function(item) {
+
+        const div =
+          document.createElement("div");
+
+
+        div.className =
+          "history-item";
+
+
+        div.textContent =
+          item;
+
+
+        list.appendChild(div);
+
+      });
+
+    }
+
+
+    displayHistory();
+
+
+    /* SERVICE WORKER */
+
+    if ("serviceWorker" in navigator) {
+
+      window.addEventListener(
+        "load",
+        function() {
+
+          navigator.serviceWorker
+            .register("./sw.js")
+            .then(function() {
+
+              console.log(
+                "QRify is ready"
+              );
+
+            })
+            .catch(function(error) {
+
+              console.log(
+                "Service Worker error:",
+                error
+              );
+
+            });
+
+        }
+      );
+
+    }
+
+  </script>
 
 </body>
-</html>
+    </html>
