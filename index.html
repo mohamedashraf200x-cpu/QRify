@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>QRify - QR Code Generator</title>
+  <title>QRify - Advanced QR Generator</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -14,19 +14,30 @@
     }
 
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
       margin: 0;
       padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #111;
+      transition: 0.3s;
+    }
+
+    body.dark {
+      background: #121212;
+      color: #fff;
     }
 
     .container {
-      max-width: 500px;
-      margin: 30px auto;
-      background: white;
+      max-width: 550px;
+      margin: 20px auto;
       padding: 25px;
-      border-radius: 18px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+    }
+
+    body.dark .container {
+      background: #1e1e1e;
     }
 
     h1 {
@@ -36,29 +47,49 @@
 
     .subtitle {
       text-align: center;
-      color: #666;
+      color: #777;
       margin-bottom: 25px;
     }
 
+    body.dark .subtitle {
+      color: #bbb;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 7px;
+      font-weight: bold;
+    }
+
+    select,
+    input,
     textarea {
       width: 100%;
-      height: 120px;
-      padding: 12px;
+      padding: 13px;
       border: 1px solid #ccc;
       border-radius: 10px;
       font-size: 16px;
-      resize: vertical;
       outline: none;
     }
 
-    textarea:focus {
-      border-color: #111;
+    textarea {
+      height: 110px;
+      resize: vertical;
+    }
+
+    body.dark input,
+    body.dark textarea,
+    body.dark select {
+      background: #2b2b2b;
+      color: white;
+      border-color: #555;
     }
 
     button {
       width: 100%;
       padding: 14px;
-      margin-top: 12px;
+      margin-top: 14px;
       border: none;
       border-radius: 10px;
       background: #111;
@@ -71,182 +102,83 @@
       opacity: 0.9;
     }
 
-    .secondary {
-      background: #555;
-    }
-
     .download {
       background: #16803c;
+    }
+
+    .share {
+      background: #2563eb;
+    }
+
+    .clear {
+      background: #666;
+    }
+
+    .dark-btn {
+      background: #333;
+    }
+
+    .field {
+      display: none;
     }
 
     #qr {
       display: flex;
       justify-content: center;
       margin-top: 25px;
+      padding: 15px;
     }
 
     #message {
       text-align: center;
-      color: #555;
-      margin-top: 15px;
+      color: #666;
     }
 
-    .hidden {
+    body.dark #message {
+      color: #bbb;
+    }
+
+    #actions {
       display: none;
+    }
+
+    .history {
+      margin-top: 30px;
+      border-top: 1px solid #ddd;
+      padding-top: 20px;
+    }
+
+    body.dark .history {
+      border-color: #444;
+    }
+
+    .history-item {
+      background: #f1f1f1;
+      padding: 10px;
+      margin-top: 8px;
+      border-radius: 8px;
+      word-break: break-word;
+    }
+
+    body.dark .history-item {
+      background: #2b2b2b;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <h1>QRify</h1>
+  <h1>QRify</h1>
 
-    <p class="subtitle">
-      Turn your information into a QR code
-    </p>
+  <p class="subtitle">
+    Advanced QR Code Generator
+  </p>
 
-    <textarea
-      id="text"
-      placeholder="Enter text, website link, phone number, email, etc..."
-    ></textarea>
+  <!-- QR TYPE -->
 
-    <button onclick="generateQR()">
-      Generate QR Code
-    </button>
+  <label>QR Type</label>
 
-    <div id="qr"></div>
-
-    <p id="message"></p>
-
-    <div id="actions" class="hidden">
-
-      <button class="download" onclick="downloadQR()">
-        Download QR
-      </button>
-
-      <button onclick="shareQR()">
-        Share QR
-      </button>
-
-      <button class="secondary" onclick="clearQR()">
-        Clear
-      </button>
-
-    </div>
-
-  </div>
-
-  <script>
-
-    function generateQR() {
-
-      const text = document.getElementById("text").value.trim();
-      const qr = document.getElementById("qr");
-      const message = document.getElementById("message");
-      const actions = document.getElementById("actions");
-
-      qr.innerHTML = "";
-      message.innerHTML = "";
-      actions.classList.add("hidden");
-
-      if (text === "") {
-        message.innerHTML = "Please enter some information first.";
-        return;
-      }
-
-      new QRCode(qr, {
-        text: text,
-        width: 250,
-        height: 250,
-        correctLevel: QRCode.CorrectLevel.H
-      });
-
-      message.innerHTML = "QR Code generated successfully!";
-
-      actions.classList.remove("hidden");
-    }
-
-
-    function downloadQR() {
-
-      const qrCanvas = document.querySelector("#qr canvas");
-
-      if (!qrCanvas) {
-        alert("Please generate a QR code first.");
-        return;
-      }
-
-      const link = document.createElement("a");
-
-      link.download = "QRify-QR-Code.png";
-
-      link.href = qrCanvas.toDataURL("image/png");
-
-      link.click();
-    }
-
-
-    async function shareQR() {
-
-      const qrCanvas = document.querySelector("#qr canvas");
-
-      if (!qrCanvas) {
-        alert("Please generate a QR code first.");
-        return;
-      }
-
-      try {
-
-        const blob = await new Promise(resolve =>
-          qrCanvas.toBlob(resolve, "image/png")
-        );
-
-        const file = new File(
-          [blob],
-          "QRify-QR-Code.png",
-          { type: "image/png" }
-        );
-
-        if (
-          navigator.share &&
-          navigator.canShare &&
-          navigator.canShare({ files: [file] })
-        ) {
-
-          await navigator.share({
-            title: "QRify QR Code",
-            text: "QR Code created with QRify",
-            files: [file]
-          });
-
-        } else {
-
-          alert("Sharing is not supported on this browser. Please use Download QR.");
-
-        }
-
-      } catch (error) {
-
-        console.log(error);
-
-      }
-    }
-
-
-    function clearQR() {
-
-      document.getElementById("text").value = "";
-      document.getElementById("qr").innerHTML = "";
-      document.getElementById("message").innerHTML = "";
-
-      document
-        .getElementById("actions")
-        .classList.add("hidden");
-    }
-
-  </script>
-
-</body>
-</html>
+  <select id="type" onchange="changeType()">
+    <option value="text">
