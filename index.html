@@ -6,7 +6,6 @@
 
   <title>QRify - QR Code Generator</title>
 
-  <!-- QR Code Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <style>
@@ -23,16 +22,16 @@
 
     .container {
       max-width: 500px;
-      margin: 40px auto;
+      margin: 30px auto;
       background: white;
       padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border-radius: 18px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
     }
 
     .subtitle {
@@ -45,8 +44,8 @@
       width: 100%;
       height: 120px;
       padding: 12px;
-      border-radius: 10px;
       border: 1px solid #ccc;
+      border-radius: 10px;
       font-size: 16px;
       resize: vertical;
       outline: none;
@@ -59,7 +58,7 @@
     button {
       width: 100%;
       padding: 14px;
-      margin-top: 15px;
+      margin-top: 12px;
       border: none;
       border-radius: 10px;
       background: #111;
@@ -72,18 +71,28 @@
       opacity: 0.9;
     }
 
+    .secondary {
+      background: #555;
+    }
+
+    .download {
+      background: #16803c;
+    }
+
     #qr {
       display: flex;
       justify-content: center;
-      align-items: center;
       margin-top: 25px;
-      min-height: 20px;
     }
 
-    .message {
+    #message {
       text-align: center;
-      color: #777;
+      color: #555;
       margin-top: 15px;
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
@@ -109,37 +118,134 @@
 
     <div id="qr"></div>
 
-    <p id="message" class="message"></p>
+    <p id="message"></p>
+
+    <div id="actions" class="hidden">
+
+      <button class="download" onclick="downloadQR()">
+        Download QR
+      </button>
+
+      <button onclick="shareQR()">
+        Share QR
+      </button>
+
+      <button class="secondary" onclick="clearQR()">
+        Clear
+      </button>
+
+    </div>
 
   </div>
 
   <script>
+
     function generateQR() {
 
       const text = document.getElementById("text").value.trim();
       const qr = document.getElementById("qr");
       const message = document.getElementById("message");
+      const actions = document.getElementById("actions");
 
-      // Clear previous QR code
       qr.innerHTML = "";
       message.innerHTML = "";
+      actions.classList.add("hidden");
 
-      // Check empty input
       if (text === "") {
         message.innerHTML = "Please enter some information first.";
         return;
       }
 
-      // Generate QR code
       new QRCode(qr, {
         text: text,
-        width: 220,
-        height: 220,
+        width: 250,
+        height: 250,
         correctLevel: QRCode.CorrectLevel.H
       });
 
       message.innerHTML = "QR Code generated successfully!";
+
+      actions.classList.remove("hidden");
     }
+
+
+    function downloadQR() {
+
+      const qrCanvas = document.querySelector("#qr canvas");
+
+      if (!qrCanvas) {
+        alert("Please generate a QR code first.");
+        return;
+      }
+
+      const link = document.createElement("a");
+
+      link.download = "QRify-QR-Code.png";
+
+      link.href = qrCanvas.toDataURL("image/png");
+
+      link.click();
+    }
+
+
+    async function shareQR() {
+
+      const qrCanvas = document.querySelector("#qr canvas");
+
+      if (!qrCanvas) {
+        alert("Please generate a QR code first.");
+        return;
+      }
+
+      try {
+
+        const blob = await new Promise(resolve =>
+          qrCanvas.toBlob(resolve, "image/png")
+        );
+
+        const file = new File(
+          [blob],
+          "QRify-QR-Code.png",
+          { type: "image/png" }
+        );
+
+        if (
+          navigator.share &&
+          navigator.canShare &&
+          navigator.canShare({ files: [file] })
+        ) {
+
+          await navigator.share({
+            title: "QRify QR Code",
+            text: "QR Code created with QRify",
+            files: [file]
+          });
+
+        } else {
+
+          alert("Sharing is not supported on this browser. Please use Download QR.");
+
+        }
+
+      } catch (error) {
+
+        console.log(error);
+
+      }
+    }
+
+
+    function clearQR() {
+
+      document.getElementById("text").value = "";
+      document.getElementById("qr").innerHTML = "";
+      document.getElementById("message").innerHTML = "";
+
+      document
+        .getElementById("actions")
+        .classList.add("hidden");
+    }
+
   </script>
 
 </body>
