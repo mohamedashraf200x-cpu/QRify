@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8">
 
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>QRify - Generate & Scan QR</title>
+
+  <!-- Google Search Console Verification -->
+  <meta name="google-site-verification"
+        content="5HCcQf2Dkuhb6cXjoyaUMdktFcyYmGymxjnBAaxDoyA" />
 
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="manifest" href="manifest.json">
@@ -229,20 +232,24 @@
 <body>
 
 <header>
+
   <img src="logo.png" alt="QRify Logo">
 
   <h1>QRify</h1>
+
   <p>Generate • Scan • Simplify</p>
 
   <button class="dark-btn" onclick="toggleDarkMode()">
     🌙 Dark Mode
   </button>
+
 </header>
 
 
 <div class="container">
 
   <!-- QR GENERATOR -->
+
   <div class="card">
 
     <h2>Generate QR Code</h2>
@@ -250,30 +257,39 @@
     <label for="qrType">QR Type</label>
 
     <select id="qrType" onchange="selectType(this.value)">
+
       <option value="text">📝 Text</option>
+
       <option value="website">🌐 Website</option>
+
       <option value="phone">📞 Phone</option>
+
       <option value="email">📧 Email</option>
+
       <option value="wifi">📶 Wi-Fi</option>
+
       <option value="contact">👤 Contact</option>
+
       <option value="location">📍 Location</option>
+
     </select>
 
 
     <!-- TEXT -->
+
     <div id="textSection">
 
       <label for="textInput">Message</label>
 
       <textarea
         id="textInput"
-        placeholder="Enter your text or message">
-      </textarea>
+        placeholder="Enter your text or message"></textarea>
 
     </div>
 
 
     <!-- WEBSITE -->
+
     <div id="websiteSection" class="hidden">
 
       <label for="websiteInput">Website URL</label>
@@ -287,6 +303,7 @@
 
 
     <!-- PHONE -->
+
     <div id="phoneSection" class="hidden">
 
       <label for="phoneInput">Phone Number</label>
@@ -300,6 +317,7 @@
 
 
     <!-- EMAIL -->
+
     <div id="emailSection" class="hidden">
 
       <label for="emailInput">Email</label>
@@ -320,13 +338,13 @@
 
       <textarea
         id="emailMessage"
-        placeholder="Email message">
-      </textarea>
+        placeholder="Email message"></textarea>
 
     </div>
 
 
     <!-- WIFI -->
+
     <div id="wifiSection" class="hidden">
 
       <label for="wifiSSID">Wi-Fi Name (SSID)</label>
@@ -346,15 +364,20 @@
       <label for="wifiSecurity">Security</label>
 
       <select id="wifiSecurity">
+
         <option value="WPA">WPA/WPA2</option>
+
         <option value="WEP">WEP</option>
+
         <option value="nopass">No Password</option>
+
       </select>
 
     </div>
 
 
     <!-- CONTACT -->
+
     <div id="contactSection" class="hidden">
 
       <label for="contactName">Name</label>
@@ -389,6 +412,7 @@
 
 
     <!-- LOCATION -->
+
     <div id="locationSection" class="hidden">
 
       <label for="latitude">Latitude</label>
@@ -409,52 +433,71 @@
 
 
     <!-- QR SETTINGS -->
+
     <h3>QR Settings</h3>
 
     <label for="qrSize">QR Size</label>
 
     <select id="qrSize">
+
       <option value="180">Small</option>
+
       <option value="250" selected>Medium</option>
+
       <option value="350">Large</option>
+
     </select>
 
 
     <div class="row">
 
       <div>
+
         <label for="qrColor">QR Color</label>
 
         <input
           type="color"
           id="qrColor"
           value="#000000">
+
       </div>
 
       <div>
+
         <label for="bgColor">Background</label>
 
         <input
           type="color"
           id="bgColor"
           value="#ffffff">
+
       </div>
 
     </div>
 
 
-    <button class="generate" onclick="generateQR()">
+    <button
+      class="generate"
+      onclick="generateQR()">
+
       ⚡ Generate QR
+
     </button>
 
-    <button class="clear" onclick="clearAll()">
+
+    <button
+      class="clear"
+      onclick="clearAll()">
+
       🗑 Clear
+
     </button>
 
   </div>
 
 
   <!-- QR RESULT -->
+
   <div class="card result-box">
 
     <h2>Your QR Code</h2>
@@ -465,23 +508,31 @@
       id="downloadBtn"
       class="download hidden"
       onclick="downloadQR()">
+
       ⬇ Download QR
+
     </button>
 
   </div>
 
 
   <!-- QR SCANNER -->
+
   <div class="card">
 
     <h2>📷 Scan QR Code</h2>
 
     <button onclick="startCameraScan()">
+
       📸 Camera Scan
+
     </button>
 
-    <button onclick="document.getElementById('qrFile').click()">
+    <button
+      onclick="document.getElementById('qrFile').click()">
+
       🖼 Scan Image
+
     </button>
 
     <input
@@ -494,6 +545,7 @@
     <div id="reader"></div>
 
     <div id="scanResult" class="hidden">
+
       <strong>Scan Result:</strong>
 
       <p id="scanText"></p>
@@ -502,14 +554,18 @@
         id="openLinkBtn"
         class="hidden"
         onclick="openScannedLink()">
+
         🔗 Open Link
+
       </button>
+
     </div>
 
   </div>
 
 
   <!-- HISTORY -->
+
   <div class="card">
 
     <h2>🕘 QR History</h2>
@@ -521,7 +577,9 @@
     <button
       class="clear"
       onclick="clearHistory()">
+
       Clear History
+
     </button>
 
   </div>
@@ -530,20 +588,24 @@
 
 
 <footer>
-  QRify — Generate • Scan • Simplify<br>
+
+  QRify — Generate • Scan • Simplify
+
+  <br>
+
   By Ashraf
+
 </footer>
 
 
 <script>
 
-  /* -------------------------
-     QR TYPE SELECT
-  ------------------------- */
+  /* QR TYPE */
 
   function selectType(type) {
 
     const sections = [
+
       "textSection",
       "websiteSection",
       "phoneSection",
@@ -551,23 +613,24 @@
       "wifiSection",
       "contactSection",
       "locationSection"
+
     ];
 
     sections.forEach(function(id) {
-      document.getElementById(id).classList.add("hidden");
+
+      document
+        .getElementById(id)
+        .classList.add("hidden");
+
     });
 
-    const selectedSection = type + "Section";
-
     document
-      .getElementById(selectedSection)
+      .getElementById(type + "Section")
       .classList.remove("hidden");
   }
 
 
-  /* -------------------------
-     GET QR DATA
-  ------------------------- */
+  /* GET QR DATA */
 
   function getQRData() {
 
@@ -575,15 +638,18 @@
       document.getElementById("qrType").value;
 
 
-    /* TEXT */
-
     if (type === "text") {
 
       const text =
-        document.getElementById("textInput").value.trim();
+        document
+          .getElementById("textInput")
+          .value
+          .trim();
 
       if (!text) {
+
         alert("Please enter some text.");
+
         return null;
       }
 
@@ -591,15 +657,18 @@
     }
 
 
-    /* WEBSITE */
-
     if (type === "website") {
 
       let url =
-        document.getElementById("websiteInput").value.trim();
+        document
+          .getElementById("websiteInput")
+          .value
+          .trim();
 
       if (!url) {
+
         alert("Please enter a website URL.");
+
         return null;
       }
 
@@ -607,6 +676,7 @@
         !url.startsWith("http://") &&
         !url.startsWith("https://")
       ) {
+
         url = "https://" + url;
       }
 
@@ -614,15 +684,18 @@
     }
 
 
-    /* PHONE */
-
     if (type === "phone") {
 
       const phone =
-        document.getElementById("phoneInput").value.trim();
+        document
+          .getElementById("phoneInput")
+          .value
+          .trim();
 
       if (!phone) {
+
         alert("Please enter a phone number.");
+
         return null;
       }
 
@@ -630,21 +703,30 @@
     }
 
 
-    /* EMAIL */
-
     if (type === "email") {
 
       const email =
-        document.getElementById("emailInput").value.trim();
+        document
+          .getElementById("emailInput")
+          .value
+          .trim();
 
       const subject =
-        document.getElementById("emailSubject").value.trim();
+        document
+          .getElementById("emailSubject")
+          .value
+          .trim();
 
       const message =
-        document.getElementById("emailMessage").value.trim();
+        document
+          .getElementById("emailMessage")
+          .value
+          .trim();
 
       if (!email) {
+
         alert("Please enter an email address.");
+
         return null;
       }
 
@@ -659,8 +741,6 @@
     }
 
 
-    /* WIFI */
-
     if (type === "wifi") {
 
       const ssid =
@@ -672,18 +752,25 @@
       const security =
         document.getElementById("wifiSecurity").value;
 
+
       if (!ssid) {
+
         alert("Please enter Wi-Fi name.");
+
         return null;
       }
 
+
       function escapeWifi(value) {
+
         return value
           .replace(/\\/g, "\\\\")
           .replace(/;/g, "\\;")
           .replace(/,/g, "\\,")
           .replace(/:/g, "\\:");
+
       }
+
 
       return (
         "WIFI:" +
@@ -697,26 +784,40 @@
     }
 
 
-    /* CONTACT */
-
     if (type === "contact") {
 
       const name =
-        document.getElementById("contactName").value.trim();
+        document
+          .getElementById("contactName")
+          .value
+          .trim();
 
       const phone =
-        document.getElementById("contactPhone").value.trim();
+        document
+          .getElementById("contactPhone")
+          .value
+          .trim();
 
       const email =
-        document.getElementById("contactEmail").value.trim();
+        document
+          .getElementById("contactEmail")
+          .value
+          .trim();
 
       const org =
-        document.getElementById("contactOrg").value.trim();
+        document
+          .getElementById("contactOrg")
+          .value
+          .trim();
+
 
       if (!name && !phone && !email) {
+
         alert("Please enter contact details.");
+
         return null;
       }
+
 
       return (
         "BEGIN:VCARD\n" +
@@ -730,20 +831,30 @@
     }
 
 
-    /* LOCATION */
-
     if (type === "location") {
 
       const latitude =
-        document.getElementById("latitude").value.trim();
+        document
+          .getElementById("latitude")
+          .value
+          .trim();
 
       const longitude =
-        document.getElementById("longitude").value.trim();
+        document
+          .getElementById("longitude")
+          .value
+          .trim();
+
 
       if (!latitude || !longitude) {
-        alert("Please enter latitude and longitude.");
+
+        alert(
+          "Please enter latitude and longitude."
+        );
+
         return null;
       }
+
 
       return (
         "https://www.google.com/maps?q=" +
@@ -753,15 +864,15 @@
       );
     }
 
+
     return null;
   }
 
 
-  /* -------------------------
-     GENERATE QR
-  ------------------------- */
+  /* GENERATE */
 
   let currentQRData = "";
+
 
   function generateQR() {
 
@@ -773,18 +884,22 @@
 
     currentQRData = data;
 
+
     const qrContainer =
       document.getElementById("qrcode");
 
     qrContainer.innerHTML = "";
+
 
     const size =
       parseInt(
         document.getElementById("qrSize").value
       );
 
+
     const color =
       document.getElementById("qrColor").value;
+
 
     const background =
       document.getElementById("bgColor").value;
@@ -795,9 +910,11 @@
       text: data,
 
       width: size,
+
       height: size,
 
       colorDark: color,
+
       colorLight: background,
 
       correctLevel:
@@ -812,22 +929,10 @@
 
 
     saveHistory(data);
-
-    setTimeout(function() {
-
-      document
-        .getElementById("qrcode")
-        .scrollIntoView({
-          behavior: "smooth"
-        });
-
-    }, 200);
   }
 
 
-  /* -------------------------
-     DOWNLOAD QR
-  ------------------------- */
+  /* DOWNLOAD */
 
   function downloadQR() {
 
@@ -837,14 +942,14 @@
     const image =
       document.querySelector("#qrcode img");
 
-    let source = canvas;
 
-    if (!source && image) {
-      source = image;
-    }
+    let source = canvas || image;
+
 
     if (!source) {
+
       alert("Generate a QR code first.");
+
       return;
     }
 
@@ -854,8 +959,10 @@
 
     const border = 30;
 
+
     const downloadCanvas =
       document.createElement("canvas");
+
 
     downloadCanvas.width =
       size + border * 2;
@@ -863,11 +970,13 @@
     downloadCanvas.height =
       size + border * 2;
 
+
     const ctx =
       downloadCanvas.getContext("2d");
 
 
     ctx.fillStyle = "#ffffff";
+
 
     ctx.fillRect(
       0,
@@ -889,49 +998,57 @@
     const link =
       document.createElement("a");
 
+
     link.download =
       "QRify-QR.png";
 
+
     link.href =
       downloadCanvas.toDataURL("image/png");
+
 
     link.click();
   }
 
 
-  /* -------------------------
-     CLEAR
-  ------------------------- */
+  /* CLEAR */
 
   function clearAll() {
 
-    const inputs =
-      document.querySelectorAll(
+    document
+      .querySelectorAll(
         "input:not([type=color]), textarea"
-      );
+      )
+      .forEach(function(input) {
 
-    inputs.forEach(function(input) {
-      input.value = "";
-    });
+        input.value = "";
+
+      });
 
 
-    document.getElementById("qrcode").innerHTML = "";
+    document
+      .getElementById("qrcode")
+      .innerHTML = "";
+
 
     document
       .getElementById("downloadBtn")
       .classList.add("hidden");
 
+
     currentQRData = "";
 
-    document.getElementById("qrType").value = "text";
+
+    document
+      .getElementById("qrType")
+      .value = "text";
+
 
     selectType("text");
   }
 
 
-  /* -------------------------
-     HISTORY
-  ------------------------- */
+  /* HISTORY */
 
   function saveHistory(data) {
 
@@ -940,15 +1057,19 @@
         localStorage.getItem("qrifyHistory") || "[]"
       );
 
+
     history.unshift(data);
+
 
     history =
       history.slice(0, 5);
+
 
     localStorage.setItem(
       "qrifyHistory",
       JSON.stringify(history)
     );
+
 
     displayHistory();
   }
@@ -958,6 +1079,7 @@
 
     const container =
       document.getElementById("history");
+
 
     let history =
       JSON.parse(
@@ -982,35 +1104,41 @@
       const div =
         document.createElement("div");
 
+
       div.className =
         "history-item";
+
 
       div.textContent =
         (index + 1) + ". " + item;
 
+
       container.appendChild(div);
+
     });
   }
 
 
   function clearHistory() {
 
-    localStorage.removeItem("qrifyHistory");
+    localStorage.removeItem(
+      "qrifyHistory"
+    );
 
     displayHistory();
   }
 
 
-  /* -------------------------
-     DARK MODE
-  ------------------------- */
+  /* DARK MODE */
 
   function toggleDarkMode() {
 
     document.body.classList.toggle("dark");
 
+
     const isDark =
       document.body.classList.contains("dark");
+
 
     localStorage.setItem(
       "qrifyDarkMode",
@@ -1022,13 +1150,13 @@
   if (
     localStorage.getItem("qrifyDarkMode") === "on"
   ) {
+
     document.body.classList.add("dark");
+
   }
 
 
-  /* -------------------------
-     QR CAMERA SCANNER
-  ------------------------- */
+  /* CAMERA SCANNER */
 
   let html5QrCode = null;
 
@@ -1037,6 +1165,7 @@
 
     const reader =
       document.getElementById("reader");
+
 
     reader.innerHTML = "";
 
@@ -1060,17 +1189,18 @@
 
         showScanResult(decodedText);
 
+
         html5QrCode.stop()
           .then(function() {
+
             reader.innerHTML = "";
+
           })
           .catch(function() {});
 
       },
 
-      function(errorMessage) {
-        // Scanning continues
-      }
+      function(errorMessage) {}
 
     ).catch(function(error) {
 
@@ -1082,14 +1212,13 @@
   }
 
 
-  /* -------------------------
-     SCAN IMAGE
-  ------------------------- */
+  /* IMAGE SCANNER */
 
   function scanImage(event) {
 
     const file =
       event.target.files[0];
+
 
     if (!file) {
       return;
@@ -1100,7 +1229,8 @@
       new Html5Qrcode("reader");
 
 
-    scanner.scanFile(file, true)
+    scanner
+      .scanFile(file, true)
 
       .then(function(decodedText) {
 
@@ -1118,9 +1248,7 @@
   }
 
 
-  /* -------------------------
-     SCAN RESULT
-  ------------------------- */
+  /* SCAN RESULT */
 
   let scannedLink = "";
 
@@ -1130,8 +1258,10 @@
     const resultBox =
       document.getElementById("scanResult");
 
+
     const resultText =
       document.getElementById("scanText");
+
 
     const openButton =
       document.getElementById("openLinkBtn");
@@ -1139,13 +1269,14 @@
 
     resultBox.classList.remove("hidden");
 
+
     resultText.textContent = text;
 
 
     scannedLink = "";
 
 
-    let url = text.trim();
+    const url = text.trim();
 
 
     if (
@@ -1173,6 +1304,7 @@
     else {
 
       openButton.classList.add("hidden");
+
     }
   }
 
@@ -1183,6 +1315,7 @@
       return;
     }
 
+
     window.open(
       scannedLink,
       "_blank"
@@ -1190,18 +1323,14 @@
   }
 
 
-  /* -------------------------
-     INITIALIZE
-  ------------------------- */
+  /* INITIALIZE */
 
   selectType("text");
 
   displayHistory();
 
 
-  /* -------------------------
-     SERVICE WORKER
-  ------------------------- */
+  /* SERVICE WORKER */
 
   if ("serviceWorker" in navigator) {
 
