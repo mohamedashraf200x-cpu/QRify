@@ -24,7 +24,6 @@ body {
   font-family: Arial, sans-serif;
   background: #f3f4f6;
   color: #111827;
-  transition: 0.3s;
 }
 
 body.dark {
@@ -35,8 +34,8 @@ body.dark {
 header {
   background: #111827;
   color: white;
-  padding: 15px;
   text-align: center;
+  padding: 15px;
 }
 
 header img {
@@ -46,7 +45,7 @@ header img {
 
 .container {
   max-width: 600px;
-  margin: 20px auto;
+  margin: auto;
   padding: 15px;
 }
 
@@ -85,7 +84,7 @@ button {
 }
 
 textarea {
-  min-height: 100px;
+  min-height: 110px;
   resize: vertical;
 }
 
@@ -121,14 +120,49 @@ button:hover {
   border-color: #4b5563;
 }
 
+.type-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.type-btn {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.type-btn.active {
+  background: #2563eb;
+  color: white;
+}
+
+.dark .type-btn {
+  background: #374151;
+  color: white;
+}
+
+.dark .type-btn.active {
+  background: #2563eb;
+}
+
+.form-section {
+  display: none;
+}
+
+.form-section.active {
+  display: block;
+}
+
 #qrcode {
   text-align: center;
-  margin-top: 20px;
+  margin: 20px 0;
 }
 
 #qrcode img,
 #qrcode canvas {
   max-width: 100%;
+  margin: auto;
 }
 
 .scanner-box {
@@ -170,6 +204,16 @@ footer {
   padding: 20px;
   color: #6b7280;
 }
+
+.small-note {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 5px;
+}
+
+.dark .small-note {
+  color: #d1d5db;
+}
 </style>
 </head>
 
@@ -181,249 +225,688 @@ footer {
 
 <div class="container">
 
-  <!-- QR GENERATOR -->
-  <div class="card">
+<!-- ================= QR GENERATOR ================= -->
 
-    <h2>🔳 Generate QR Code</h2>
+<div class="card">
 
-    <label>QR Type</label>
-    <select id="qrType" onchange="changeType()">
-      <option value="text">Text</option>
-      <option value="website">Website</option>
-      <option value="phone">Phone</option>
-      <option value="email">Email</option>
-      <option value="wifi">Wi-Fi</option>
-      <option value="contact">Contact</option>
-      <option value="location">Location</option>
-    </select>
+<h2>🔳 Generate QR Code</h2>
 
-    <label>Information</label>
-    <textarea id="qrInput" placeholder="Enter your information"></textarea>
+<label>Choose QR Type</label>
 
-    <label>QR Size</label>
-    <select id="qrSize">
-      <option value="180">Small</option>
-      <option value="250" selected>Medium</option>
-      <option value="320">Large</option>
-    </select>
+<div class="type-buttons">
 
-    <label>QR Color</label>
-    <input type="color" id="qrColor" value="#000000">
+<button class="type-btn active" onclick="selectType('text', this)">
+📝 Text
+</button>
 
-    <label>Background Color</label>
-    <input type="color" id="bgColor" value="#ffffff">
+<button class="type-btn" onclick="selectType('website', this)">
+🌐 Website
+</button>
 
-    <button onclick="generateQR()">Generate QR</button>
+<button class="type-btn" onclick="selectType('phone', this)">
+📞 Phone
+</button>
 
-    <div id="qrcode"></div>
+<button class="type-btn" onclick="selectType('email', this)">
+📧 Email
+</button>
 
-    <button id="downloadBtn"
-            class="green"
-            style="display:none;"
-            onclick="downloadQR()">
-      ⬇️ Download QR
-    </button>
+<button class="type-btn" onclick="selectType('wifi', this)">
+📶 Wi-Fi
+</button>
 
-    <button class="secondary" onclick="clearQR()">
-      🗑️ Clear
-    </button>
+<button class="type-btn" onclick="selectType('contact', this)">
+👤 Contact
+</button>
 
-  </div>
-
-
-  <!-- QR SCANNER -->
-  <div class="card">
-
-    <h2>📷 Scan QR</h2>
-
-    <button onclick="startCameraScanner()">
-      📷 Scan Using Camera
-    </button>
-
-    <button class="secondary" onclick="document.getElementById('qrImageInput').click()">
-      🖼️ Scan QR From Image / Photo
-    </button>
-
-    <input
-      type="file"
-      id="qrImageInput"
-      accept="image/*"
-      style="display:none;"
-      onchange="scanFromImage(event)"
-    >
-
-    <div id="scannerBox" class="scanner-box">
-      <div id="reader"></div>
-
-      <button
-        class="red"
-        onclick="stopScanner()"
-        style="margin-top:10px;">
-        ✖ Stop Camera
-      </button>
-    </div>
-
-    <div id="scanResult">
-      <strong>QR Result:</strong>
-      <p id="resultText"></p>
-
-      <button
-        id="openLinkBtn"
-        class="green"
-        style="display:none;"
-        onclick="openScannedLink()">
-        🔗 Open Link
-      </button>
-    </div>
-
-  </div>
-
-
-  <!-- HISTORY -->
-  <div class="card">
-
-    <h2>🕘 History</h2>
-
-    <div id="history"></div>
-
-    <button class="red" onclick="clearHistory()">
-      Clear History
-    </button>
-
-  </div>
-
-
-  <!-- SETTINGS -->
-  <div class="card">
-
-    <h2>⚙️ Settings</h2>
-
-    <button onclick="toggleDarkMode()">
-      🌙 Dark Mode
-    </button>
-
-  </div>
+<button class="type-btn" onclick="selectType('location', this)">
+📍 Location
+</button>
 
 </div>
 
+
+<!-- TEXT -->
+
+<div id="textSection" class="form-section active">
+
+<h3>📝 Text</h3>
+
+<label>Enter Message</label>
+
+<textarea
+id="textInput"
+placeholder="Type your message here..."
+></textarea>
+
+</div>
+
+
+<!-- WEBSITE -->
+
+<div id="websiteSection" class="form-section">
+
+<h3>🌐 Website</h3>
+
+<label>Website URL</label>
+
+<input
+type="url"
+id="websiteInput"
+placeholder="https://example.com"
+>
+
+</div>
+
+
+<!-- PHONE -->
+
+<div id="phoneSection" class="form-section">
+
+<h3>📞 Phone</h3>
+
+<label>Phone Number</label>
+
+<input
+type="tel"
+id="phoneInput"
+placeholder="+91 9876543210"
+>
+
+</div>
+
+
+<!-- EMAIL -->
+
+<div id="emailSection" class="form-section">
+
+<h3>📧 Email</h3>
+
+<label>Email Address</label>
+
+<input
+type="email"
+id="emailInput"
+placeholder="example@gmail.com"
+>
+
+<label>Subject</label>
+
+<input
+type="text"
+id="emailSubject"
+placeholder="Email subject"
+>
+
+<label>Message</label>
+
+<textarea
+id="emailMessage"
+placeholder="Email message"
+></textarea>
+
+</div>
+
+
+<!-- WIFI -->
+
+<div id="wifiSection" class="form-section">
+
+<h3>📶 Wi-Fi</h3>
+
+<label>Network Name (SSID)</label>
+
+<input
+type="text"
+id="wifiName"
+placeholder="Wi-Fi name"
+>
+
+<label>Password</label>
+
+<input
+type="text"
+id="wifiPassword"
+placeholder="Wi-Fi password"
+>
+
+<label>Security</label>
+
+<select id="wifiSecurity">
+
+<option value="WPA">WPA/WPA2</option>
+<option value="WEP">WEP</option>
+<option value="nopass">No Password</option>
+
+</select>
+
+</div>
+
+
+<!-- CONTACT -->
+
+<div id="contactSection" class="form-section">
+
+<h3>👤 Contact</h3>
+
+<label>Full Name</label>
+
+<input
+type="text"
+id="contactName"
+placeholder="Your name"
+>
+
+<label>Phone Number</label>
+
+<input
+type="tel"
+id="contactPhone"
+placeholder="+91 9876543210"
+>
+
+<label>Email</label>
+
+<input
+type="email"
+id="contactEmail"
+placeholder="example@gmail.com"
+>
+
+<label>Organization</label>
+
+<input
+type="text"
+id="contactOrganization"
+placeholder="Company / Organization"
+>
+
+</div>
+
+
+<!-- LOCATION -->
+
+<div id="locationSection" class="form-section">
+
+<h3>📍 Location</h3>
+
+<label>Latitude</label>
+
+<input
+type="text"
+id="latitude"
+placeholder="Example: 12.9165"
+>
+
+<label>Longitude</label>
+
+<input
+type="text"
+id="longitude"
+placeholder="Example: 79.1325"
+>
+
+<div class="small-note">
+Example: Enter the latitude and longitude of a place.
+</div>
+
+</div>
+
+
+<!-- QR SETTINGS -->
+
+<label>QR Size</label>
+
+<select id="qrSize">
+
+<option value="180">Small</option>
+<option value="250" selected>Medium</option>
+<option value="320">Large</option>
+
+</select>
+
+
+<label>QR Color</label>
+
+<input
+type="color"
+id="qrColor"
+value="#000000"
+>
+
+
+<label>Background Color</label>
+
+<input
+type="color"
+id="bgColor"
+value="#ffffff"
+>
+
+
+<button onclick="generateQR()">
+🔳 Generate QR
+</button>
+
+
+<div id="qrcode"></div>
+
+
+<button
+id="downloadBtn"
+class="green"
+style="display:none;"
+onclick="downloadQR()"
+>
+⬇️ Download QR
+</button>
+
+
+<button
+class="secondary"
+onclick="clearQR()"
+>
+🗑️ Clear
+</button>
+
+</div>
+
+
+<!-- ================= QR SCANNER ================= -->
+
+<div class="card">
+
+<h2>📷 Scan QR</h2>
+
+<button onclick="startCameraScanner()">
+📷 Scan Using Camera
+</button>
+
+
+<button
+class="secondary"
+onclick="document.getElementById('qrImageInput').click()"
+>
+🖼️ Scan From Image / Photo
+</button>
+
+
+<input
+type="file"
+id="qrImageInput"
+accept="image/*"
+style="display:none;"
+onchange="scanFromImage(event)"
+>
+
+
+<div id="scannerBox" class="scanner-box">
+
+<div id="reader"></div>
+
+<button
+class="red"
+onclick="stopScanner()"
+>
+✖ Stop Camera
+</button>
+
+</div>
+
+
+<div id="scanResult">
+
+<strong>QR Result:</strong>
+
+<p id="resultText"></p>
+
+<button
+id="openLinkBtn"
+class="green"
+style="display:none;"
+onclick="openScannedLink()"
+>
+🔗 Open Link
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ================= HISTORY ================= -->
+
+<div class="card">
+
+<h2>🕘 QR History</h2>
+
+<div id="history"></div>
+
+<button
+class="red"
+onclick="clearHistory()"
+>
+Clear History
+</button>
+
+</div>
+
+
+<!-- ================= SETTINGS ================= -->
+
+<div class="card">
+
+<h2>⚙️ Settings</h2>
+
+<button onclick="toggleDarkMode()">
+🌙 Dark Mode
+</button>
+
+</div>
+
+</div>
+
+
 <footer>
-  QRify • Generate • Scan • Simplify
-  <br>
-  By Ashraf
+QRify • Generate • Scan • Simplify
+<br>
+By Ashraf
 </footer>
 
 
-<!-- QR GENERATOR LIBRARY -->
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
-<!-- QR SCANNER LIBRARY -->
 <script src="https://unpkg.com/html5-qrcode"></script>
 
 
 <script>
 
+/* ===============================
+   CURRENT QR TYPE
+================================ */
+
+let currentType = "text";
+
 let scanner = null;
+
 let lastScannedResult = "";
 
 
-/* =========================
-   QR GENERATOR
-========================= */
+/* ===============================
+   SELECT QR TYPE
+================================ */
 
-function changeType() {
+function selectType(type, button) {
 
-  const type = document.getElementById("qrType").value;
-  const input = document.getElementById("qrInput");
+  currentType = type;
 
-  const placeholders = {
+  document.querySelectorAll(".type-btn")
+    .forEach(function(btn) {
+      btn.classList.remove("active");
+    });
 
-    text: "Enter text here",
+  button.classList.add("active");
 
-    website: "https://example.com",
 
-    phone: "+91 9876543210",
+  document.querySelectorAll(".form-section")
+    .forEach(function(section) {
+      section.classList.remove("active");
+    });
 
-    email: "example@gmail.com",
 
-    wifi: "WIFI:T:WPA;S:WiFiName;P:Password;;",
-
-    contact: "Name, Phone, Email",
-
-    location: "12.9716,77.5946"
-
-  };
-
-  input.placeholder = placeholders[type] || "Enter information";
+  document.getElementById(type + "Section")
+    .classList.add("active");
 }
 
 
-/* =========================
+/* ===============================
+   GET QR DATA
+================================ */
+
+function getQRData() {
+
+  /* TEXT */
+
+  if (currentType === "text") {
+
+    const text =
+      document.getElementById("textInput")
+      .value.trim();
+
+    if (!text) {
+      alert("Please enter your message.");
+      return null;
+    }
+
+    return text;
+  }
+
+
+  /* WEBSITE */
+
+  if (currentType === "website") {
+
+    let url =
+      document.getElementById("websiteInput")
+      .value.trim();
+
+    if (!url) {
+      alert("Please enter a website URL.");
+      return null;
+    }
+
+    if (
+      !url.startsWith("http://") &&
+      !url.startsWith("https://")
+    ) {
+      url = "https://" + url;
+    }
+
+    return url;
+  }
+
+
+  /* PHONE */
+
+  if (currentType === "phone") {
+
+    const phone =
+      document.getElementById("phoneInput")
+      .value.trim();
+
+    if (!phone) {
+      alert("Please enter a phone number.");
+      return null;
+    }
+
+    return "tel:" + phone;
+  }
+
+
+  /* EMAIL */
+
+  if (currentType === "email") {
+
+    const email =
+      document.getElementById("emailInput")
+      .value.trim();
+
+    const subject =
+      document.getElementById("emailSubject")
+      .value.trim();
+
+    const message =
+      document.getElementById("emailMessage")
+      .value.trim();
+
+    if (!email) {
+      alert("Please enter an email address.");
+      return null;
+    }
+
+    return (
+      "mailto:" +
+      email +
+      "?subject=" +
+      encodeURIComponent(subject) +
+      "&body=" +
+      encodeURIComponent(message)
+    );
+  }
+
+
+  /* WIFI */
+
+  if (currentType === "wifi") {
+
+    const name =
+      document.getElementById("wifiName")
+      .value.trim();
+
+    const password =
+      document.getElementById("wifiPassword")
+      .value;
+
+    const security =
+      document.getElementById("wifiSecurity")
+      .value;
+
+    if (!name) {
+      alert("Please enter the Wi-Fi name.");
+      return null;
+    }
+
+    return (
+      "WIFI:T:" +
+      security +
+      ";S:" +
+      escapeWifi(name) +
+      ";P:" +
+      escapeWifi(password) +
+      ";;"
+    );
+  }
+
+
+  /* CONTACT */
+
+  if (currentType === "contact") {
+
+    const name =
+      document.getElementById("contactName")
+      .value.trim();
+
+    const phone =
+      document.getElementById("contactPhone")
+      .value.trim();
+
+    const email =
+      document.getElementById("contactEmail")
+      .value.trim();
+
+    const organization =
+      document.getElementById("contactOrganization")
+      .value.trim();
+
+    if (!name && !phone && !email) {
+
+      alert("Please enter contact information.");
+
+      return null;
+    }
+
+    return (
+      "BEGIN:VCARD\n" +
+      "VERSION:3.0\n" +
+      "FN:" + name + "\n" +
+      "TEL:" + phone + "\n" +
+      "EMAIL:" + email + "\n" +
+      "ORG:" + organization + "\n" +
+      "END:VCARD"
+    );
+  }
+
+
+  /* LOCATION */
+
+  if (currentType === "location") {
+
+    const latitude =
+      document.getElementById("latitude")
+      .value.trim();
+
+    const longitude =
+      document.getElementById("longitude")
+      .value.trim();
+
+    if (!latitude || !longitude) {
+
+      alert(
+        "Please enter latitude and longitude."
+      );
+
+      return null;
+    }
+
+    return (
+      "https://www.google.com/maps?q=" +
+      encodeURIComponent(latitude) +
+      "," +
+      encodeURIComponent(longitude)
+    );
+  }
+
+}
+
+
+/* ===============================
+   WIFI ESCAPE
+================================ */
+
+function escapeWifi(value) {
+
+  return value.replace(
+    /([\\;,:"])/g,
+    "\\$1"
+  );
+}
+
+
+/* ===============================
    GENERATE QR
-========================= */
+================================ */
 
 function generateQR() {
 
-  const input = document.getElementById("qrInput").value.trim();
+  const finalText = getQRData();
 
-  if (!input) {
-    alert("Please enter some information.");
+  if (!finalText) {
     return;
   }
 
+
   const size =
-    parseInt(document.getElementById("qrSize").value);
+    parseInt(
+      document.getElementById("qrSize").value
+    );
+
 
   const color =
     document.getElementById("qrColor").value;
 
+
   const background =
     document.getElementById("bgColor").value;
 
-  const qrType =
-    document.getElementById("qrType").value;
 
-  let finalText = input;
-
-
-  /* Website */
-
-  if (qrType === "website") {
-
-    if (
-      !input.startsWith("http://") &&
-      !input.startsWith("https://")
-    ) {
-      finalText = "https://" + input;
-    }
-
-  }
-
-
-  /* Phone */
-
-  if (qrType === "phone") {
-    finalText = "tel:" + input;
-  }
-
-
-  /* Email */
-
-  if (qrType === "email") {
-    finalText = "mailto:" + input;
-  }
-
-
-  /* Clear previous QR */
-
-  const qrContainer =
+  const container =
     document.getElementById("qrcode");
 
-  qrContainer.innerHTML = "";
+
+  container.innerHTML = "";
 
 
-  /* Create QR */
-
-  new QRCode(qrContainer, {
+  new QRCode(container, {
 
     text: finalText,
 
@@ -435,46 +918,62 @@ function generateQR() {
 
     colorLight: background,
 
-    correctLevel: QRCode.CorrectLevel.H
+    correctLevel:
+      QRCode.CorrectLevel.H
 
   });
 
 
-  document.getElementById("downloadBtn").style.display =
-    "block";
+  document.getElementById("downloadBtn")
+    .style.display = "block";
 
 
   saveHistory(finalText);
 }
 
 
-/* =========================
+/* ===============================
    DOWNLOAD QR
-========================= */
+================================ */
 
 function downloadQR() {
 
-  const qr =
+  const qrImage =
     document.querySelector("#qrcode img");
 
-  if (!qr) {
+
+  if (!qrImage) {
+
     alert("Generate a QR first.");
+
     return;
   }
 
-  const size = qr.naturalWidth || 250;
+
+  const size =
+    qrImage.naturalWidth || 250;
+
 
   const border = 30;
+
 
   const canvas =
     document.createElement("canvas");
 
-  canvas.width = size + border * 2;
-  canvas.height = size + border * 2;
 
-  const ctx = canvas.getContext("2d");
+  canvas.width =
+    size + border * 2;
+
+  canvas.height =
+    size + border * 2;
+
+
+  const ctx =
+    canvas.getContext("2d");
+
 
   ctx.fillStyle = "#ffffff";
+
 
   ctx.fillRect(
     0,
@@ -483,58 +982,76 @@ function downloadQR() {
     canvas.height
   );
 
+
   ctx.drawImage(
-    qr,
+    qrImage,
     border,
     border,
     size,
     size
   );
 
+
   const link =
     document.createElement("a");
 
-  link.download = "QRify-QR.png";
+
+  link.download =
+    "QRify-QR.png";
+
 
   link.href =
     canvas.toDataURL("image/png");
+
 
   link.click();
 }
 
 
-/* =========================
+/* ===============================
    CLEAR QR
-========================= */
+================================ */
 
 function clearQR() {
 
-  document.getElementById("qrcode").innerHTML = "";
+  document.getElementById("qrcode")
+    .innerHTML = "";
 
-  document.getElementById("qrInput").value = "";
 
-  document.getElementById("downloadBtn").style.display =
-    "none";
+  document.getElementById("downloadBtn")
+    .style.display = "none";
+
+
+  document.querySelectorAll(
+    "input, textarea"
+  ).forEach(function(input) {
+
+    if (input.type !== "color") {
+      input.value = "";
+    }
+
+  });
 }
 
 
-/* =========================
+/* ===============================
    CAMERA SCANNER
-========================= */
+================================ */
 
 function startCameraScanner() {
 
-  const scannerBox =
-    document.getElementById("scannerBox");
+  document.getElementById("scannerBox")
+    .style.display = "block";
 
-  scannerBox.style.display = "block";
 
   if (scanner) {
     return;
   }
 
+
   scanner =
     new Html5Qrcode("reader");
+
 
   scanner.start(
 
@@ -544,10 +1061,12 @@ function startCameraScanner() {
 
     {
       fps: 10,
+
       qrbox: {
         width: 250,
         height: 250
       }
+
     },
 
     function(decodedText) {
@@ -560,7 +1079,7 @@ function startCameraScanner() {
 
     function(errorMessage) {
 
-      // Normal scanning errors are ignored.
+      // Normal scanning errors ignored.
 
     }
 
@@ -576,9 +1095,9 @@ function startCameraScanner() {
 }
 
 
-/* =========================
+/* ===============================
    STOP SCANNER
-========================= */
+================================ */
 
 function stopScanner() {
 
@@ -588,10 +1107,11 @@ function stopScanner() {
       .style.display = "none";
 
     return;
-
   }
 
+
   scanner.stop()
+
     .then(function() {
 
       scanner.clear();
@@ -602,6 +1122,7 @@ function stopScanner() {
         .style.display = "none";
 
     })
+
     .catch(function() {
 
       scanner = null;
@@ -613,29 +1134,32 @@ function stopScanner() {
 }
 
 
-/* =========================
-   SCAN QR FROM IMAGE
-========================= */
+/* ===============================
+   IMAGE / PHOTO SCANNER
+================================ */
 
 function scanFromImage(event) {
 
   const file =
     event.target.files[0];
 
+
   if (!file) {
     return;
   }
 
-  const resultBox =
-    document.getElementById("scanResult");
 
-  resultBox.style.display = "block";
+  document.getElementById("scanResult")
+    .style.display = "block";
 
-  document.getElementById("resultText").textContent =
-    "Scanning image...";
 
-  document.getElementById("openLinkBtn").style.display =
-    "none";
+  document.getElementById("resultText")
+    .textContent =
+    "🔍 Scanning image...";
+
+
+  document.getElementById("openLinkBtn")
+    .style.display = "none";
 
 
   const imageScanner =
@@ -654,44 +1178,40 @@ function scanFromImage(event) {
 
     .catch(function(error) {
 
-      document.getElementById("resultText").textContent =
+      document.getElementById("resultText")
+        .textContent =
         "❌ QR code not found in this image.";
 
-      document.getElementById("openLinkBtn").style.display =
-        "none";
+
+      document.getElementById("openLinkBtn")
+        .style.display = "none";
+
 
       imageScanner.clear();
 
     });
 
 
-  /* Reset input so same image can be selected again */
-
   event.target.value = "";
 }
 
 
-/* =========================
+/* ===============================
    SHOW SCAN RESULT
-========================= */
+================================ */
 
 function showScanResult(decodedText) {
 
-  lastScannedResult = decodedText;
-
-  const resultBox =
-    document.getElementById("scanResult");
-
-  const resultText =
-    document.getElementById("resultText");
-
-  const openButton =
-    document.getElementById("openLinkBtn");
+  lastScannedResult =
+    decodedText;
 
 
-  resultBox.style.display = "block";
+  document.getElementById("scanResult")
+    .style.display = "block";
 
-  resultText.textContent =
+
+  document.getElementById("resultText")
+    .textContent =
     decodedText;
 
 
@@ -701,30 +1221,34 @@ function showScanResult(decodedText) {
     decodedText.startsWith("www.")
   ) {
 
-    openButton.style.display =
-      "block";
+    document.getElementById("openLinkBtn")
+      .style.display = "block";
 
   } else {
 
-    openButton.style.display =
-      "none";
+    document.getElementById("openLinkBtn")
+      .style.display = "none";
 
   }
 }
 
 
-/* =========================
+/* ===============================
    OPEN SCANNED LINK
-========================= */
+================================ */
 
 function openScannedLink() {
 
   let url =
     lastScannedResult;
 
+
   if (url.startsWith("www.")) {
-    url = "https://" + url;
+
+    url =
+      "https://" + url;
   }
+
 
   if (
     url.startsWith("http://") ||
@@ -735,15 +1259,13 @@ function openScannedLink() {
       url,
       "_blank"
     );
-
   }
-
 }
 
 
-/* =========================
+/* ===============================
    HISTORY
-========================= */
+================================ */
 
 function saveHistory(text) {
 
@@ -752,15 +1274,19 @@ function saveHistory(text) {
       localStorage.getItem("qrifyHistory") || "[]"
     );
 
+
   history.unshift(text);
+
 
   history =
     history.slice(0, 5);
+
 
   localStorage.setItem(
     "qrifyHistory",
     JSON.stringify(history)
   );
+
 
   displayHistory();
 }
@@ -770,6 +1296,7 @@ function displayHistory() {
 
   const container =
     document.getElementById("history");
+
 
   const history =
     JSON.parse(
@@ -794,16 +1321,18 @@ function displayHistory() {
     const div =
       document.createElement("div");
 
+
     div.className =
       "history-item";
+
 
     div.textContent =
       item;
 
+
     container.appendChild(div);
 
   });
-
 }
 
 
@@ -813,24 +1342,24 @@ function clearHistory() {
     "qrifyHistory"
   );
 
-  displayHistory();
 
+  displayHistory();
 }
 
 
-/* =========================
+/* ===============================
    DARK MODE
-========================= */
+================================ */
 
 function toggleDarkMode() {
 
   document.body.classList.toggle("dark");
 
+
   localStorage.setItem(
     "qrifyDark",
     document.body.classList.contains("dark")
   );
-
 }
 
 
@@ -839,20 +1368,19 @@ if (
 ) {
 
   document.body.classList.add("dark");
-
 }
 
 
-/* =========================
+/* ===============================
    LOAD HISTORY
-========================= */
+================================ */
 
 displayHistory();
 
 
-/* =========================
+/* ===============================
    PWA SERVICE WORKER
-========================= */
+================================ */
 
 if ("serviceWorker" in navigator) {
 
@@ -873,10 +1401,9 @@ if ("serviceWorker" in navigator) {
 
     }
   );
-
 }
 
 </script>
 
 </body>
-    </html>
+  </html>
