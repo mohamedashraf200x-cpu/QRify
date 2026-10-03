@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QRify</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 12px;
+      box-sizing: border-box;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      background: #111;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #qr {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>QRify</h1>
+
+    <p>Enter your information:</p>
+
+    <textarea id="text" placeholder="Type text, link, phone number, etc..."></textarea>
+
+    <button onclick="generateQR()">Generate QR Code</button>
+
+    <div id="qr"></div>
+  </div>
+
+  <script>
+    function generateQR() {
+      const text = document.getElementById("text").value;
+      const qr = document.getElementById("qr");
+
+      qr.innerHTML = "";
+
+      if (text.trim() === "") {
+        alert("Please enter some information!");
+        return;
+      }
+
+      const canvas = document.createElement("canvas");
+
+      QRCode.toCanvas(canvas, text, function(error) {
+        if (error) {
+          console.error(error);
+          return;
+        }
+
+        qr.appendChild(canvas);
+      });
+    }
+  </script>
+
+</body>
+  </html>
