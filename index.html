@@ -641,6 +641,7 @@ footer {
 
 </section>
 
+
 <section id="generate" class="page">
 
   <div class="card">
@@ -853,6 +854,7 @@ footer {
 
 </section>
 
+
 <section id="scan" class="page">
 
   <div class="card">
@@ -909,6 +911,7 @@ footer {
 
 </section>
 
+
 <section id="send" class="page">
 
   <div id="accountRequired" class="card">
@@ -960,6 +963,7 @@ footer {
   </div>
 
 </section>
+
 
 <section id="chat" class="page">
 
@@ -1075,6 +1079,7 @@ footer {
 
 </section>
 
+
 <section id="received" class="page">
 
   <div id="inboxCard" class="card hidden">
@@ -1111,6 +1116,7 @@ footer {
 
 </section>
 
+
 <section id="history" class="page">
 
   <div class="card">
@@ -1122,6 +1128,7 @@ footer {
   </div>
 
 </section>
+
 
 <section id="profile" class="page">
 
@@ -1187,6 +1194,7 @@ footer {
 
 </section>
 
+
 <section id="settings" class="page">
 
   <div class="card">
@@ -1235,6 +1243,7 @@ footer {
 
 </footer>
 
+
 <script type="module">
 
 import {
@@ -1267,6 +1276,7 @@ import {
 } from
 "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
+
 const firebaseConfig = {
 
   apiKey:
@@ -1289,6 +1299,7 @@ const firebaseConfig = {
 
 };
 
+
 const app =
   initializeApp(firebaseConfig);
 
@@ -1301,11 +1312,17 @@ const db =
 const provider =
   new GoogleAuthProvider();
 
+
 let currentUser = null;
+
 let currentUsername = "";
+
 window.latestQRData = "";
+
 let unsubscribeInbox = null;
+
 let activeChatUser = null;
+
 let unsubscribeChat = null;
 
 
@@ -2922,92 +2939,38 @@ let html5QrCode = null;
 
 
 /* =====================================================
-   PAGE NAVIGATION
-   ANDROID BACK BUTTON FIX
+   QRIFY PAGE NAVIGATION
+   ANDROID BACK BUTTON
    ===================================================== */
-
-let isHandlingBrowserBack = false;
 
 
 /*
-  Create the first history entry.
-  This prevents the first page from being blank.
+  IMPORTANT:
+
+  Every QRify page gets its own URL hash.
+
+  Example:
+
+  #home
+  #generate
+  #scan
+  #chat
+  #profile
+
+  Android Back changes the browser history,
+  then hashchange shows the previous QRify page.
 */
 
-if(
-  !history.state ||
-  !history.state.qrify
-) {
 
-  history.replaceState(
-    {
-      qrify: true,
-      page: "home"
-    },
-    "",
-    "#home"
-  );
+function renderPage(pageId) {
 
-}
+  const selectedPage =
+    document.getElementById(pageId);
 
 
-/* ================= PAGE NAVIGATION ================= */
+  if(!selectedPage) {
 
-function showPage(
-  pageId,
-  addHistory = true
-) {
-
-  const currentPage =
-    document.querySelector(
-      ".page.active"
-    );
-
-  const currentPageId =
-    currentPage
-      ? currentPage.id
-      : "home";
-
-
-  /*
-    If the user is already on this page,
-    don't create another history entry.
-  */
-
-  if(
-    addHistory &&
-    currentPageId === pageId
-  ) {
-
-    closeMenu();
-
-    return;
-
-  }
-
-
-  /*
-    Add a browser history entry when
-    the user normally opens a page.
-  */
-
-  if(
-    addHistory &&
-    !isHandlingBrowserBack
-  ) {
-
-    history.pushState(
-
-      {
-        qrify: true,
-        page: pageId
-      },
-
-      "",
-
-      "#" + pageId
-
-    );
+    pageId = "home";
 
   }
 
@@ -3036,55 +2999,165 @@ function showPage(
       .add("active");
 
     window.scrollTo({
-
       top: 0,
-
       behavior: "smooth"
-
     });
 
   }
 
+}
+
+
+/* ================= SHOW PAGE ================= */
+
+function showPage(pageId) {
+
+  const page =
+    document.getElementById(pageId);
+
+
+  if(!page) {
+
+    return;
+
+  }
+
+
+  const currentPage =
+    document.querySelector(
+      ".page.active"
+    );
+
+
+  const currentPageId =
+    currentPage
+      ? currentPage.id
+      : "home";
+
+
+  /*
+    Same page:
+    don't create duplicate history.
+  */
+
+  if(
+    currentPageId === pageId
+  ) {
+
+    closeMenu();
+
+    return;
+
+  }
+
+
+  /*
+    Change URL hash.
+
+    Changing the hash creates a browser
+    history entry automatically.
+  */
+
+  window.location.hash =
+    pageId;
+
+
+  /*
+    hashchange event will render
+    the page.
+  */
 
   closeMenu();
 
 }
 
 
-/* ================= ANDROID/BROWSER BACK ================= */
+/* ================= HASH CHANGE ================= */
 
 window.addEventListener(
-  "popstate",
-  function(event) {
+  "hashchange",
+  function() {
 
-    isHandlingBrowserBack = true;
+    let pageId =
+      window.location.hash
+        .substring(1);
 
 
-    let pageId = "home";
+    if(!pageId) {
 
-
-    if(
-      event.state &&
-      event.state.qrify &&
-      event.state.page
-    ) {
-
-      pageId =
-        event.state.page;
+      pageId = "home";
 
     }
 
 
-    showPage(
-      pageId,
-      false
-    );
-
-
-    isHandlingBrowserBack = false;
+    renderPage(pageId);
 
   }
 );
+
+
+/* ================= POPSTATE ================= */
+
+window.addEventListener(
+  "popstate",
+  function() {
+
+    let pageId =
+      window.location.hash
+        .substring(1);
+
+
+    if(!pageId) {
+
+      pageId = "home";
+
+    }
+
+
+    renderPage(pageId);
+
+  }
+);
+
+
+/* ================= INITIAL PAGE ================= */
+
+(function() {
+
+  let pageId =
+    window.location.hash
+      .substring(1);
+
+
+  const pageExists =
+    pageId &&
+    document.getElementById(pageId);
+
+
+  if(!pageExists) {
+
+    pageId = "home";
+
+
+    /*
+      Create the first QRify history entry.
+    */
+
+    history.replaceState(
+      {
+        qrify: true,
+        page: "home"
+      },
+      "",
+      "#home"
+    );
+
+  }
+
+
+  renderPage(pageId);
+
+})();
 
 
 /* ================= MENU ================= */
@@ -3146,6 +3219,7 @@ function getQRData() {
         .value
         .trim();
 
+
     if(
 
       url &&
@@ -3160,6 +3234,7 @@ function getQRData() {
         "https://" + url;
 
     }
+
 
     return url;
 
@@ -3202,6 +3277,7 @@ function getQRData() {
 
       );
 
+
     return
 
       `mailto:${email}` +
@@ -3229,6 +3305,7 @@ function getQRData() {
       document
         .getElementById("wifiSecurity")
         .value;
+
 
     return
 
@@ -3263,6 +3340,7 @@ function getQRData() {
         .getElementById("contactOrg")
         .value;
 
+
     return `BEGIN:VCARD
 VERSION:3.0
 FN:${name}
@@ -3286,6 +3364,7 @@ END:VCARD`;
         .getElementById("longitude")
         .value;
 
+
     return `geo:${lat},${lon}`;
 
   }
@@ -3300,6 +3379,7 @@ function generateQR() {
   const data =
     getQRData();
 
+
   if(
     !data ||
     !data.trim()
@@ -3313,8 +3393,10 @@ function generateQR() {
 
   }
 
+
   window.latestQRData =
     data;
+
 
   const size =
     parseInt(
@@ -3325,20 +3407,25 @@ function generateQR() {
 
     );
 
+
   const color =
     document
       .getElementById("qrColor")
       .value;
+
 
   const background =
     document
       .getElementById("bgColor")
       .value;
 
+
   const qrContainer =
     document.getElementById("qrcode");
 
+
   qrContainer.innerHTML = "";
+
 
   qrCodeInstance =
     new QRCode(
@@ -3387,6 +3474,7 @@ function generateQR() {
       "sendQRStatus"
     );
 
+
   if(sendStatus) {
 
     sendStatus.textContent =
@@ -3409,6 +3497,7 @@ function downloadQR() {
       "#qrcode canvas"
     );
 
+
   if(!canvas) {
 
     alert(
@@ -3419,24 +3508,31 @@ function downloadQR() {
 
   }
 
+
   const border = 20;
+
 
   const newCanvas =
     document.createElement("canvas");
+
 
   newCanvas.width =
     canvas.width +
     border * 2;
 
+
   newCanvas.height =
     canvas.height +
     border * 2;
 
+
   const ctx =
     newCanvas.getContext("2d");
 
+
   ctx.fillStyle =
     "#ffffff";
+
 
   ctx.fillRect(
     0,
@@ -3445,20 +3541,25 @@ function downloadQR() {
     newCanvas.height
   );
 
+
   ctx.drawImage(
     canvas,
     border,
     border
   );
 
+
   const link =
     document.createElement("a");
+
 
   link.download =
     "QRify-QR.png";
 
+
   link.href =
     newCanvas.toDataURL("image/png");
+
 
   link.click();
 
@@ -3598,11 +3699,14 @@ function displayHistory() {
       const div =
         document.createElement("div");
 
+
       div.className =
         "history-item";
 
+
       div.textContent =
         item;
+
 
       container.appendChild(div);
 
@@ -3779,6 +3883,7 @@ function scanImage(event) {
   const file =
     event.target.files[0];
 
+
   if(!file) return;
 
 
@@ -3823,10 +3928,12 @@ function showScanResult(text) {
       "scanResult"
     );
 
+
   const scanText =
     document.getElementById(
       "scanText"
     );
+
 
   const openButton =
     document.getElementById(
