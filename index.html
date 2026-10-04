@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
 <title>QRify - Free QR Code Generator & Scanner</title>
 
@@ -13,411 +17,736 @@ content="QRify is a free QR code generator and scanner for text, websites, phone
 content="5HCcQf2Dkuhb6cXjoyaUMdktFcyYmGymxjnBAaxDoyA">
 
 <meta name="theme-color" content="#111827">
+
 <meta name="mobile-web-app-capable" content="yes">
+
 <meta name="apple-mobile-web-app-capable" content="yes">
+
 <meta name="apple-mobile-web-app-title" content="QRify">
 
-<link rel="icon" type="image/png" href="logo.png">
-<link rel="manifest" href="manifest.json">
+<link rel="icon"
+      type="image/png"
+      href="logo.png">
+
+<link rel="manifest"
+      href="manifest.json">
+
+
+<!-- QR GENERATOR -->
 
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+
+<!-- QR SCANNER -->
+
 <script src="https://unpkg.com/html5-qrcode"></script>
 
+
 <style>
+
+/* ================= GLOBAL ================= */
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
+
   margin: 0;
-  font-family: Arial, sans-serif;
+
+  font-family:
+    Arial,
+    sans-serif;
+
   background: #f3f4f6;
+
   color: #111827;
+
   transition: 0.3s;
 }
 
 body.dark {
+
   background: #111827;
+
   color: #f9fafb;
 }
 
-/* HEADER */
+
+/* ================= HEADER ================= */
 
 header {
+
   background: #111827;
+
   color: white;
+
   padding: 12px 16px;
+
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
+
   position: sticky;
+
   top: 0;
+
   z-index: 1000;
 }
 
 header img {
+
   width: 130px;
+
   max-width: 55%;
 }
 
 .menu-btn {
+
   background: #2563eb;
+
   color: white;
+
   border: none;
+
   width: 48px;
+
   height: 44px;
+
   border-radius: 12px;
+
   font-size: 24px;
+
   cursor: pointer;
+
   margin: 0;
 }
 
-/* SIDE MENU */
+
+/* ================= SIDE MENU ================= */
 
 .menu-overlay {
+
   position: fixed;
+
   inset: 0;
-  background: rgba(0,0,0,0.45);
+
+  background:
+    rgba(0,0,0,0.45);
+
   z-index: 1500;
+
   display: none;
 }
 
 .menu-overlay.show {
+
   display: block;
 }
 
 .side-menu {
+
   position: fixed;
+
   top: 0;
-  right: -290px;
-  width: 280px;
+
+  right: -300px;
+
+  width: 285px;
+
   height: 100%;
+
   background: white;
+
   z-index: 1600;
+
   padding: 20px;
-  box-shadow: -5px 0 20px rgba(0,0,0,0.2);
+
+  box-shadow:
+    -5px 0 20px rgba(0,0,0,0.2);
+
   transition: 0.3s;
+
   overflow-y: auto;
 }
 
 body.dark .side-menu {
+
   background: #1f2937;
+
   color: white;
 }
 
 .side-menu.open {
+
   right: 0;
 }
 
 .menu-header {
+
   display: flex;
+
   justify-content: space-between;
+
   align-items: center;
+
   padding-bottom: 15px;
-  border-bottom: 1px solid #d1d5db;
+
+  border-bottom:
+    1px solid #d1d5db;
+
   margin-bottom: 15px;
 }
 
 .menu-header h2 {
+
   margin: 0;
 }
 
 .close-menu {
+
   background: transparent;
+
   color: inherit;
+
   font-size: 26px;
+
   margin: 0;
+
   padding: 5px;
 }
 
 .menu-item {
+
   width: 100%;
+
   text-align: left;
+
   background: transparent;
+
   color: inherit;
+
   padding: 14px;
+
   margin: 3px 0;
+
   border-radius: 10px;
+
   font-size: 16px;
 }
 
 .menu-item:hover {
+
   background: #e5e7eb;
 }
 
 body.dark .menu-item:hover {
+
   background: #374151;
 }
 
-/* CONTAINER */
+
+/* ================= CONTAINER ================= */
 
 .container {
+
   max-width: 700px;
+
   margin: 20px auto;
+
   padding: 15px;
 }
 
-/* PAGES */
+
+/* ================= PAGES ================= */
 
 .page {
+
   display: none;
 }
 
 .page.active {
+
   display: block;
 }
 
-/* CARDS */
+
+/* ================= CARDS ================= */
 
 .card {
+
   background: white;
+
   padding: 20px;
+
   border-radius: 16px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+
+  box-shadow:
+    0 5px 20px rgba(0,0,0,0.08);
+
   margin-bottom: 20px;
 }
 
 body.dark .card {
+
   background: #1f2937;
 }
 
-/* FORM */
+
+/* ================= FORM ================= */
 
 label {
+
   display: block;
+
   margin-top: 12px;
+
   margin-bottom: 6px;
+
   font-weight: bold;
 }
 
 input,
 textarea,
 select {
+
   width: 100%;
+
   padding: 12px;
-  border: 1px solid #d1d5db;
+
+  border:
+    1px solid #d1d5db;
+
   border-radius: 10px;
+
   font-size: 15px;
+
   background: white;
+
   color: #111827;
 }
 
 body.dark input,
 body.dark textarea,
 body.dark select {
+
   background: #374151;
+
   color: white;
+
   border-color: #4b5563;
 }
 
 textarea {
+
   min-height: 100px;
+
   resize: vertical;
 }
 
 button {
+
   border: none;
+
   padding: 12px 18px;
+
   border-radius: 10px;
+
   cursor: pointer;
+
   font-size: 15px;
-  margin: 6px 4px 0 0;
+
+  margin:
+    6px 4px 0 0;
 }
 
 .primary {
+
   background: #2563eb;
+
   color: white;
 }
 
 .secondary {
+
   background: #e5e7eb;
+
   color: #111827;
 }
 
 body.dark .secondary {
+
   background: #374151;
+
   color: white;
 }
 
 .danger {
+
   background: #dc2626;
+
   color: white;
 }
 
 .success {
+
   background: #059669;
+
   color: white;
 }
 
 .hidden {
+
   display: none !important;
 }
 
-/* HOME */
+
+/* ================= HOME ================= */
 
 .home-title {
+
   text-align: center;
+
   padding: 15px 0;
 }
 
 .home-title h1 {
+
   margin-bottom: 8px;
 }
 
 .feature-grid {
+
   display: grid;
-  grid-template-columns: 1fr 1fr;
+
+  grid-template-columns:
+    1fr 1fr;
+
   gap: 12px;
 }
 
 .feature {
+
   background: #f3f4f6;
+
   padding: 18px;
+
   border-radius: 14px;
+
   text-align: center;
+
   cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.feature:hover {
+
+  transform: translateY(-2px);
 }
 
 body.dark .feature {
+
   background: #374151;
 }
 
 .feature-icon {
+
   font-size: 30px;
+
   display: block;
+
   margin-bottom: 8px;
 }
 
-/* RESULT */
+
+/* ================= QR RESULT ================= */
 
 .result {
+
   text-align: center;
 }
 
 #qrcode {
+
   display: inline-block;
+
   background: white;
+
   padding: 15px;
+
   border-radius: 8px;
+
   margin-top: 10px;
 }
 
 #reader {
+
   width: 100%;
+
   margin-top: 15px;
 }
+
+
+/* ================= HISTORY / RECEIVED ================= */
 
 .history-item,
 .received-item,
 .user-result {
+
   background: #f3f4f6;
+
   padding: 12px;
+
   border-radius: 10px;
+
   margin-top: 8px;
+
   word-break: break-word;
 }
 
 body.dark .history-item,
 body.dark .received-item,
 body.dark .user-result {
+
   background: #374151;
 }
 
 .received-qr {
+
   background: white;
+
   display: inline-block;
+
   padding: 10px;
+
   margin-top: 10px;
+
   border-radius: 8px;
 }
 
+
+/* ================= TEXT ================= */
+
 .small-text {
+
   font-size: 13px;
+
   color: #6b7280;
 }
 
 body.dark .small-text {
+
   color: #d1d5db;
 }
 
 .account-name {
+
   font-weight: bold;
+
   font-size: 18px;
 }
 
 .username {
+
   color: #2563eb;
+
   font-weight: bold;
 }
 
 .status {
+
   padding: 10px;
+
   border-radius: 10px;
+
   margin-top: 10px;
+
   background: #ecfdf5;
+
   color: #065f46;
 }
 
 .row {
+
   display: flex;
+
   gap: 10px;
 }
 
 .row > * {
+
   flex: 1;
 }
 
+
+/* ================= CHAT ================= */
+
+.chat-user-result {
+
+  background: #f3f4f6;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  margin-top: 10px;
+}
+
+body.dark .chat-user-result {
+
+  background: #374151;
+}
+
+.chat-user-result button {
+
+  margin-top: 10px;
+}
+
+.chat-message {
+
+  max-width: 80%;
+
+  padding: 10px 13px;
+
+  border-radius: 14px;
+
+  margin: 7px 0;
+
+  word-break: break-word;
+}
+
+.chat-message.sent {
+
+  margin-left: auto;
+
+  background: #2563eb;
+
+  color: white;
+
+  border-bottom-right-radius: 4px;
+}
+
+.chat-message.received {
+
+  margin-right: auto;
+
+  background: #e5e7eb;
+
+  color: #111827;
+
+  border-bottom-left-radius: 4px;
+}
+
+body.dark .chat-message.received {
+
+  background: #374151;
+
+  color: white;
+}
+
+.chat-time {
+
+  display: block;
+
+  font-size: 10px;
+
+  opacity: 0.7;
+
+  margin-top: 4px;
+}
+
+.chat-messages {
+
+  height: 350px;
+
+  overflow-y: auto;
+
+  padding: 10px 0;
+}
+
+
+/* ================= FOOTER ================= */
+
 footer {
+
   text-align: center;
+
   padding: 25px;
+
   color: #6b7280;
 }
 
-/* MOBILE */
+
+/* ================= MOBILE ================= */
 
 @media (max-width: 600px) {
 
   .container {
+
     padding: 12px;
   }
 
   .row {
+
     flex-direction: column;
   }
 
   button {
+
     width: 100%;
+
     margin-right: 0;
   }
 
   .feature-grid {
-    grid-template-columns: 1fr 1fr;
+
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+  .chat-message {
+
+    max-width: 88%;
   }
 
 }
 
 </style>
+
 </head>
+
 
 <body>
 
-<!-- HEADER -->
+
+<!-- ================= HEADER ================= -->
 
 <header>
 
-  <img src="logo.png" alt="QRify Logo">
+  <img
+    src="logo.png"
+    alt="QRify Logo">
+
 
   <button
     class="menu-btn"
     onclick="openMenu()">
+
     ☰
+
   </button>
 
 </header>
 
 
-<!-- MENU OVERLAY -->
+<!-- ================= MENU OVERLAY ================= -->
 
 <div
   id="menuOverlay"
@@ -426,11 +755,12 @@ footer {
 </div>
 
 
-<!-- SIDE MENU -->
+<!-- ================= SIDE MENU ================= -->
 
 <div
   id="sideMenu"
   class="side-menu">
+
 
   <div class="menu-header">
 
@@ -439,7 +769,9 @@ footer {
     <button
       class="close-menu"
       onclick="closeMenu()">
+
       ✕
+
     </button>
 
   </div>
@@ -448,60 +780,87 @@ footer {
   <button
     class="menu-item"
     onclick="showPage('home')">
+
     🏠 Home
+
   </button>
 
 
   <button
     class="menu-item"
     onclick="showPage('generate')">
+
     ⚡ Generate QR
+
   </button>
 
 
   <button
     class="menu-item"
     onclick="showPage('scan')">
+
     📷 Scan QR
+
   </button>
 
 
   <button
     class="menu-item"
     onclick="showPage('send')">
+
     📤 Send QR
+
+  </button>
+
+
+  <button
+    class="menu-item"
+    onclick="showPage('chat')">
+
+    💬 Chat
+
   </button>
 
 
   <button
     class="menu-item"
     onclick="showPage('received')">
+
     📥 Received
+
   </button>
 
 
   <button
     class="menu-item"
     onclick="showPage('history')">
+
     🕘 History
+
   </button>
 
 
   <button
     class="menu-item"
     onclick="showPage('profile')">
+
     👤 Profile
+
   </button>
 
 
   <button
     class="menu-item"
     onclick="showPage('settings')">
+
     ⚙️ Settings
+
   </button>
 
 </div>
 
+
+<!-- ================= MAIN CONTAINER ================= -->
 
 <div class="container">
 
@@ -512,12 +871,15 @@ footer {
   id="home"
   class="page active">
 
+
   <div class="card home-title">
 
-    <h1>Welcome to QRify 👋</h1>
+    <h1>
+      Welcome to QRify 👋
+    </h1>
 
     <p>
-      Generate • Scan • Share • Simplify
+      Generate • Scan • Share • Chat • Simplify
     </p>
 
   </div>
@@ -525,17 +887,25 @@ footer {
 
   <div class="card">
 
-    <h2>What do you want to do?</h2>
+    <h2>
+      What do you want to do?
+    </h2>
+
 
     <div class="feature-grid">
+
 
       <div
         class="feature"
         onclick="showPage('generate')">
 
-        <span class="feature-icon">⚡</span>
+        <span class="feature-icon">
+          ⚡
+        </span>
 
-        <strong>Generate QR</strong>
+        <strong>
+          Generate QR
+        </strong>
 
         <p class="small-text">
           Create your own QR code
@@ -548,9 +918,13 @@ footer {
         class="feature"
         onclick="showPage('scan')">
 
-        <span class="feature-icon">📷</span>
+        <span class="feature-icon">
+          📷
+        </span>
 
-        <strong>Scan QR</strong>
+        <strong>
+          Scan QR
+        </strong>
 
         <p class="small-text">
           Scan camera or image
@@ -563,9 +937,13 @@ footer {
         class="feature"
         onclick="showPage('send')">
 
-        <span class="feature-icon">📤</span>
+        <span class="feature-icon">
+          📤
+        </span>
 
-        <strong>Send QR</strong>
+        <strong>
+          Send QR
+        </strong>
 
         <p class="small-text">
           Send to QRify users
@@ -576,14 +954,56 @@ footer {
 
       <div
         class="feature"
+        onclick="showPage('chat')">
+
+        <span class="feature-icon">
+          💬
+        </span>
+
+        <strong>
+          Chat
+        </strong>
+
+        <p class="small-text">
+          Chat with QRify users
+        </p>
+
+      </div>
+
+
+      <div
+        class="feature"
         onclick="showPage('received')">
 
-        <span class="feature-icon">📥</span>
+        <span class="feature-icon">
+          📥
+        </span>
 
-        <strong>Received</strong>
+        <strong>
+          Received
+        </strong>
 
         <p class="small-text">
           View received QR codes
+        </p>
+
+      </div>
+
+
+      <div
+        class="feature"
+        onclick="showPage('profile')">
+
+        <span class="feature-icon">
+          👤
+        </span>
+
+        <strong>
+          Account
+        </strong>
+
+        <p class="small-text">
+          Manage your profile
         </p>
 
       </div>
@@ -601,33 +1021,62 @@ footer {
   id="generate"
   class="page">
 
+
   <div class="card">
 
-    <h2>⚡ Generate QR Code</h2>
+    <h2>
+      ⚡ Generate QR Code
+    </h2>
 
 
-    <label>QR Type</label>
+    <label>
+      QR Type
+    </label>
+
 
     <select
       id="qrType"
       onchange="showFields()">
 
-      <option value="text">📝 Text</option>
-      <option value="website">🌐 Website</option>
-      <option value="phone">📞 Phone</option>
-      <option value="email">📧 Email</option>
-      <option value="wifi">📶 Wi-Fi</option>
-      <option value="contact">👤 Contact</option>
-      <option value="location">📍 Location</option>
+      <option value="text">
+        📝 Text
+      </option>
+
+      <option value="website">
+        🌐 Website
+      </option>
+
+      <option value="phone">
+        📞 Phone
+      </option>
+
+      <option value="email">
+        📧 Email
+      </option>
+
+      <option value="wifi">
+        📶 Wi-Fi
+      </option>
+
+      <option value="contact">
+        👤 Contact
+      </option>
+
+      <option value="location">
+        📍 Location
+      </option>
 
     </select>
 
 
     <div id="textFields">
 
-      <label>Message</label>
+      <label>
+        Message
+      </label>
 
-      <textarea id="text"></textarea>
+      <textarea
+        id="text"></textarea>
 
     </div>
 
@@ -636,7 +1085,9 @@ footer {
       id="websiteFields"
       class="hidden">
 
-      <label>Website URL</label>
+      <label>
+        Website URL
+      </label>
 
       <input
         id="website"
@@ -649,7 +1100,9 @@ footer {
       id="phoneFields"
       class="hidden">
 
-      <label>Phone Number</label>
+      <label>
+        Phone Number
+      </label>
 
       <input
         id="phone"
@@ -662,19 +1115,29 @@ footer {
       id="emailFields"
       class="hidden">
 
-      <label>Email</label>
+      <label>
+        Email
+      </label>
 
       <input
         id="email"
         type="email">
 
-      <label>Subject</label>
 
-      <input id="emailSubject">
+      <label>
+        Subject
+      </label>
 
-      <label>Message</label>
+      <input
+        id="emailSubject">
 
-      <textarea id="emailMessage"></textarea>
+
+      <label>
+        Message
+      </label>
+
+      <textarea
+        id="emailMessage"></textarea>
 
     </div>
 
@@ -683,23 +1146,41 @@ footer {
       id="wifiFields"
       class="hidden">
 
-      <label>Wi-Fi Name (SSID)</label>
+      <label>
+        Wi-Fi Name (SSID)
+      </label>
 
-      <input id="wifiSSID">
+      <input
+        id="wifiSSID">
 
-      <label>Password</label>
+
+      <label>
+        Password
+      </label>
 
       <input
         id="wifiPassword"
         type="password">
 
-      <label>Security</label>
 
-      <select id="wifiSecurity">
+      <label>
+        Security
+      </label>
 
-        <option value="WPA">WPA/WPA2</option>
-        <option value="WEP">WEP</option>
-        <option value="nopass">No Password</option>
+      <select
+        id="wifiSecurity">
+
+        <option value="WPA">
+          WPA/WPA2
+        </option>
+
+        <option value="WEP">
+          WEP
+        </option>
+
+        <option value="nopass">
+          No Password
+        </option>
 
       </select>
 
@@ -710,17 +1191,36 @@ footer {
       id="contactFields"
       class="hidden">
 
-      <label>Name</label>
-      <input id="contactName">
+      <label>
+        Name
+      </label>
 
-      <label>Phone</label>
-      <input id="contactPhone">
+      <input
+        id="contactName">
 
-      <label>Email</label>
-      <input id="contactEmail">
 
-      <label>Organization</label>
-      <input id="contactOrg">
+      <label>
+        Phone
+      </label>
+
+      <input
+        id="contactPhone">
+
+
+      <label>
+        Email
+      </label>
+
+      <input
+        id="contactEmail">
+
+
+      <label>
+        Organization
+      </label>
+
+      <input
+        id="contactOrg">
 
     </div>
 
@@ -729,14 +1229,19 @@ footer {
       id="locationFields"
       class="hidden">
 
-      <label>Latitude</label>
+      <label>
+        Latitude
+      </label>
 
       <input
         id="latitude"
         type="number"
         step="any">
 
-      <label>Longitude</label>
+
+      <label>
+        Longitude
+      </label>
 
       <input
         id="longitude"
@@ -746,28 +1251,40 @@ footer {
     </div>
 
 
-    <label>QR Size</label>
+    <label>
+      QR Size
+    </label>
 
-    <select id="qrSize">
+    <select
+      id="qrSize">
 
-      <option value="150">Small</option>
+      <option value="150">
+        Small
+      </option>
 
       <option
         value="220"
         selected>
+
         Medium
+
       </option>
 
-      <option value="300">Large</option>
+      <option value="300">
+        Large
+      </option>
 
     </select>
 
 
     <div class="row">
 
+
       <div>
 
-        <label>QR Color</label>
+        <label>
+          QR Color
+        </label>
 
         <input
           type="color"
@@ -779,7 +1296,9 @@ footer {
 
       <div>
 
-        <label>Background</label>
+        <label>
+          Background
+        </label>
 
         <input
           type="color"
@@ -797,14 +1316,18 @@ footer {
     <button
       class="primary"
       onclick="generateQR()">
+
       Generate QR
+
     </button>
 
 
     <button
       class="secondary"
       onclick="clearAll()">
+
       Clear
+
     </button>
 
   </div>
@@ -812,9 +1335,13 @@ footer {
 
   <div class="card result">
 
-    <h2>Your QR Code</h2>
+    <h2>
+      Your QR Code
+    </h2>
+
 
     <div id="qrcode"></div>
+
 
     <br>
 
@@ -823,7 +1350,9 @@ footer {
       id="downloadBtn"
       class="primary hidden"
       onclick="downloadQR()">
+
       Download QR
+
     </button>
 
 
@@ -831,7 +1360,9 @@ footer {
       id="sendQRBtn"
       class="success hidden"
       onclick="showPage('send')">
+
       📤 Send to Person
+
     </button>
 
   </div>
@@ -845,9 +1376,13 @@ footer {
   id="scan"
   class="page">
 
+
   <div class="card">
 
-    <h2>📷 Scan QR Code</h2>
+    <h2>
+      📷 Scan QR Code
+    </h2>
+
 
     <p class="small-text">
       Scan a QR using your camera or an image.
@@ -857,14 +1392,18 @@ footer {
     <button
       class="primary"
       onclick="startCameraScan()">
+
       📷 Camera Scan
+
     </button>
 
 
     <button
       class="secondary"
       onclick="document.getElementById('qrFile').click()">
+
       🖼️ Scan Image
+
     </button>
 
 
@@ -883,7 +1422,10 @@ footer {
       id="scanResult"
       class="hidden">
 
-      <h3>Scan Result</h3>
+      <h3>
+        Scan Result
+      </h3>
+
 
       <p id="scanText"></p>
 
@@ -892,7 +1434,9 @@ footer {
         id="openLinkBtn"
         class="primary hidden"
         onclick="openScannedLink()">
+
         Open Link
+
       </button>
 
     </div>
@@ -908,20 +1452,27 @@ footer {
   id="send"
   class="page">
 
+
   <div
     id="accountRequired"
     class="card">
 
-    <h2>📤 Send QR</h2>
+    <h2>
+      📤 Send QR
+    </h2>
+
 
     <p>
       Sign in and create a QRify username to send QR codes.
     </p>
 
+
     <button
       class="primary"
       onclick="showPage('profile')">
+
       👤 Open Profile
+
     </button>
 
   </div>
@@ -931,14 +1482,29 @@ footer {
     id="sendCard"
     class="card hidden">
 
-    <h2>📤 Send QR to Person</h2>
+    <h2>
+      📤 Send QR to Person
+    </h2>
+
 
     <p class="small-text">
       Search another QRify user using their username.
     </p>
 
 
-    <label>Search Username</label>
+    <div
+      id="sendQRStatus"
+      class="status">
+
+      Generate a QR code first.
+
+    </div>
+
+
+    <label>
+      Search Username
+    </label>
+
 
     <input
       id="searchUsername"
@@ -948,11 +1514,174 @@ footer {
     <button
       class="primary"
       onclick="searchUser()">
+
       🔎 Search User
+
     </button>
 
 
     <div id="searchResults"></div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= CHAT ================= -->
+
+<section
+  id="chat"
+  class="page">
+
+
+  <!-- Login -->
+
+  <div
+    id="chatLoginCard"
+    class="card">
+
+    <h2>
+      💬 QRify Chat
+    </h2>
+
+
+    <p>
+      Sign in to chat privately with other QRify users.
+    </p>
+
+
+    <button
+      class="primary"
+      onclick="showPage('profile')">
+
+      👤 Open Profile
+
+    </button>
+
+  </div>
+
+
+  <!-- Chat Application -->
+
+  <div
+    id="chatApp"
+    class="hidden">
+
+
+    <!-- Search -->
+
+    <div class="card">
+
+      <h2>
+        💬 Start a Chat
+      </h2>
+
+
+      <p class="small-text">
+        Search for a QRify username.
+      </p>
+
+
+      <label>
+        Username
+      </label>
+
+
+      <input
+        id="chatSearchUsername"
+        placeholder="Enter username">
+
+
+      <button
+        class="primary"
+        onclick="searchChatUser()">
+
+        🔎 Find User
+
+      </button>
+
+
+      <div
+        id="chatSearchResults">
+      </div>
+
+    </div>
+
+
+    <!-- Chat Window -->
+
+    <div
+      id="chatWindow"
+      class="card hidden">
+
+
+      <div
+        style="
+          padding-bottom:12px;
+          border-bottom:1px solid #d1d5db;
+        ">
+
+        <h3
+          id="chatUserName"
+          style="margin:0;">
+
+          💬 Select a user
+
+        </h3>
+
+
+        <p
+          id="chatUsername"
+          class="small-text"
+          style="margin:4px 0 0;">
+
+        </p>
+
+      </div>
+
+
+      <!-- Messages -->
+
+      <div
+        id="chatMessages"
+        class="chat-messages">
+
+        <p class="small-text">
+          Select a user to start chatting.
+        </p>
+
+      </div>
+
+
+      <!-- Input -->
+
+      <div
+        class="row"
+        style="align-items:end;">
+
+        <textarea
+          id="chatInput"
+          placeholder="Type a message..."
+          style="
+            min-height:55px;
+            max-height:120px;
+          "
+          onkeydown="handleChatKey(event)">
+        </textarea>
+
+
+        <button
+          class="primary"
+          style="max-width:100px;"
+          onclick="sendChatMessage()">
+
+          ➤ Send
+
+        </button>
+
+      </div>
+
+    </div>
 
   </div>
 
@@ -965,11 +1694,15 @@ footer {
   id="received"
   class="page">
 
+
   <div
     id="inboxCard"
     class="card hidden">
 
-    <h2>📥 Received QR Codes</h2>
+    <h2>
+      📥 Received QR Codes
+    </h2>
+
 
     <div id="receivedQRs">
 
@@ -986,16 +1719,22 @@ footer {
     id="receivedLoginMessage"
     class="card">
 
-    <h2>📥 Received QR</h2>
+    <h2>
+      📥 Received QR
+    </h2>
+
 
     <p>
       Sign in to view QR codes sent to you.
     </p>
 
+
     <button
       class="primary"
       onclick="showPage('profile')">
+
       👤 Open Profile
+
     </button>
 
   </div>
@@ -1009,9 +1748,13 @@ footer {
   id="history"
   class="page">
 
+
   <div class="card">
 
-    <h2>🕘 Recent QR History</h2>
+    <h2>
+      🕘 Recent QR History
+    </h2>
+
 
     <div id="historyList"></div>
 
@@ -1026,9 +1769,13 @@ footer {
   id="profile"
   class="page">
 
+
   <div class="card">
 
-    <h2>👤 QRify Account</h2>
+    <h2>
+      👤 QRify Account
+    </h2>
+
 
     <p id="firebaseStatus">
       Connecting to QRify server...
@@ -1039,7 +1786,9 @@ footer {
       id="googleLoginBtn"
       class="primary"
       onclick="loginWithGoogle()">
+
       🔐 Sign in with Google
+
     </button>
 
 
@@ -1047,7 +1796,9 @@ footer {
       id="logoutBtn"
       class="secondary hidden"
       onclick="logoutUser()">
+
       Logout
+
     </button>
 
 
@@ -1060,14 +1811,20 @@ footer {
     id="profileCard"
     class="card hidden">
 
-    <h2>👤 QRify Profile</h2>
+    <h2>
+      👤 QRify Profile
+    </h2>
+
 
     <p class="small-text">
       Your username is used by other QRify users to find you.
     </p>
 
 
-    <label>QRify Username</label>
+    <label>
+      QRify Username
+    </label>
+
 
     <input
       id="usernameInput"
@@ -1078,7 +1835,9 @@ footer {
     <button
       class="primary"
       onclick="saveUsername()">
+
       Save Username
+
     </button>
 
 
@@ -1098,15 +1857,20 @@ footer {
   id="settings"
   class="page">
 
+
   <div class="card">
 
-    <h2>⚙️ Settings</h2>
+    <h2>
+      ⚙️ Settings
+    </h2>
 
 
     <button
       class="secondary"
       onclick="toggleDarkMode()">
+
       🌙 Dark Mode
+
     </button>
 
   </div>
@@ -1114,15 +1878,20 @@ footer {
 
   <div class="card">
 
-    <h2>ℹ️ About QRify</h2>
+    <h2>
+      ℹ️ About QRify
+    </h2>
+
 
     <p>
-      QRify helps you generate, scan and share QR codes easily.
+      QRify helps you generate, scan, share and chat easily.
     </p>
 
+
     <p class="small-text">
-      Generate • Scan • Simplify
+      Generate • Scan • Share • Chat • Simplify
     </p>
+
 
     <p class="small-text">
       By Ashraf
@@ -1132,16 +1901,19 @@ footer {
 
 </section>
 
+
 </div>
 
 
+<!-- ================= FOOTER ================= -->
+
 <footer>
 
-QRify — Generate • Scan • Simplify
+  QRify — Generate • Scan • Share • Chat • Simplify
 
-<br>
+  <br>
 
-By Ashraf
+  By Ashraf
 
 </footer>
 
@@ -1150,9 +1922,12 @@ By Ashraf
 
 <script type="module">
 
+
 import {
   initializeApp
-} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+} from
+"https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+
 
 import {
   getAuth,
@@ -1160,7 +1935,9 @@ import {
   signInWithPopup,
   onAuthStateChanged,
   signOut
-} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+} from
+"https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
 
 import {
   getFirestore,
@@ -1171,11 +1948,15 @@ import {
   collection,
   query,
   where,
+  orderBy,
   addDoc,
   onSnapshot,
   serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+} from
+"https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
+
+/* FIREBASE CONFIG */
 
 const firebaseConfig = {
 
@@ -1203,23 +1984,35 @@ const firebaseConfig = {
 const app =
   initializeApp(firebaseConfig);
 
+
 const auth =
   getAuth(app);
 
+
 const db =
   getFirestore(app);
+
 
 const provider =
   new GoogleAuthProvider();
 
 
+/* GLOBAL FIREBASE STATE */
+
 let currentUser = null;
+
 let currentUsername = "";
-let latestQRData = "";
+
+window.latestQRData = "";
+
 let unsubscribeInbox = null;
 
+let activeChatUser = null;
 
-/* LOGIN */
+let unsubscribeChat = null;
+
+
+/* ================= LOGIN ================= */
 
 window.loginWithGoogle =
 async function() {
@@ -1247,12 +2040,20 @@ async function() {
 };
 
 
-/* LOGOUT */
+/* ================= LOGOUT ================= */
 
 window.logoutUser =
 async function() {
 
   try {
+
+    if(unsubscribeChat) {
+
+      unsubscribeChat();
+
+      unsubscribeChat = null;
+
+    }
 
     await signOut(auth);
 
@@ -1262,58 +2063,69 @@ async function() {
 
     console.error(error);
 
-    alert("Logout failed.");
+    alert(
+      "Logout failed."
+    );
 
   }
 
 };
 
 
-/* AUTH STATE */
+/* ================= AUTH STATE ================= */
 
 onAuthStateChanged(
   auth,
   async user => {
+
 
     const status =
       document.getElementById(
         "firebaseStatus"
       );
 
+
     const loginButton =
       document.getElementById(
         "googleLoginBtn"
       );
+
 
     const logoutButton =
       document.getElementById(
         "logoutBtn"
       );
 
+
     const userInfo =
       document.getElementById(
         "userInfo"
       );
+
 
     const profileCard =
       document.getElementById(
         "profileCard"
       );
 
+
     const sendCard =
       document.getElementById(
         "sendCard"
       );
+
 
     const inboxCard =
       document.getElementById(
         "inboxCard"
       );
 
+
     const accountRequired =
       document.getElementById(
         "accountRequired"
       );
+
 
     const receivedLoginMessage =
       document.getElementById(
@@ -1321,112 +2133,164 @@ onAuthStateChanged(
       );
 
 
+    const chatLoginCard =
+      document.getElementById(
+        "chatLoginCard"
+      );
+
+
+    const chatApp =
+      document.getElementById(
+        "chatApp"
+      );
+
+
     if(user) {
 
-      currentUser = user;
+
+      currentUser =
+        user;
+
 
       status.textContent =
         "✅ Connected to QRify";
 
 
-      loginButton.classList.add(
-        "hidden"
-      );
+      loginButton
+        .classList
+        .add("hidden");
 
-      logoutButton.classList.remove(
-        "hidden"
-      );
+
+      logoutButton
+        .classList
+        .remove("hidden");
 
 
       userInfo.innerHTML = `
+
         <p class="account-name">
+
           ${escapeHTML(
             user.displayName ||
             "QRify User"
           )}
+
         </p>
 
         <p>
+
           ${escapeHTML(
             user.email || ""
           )}
+
         </p>
+
       `;
 
 
-      profileCard.classList.remove(
-        "hidden"
-      );
+      profileCard
+        .classList
+        .remove("hidden");
 
 
-      sendCard.classList.remove(
-        "hidden"
-      );
+      sendCard
+        .classList
+        .remove("hidden");
 
 
-      inboxCard.classList.remove(
-        "hidden"
-      );
+      inboxCard
+        .classList
+        .remove("hidden");
 
 
-      accountRequired.classList.add(
-        "hidden"
-      );
+      accountRequired
+        .classList
+        .add("hidden");
 
 
-      receivedLoginMessage.classList.add(
-        "hidden"
-      );
+      receivedLoginMessage
+        .classList
+        .add("hidden");
+
+
+      chatLoginCard
+        .classList
+        .add("hidden");
+
+
+      chatApp
+        .classList
+        .remove("hidden");
 
 
       await loadUserProfile();
+
 
       startInboxListener();
 
     }
 
+
     else {
 
+
       currentUser = null;
+
       currentUsername = "";
+
+      activeChatUser = null;
 
 
       status.textContent =
         "Firebase connected. Please sign in.";
 
 
-      loginButton.classList.remove(
-        "hidden"
-      );
+      loginButton
+        .classList
+        .remove("hidden");
 
-      logoutButton.classList.add(
-        "hidden"
-      );
+
+      logoutButton
+        .classList
+        .add("hidden");
 
 
       userInfo.innerHTML = "";
 
 
-      profileCard.classList.add(
-        "hidden"
-      );
-
-      sendCard.classList.add(
-        "hidden"
-      );
-
-      inboxCard.classList.add(
-        "hidden"
-      );
+      profileCard
+        .classList
+        .add("hidden");
 
 
-      accountRequired.classList.remove(
-        "hidden"
-      );
+      sendCard
+        .classList
+        .add("hidden");
 
-      receivedLoginMessage.classList.remove(
-        "hidden"
-      );
+
+      inboxCard
+        .classList
+        .add("hidden");
+
+
+      accountRequired
+        .classList
+        .remove("hidden");
+
+
+      receivedLoginMessage
+        .classList
+        .remove("hidden");
+
+
+      chatLoginCard
+        .classList
+        .remove("hidden");
+
+
+      chatApp
+        .classList
+        .add("hidden");
 
 
       document
@@ -1443,17 +2307,27 @@ onAuthStateChanged(
 
       }
 
+
+      if(unsubscribeChat) {
+
+        unsubscribeChat();
+
+        unsubscribeChat = null;
+
+      }
+
     }
 
   }
 );
 
 
-/* LOAD PROFILE */
+/* ================= LOAD PROFILE ================= */
 
 async function loadUserProfile() {
 
-  if(!currentUser) return;
+  if(!currentUser)
+    return;
 
 
   const userRef =
@@ -1476,6 +2350,7 @@ async function loadUserProfile() {
 
   if(snapshot.exists()) {
 
+
     const data =
       snapshot.data();
 
@@ -1491,19 +2366,26 @@ async function loadUserProfile() {
     document.getElementById(
       "usernameStatus"
     ).textContent =
+
       currentUsername
+
         ? "✅ Your QRify username is ready."
+
         : "Create your username.";
 
   }
 
+
   else {
 
+
     usernameInput.value = "";
+
 
     document.getElementById(
       "usernameStatus"
     ).textContent =
+
       "Choose a username so other QRify users can find you.";
 
   }
@@ -1511,14 +2393,17 @@ async function loadUserProfile() {
 }
 
 
-/* SAVE USERNAME */
+/* ================= SAVE USERNAME ================= */
 
 window.saveUsername =
 async function() {
 
+
   if(!currentUser) {
 
-    alert("Please sign in first.");
+    alert(
+      "Please sign in first."
+    );
 
     return;
 
@@ -1537,7 +2422,10 @@ async function() {
       .toLowerCase();
 
 
-  if(!/^[a-z0-9_]{3,20}$/.test(username)) {
+  if(
+    !/^[a-z0-9_]{3,20}$/
+      .test(username)
+  ) {
 
     alert(
       "Username must be 3-20 characters and use only letters, numbers or _."
@@ -1548,111 +2436,141 @@ async function() {
   }
 
 
-  const searchQuery =
-    query(
-      collection(db,"users"),
-      where(
-        "username",
-        "==",
-        username
-      )
-    );
+  try {
 
 
-  const existingUsers =
-    await getDocs(searchQuery);
+    const searchQuery =
+      query(
+        collection(
+          db,
+          "users"
+        ),
+
+        where(
+          "username",
+          "==",
+          username
+        )
+      );
 
 
-  let takenByOtherUser = false;
+    const existingUsers =
+      await getDocs(
+        searchQuery
+      );
 
 
-  existingUsers.forEach(
-    userDoc => {
+    let takenByOtherUser =
+      false;
 
-      if(
-        userDoc.id !==
-        currentUser.uid
-      ) {
 
-        takenByOtherUser = true;
+    existingUsers.forEach(
+      userDoc => {
+
+        if(
+          userDoc.id !==
+          currentUser.uid
+        ) {
+
+          takenByOtherUser =
+            true;
+
+        }
 
       }
-
-    }
-  );
-
-
-  if(takenByOtherUser) {
-
-    alert(
-      "That username is already taken. Try another one."
     );
 
-    return;
+
+    if(takenByOtherUser) {
+
+      alert(
+        "That username is already taken. Try another one."
+      );
+
+      return;
+
+    }
+
+
+    await setDoc(
+
+      doc(
+        db,
+        "users",
+        currentUser.uid
+      ),
+
+      {
+
+        uid:
+          currentUser.uid,
+
+        username:
+          username,
+
+        displayName:
+          currentUser.displayName ||
+          "",
+
+        email:
+          currentUser.email ||
+          "",
+
+        updatedAt:
+          serverTimestamp()
+
+      },
+
+      {
+        merge: true
+      }
+
+    );
+
+
+    currentUsername =
+      username;
+
+
+    document.getElementById(
+      "usernameStatus"
+    ).textContent =
+
+      "✅ Username saved: @" +
+      username;
+
+
+    alert(
+      "Username saved successfully!"
+    );
 
   }
 
+  catch(error) {
 
-  await setDoc(
+    console.error(error);
 
-    doc(
-      db,
-      "users",
-      currentUser.uid
-    ),
+    alert(
+      "Could not save username: " +
+      error.message
+    );
 
-    {
-
-      uid:
-        currentUser.uid,
-
-      username:
-        username,
-
-      displayName:
-        currentUser.displayName || "",
-
-      email:
-        currentUser.email || "",
-
-      updatedAt:
-        serverTimestamp()
-
-    },
-
-    {
-      merge: true
-    }
-
-  );
-
-
-  currentUsername =
-    username;
-
-
-  document.getElementById(
-    "usernameStatus"
-  ).textContent =
-    "✅ Username saved: @" +
-    username;
-
-
-  alert(
-    "Username saved successfully!"
-  );
+  }
 
 };
 
 
-/* SEARCH USER */
+/* ================= SEARCH USER FOR QR ================= */
 
 window.searchUser =
 async function() {
 
+
   if(!currentUser) {
 
-    alert("Please sign in first.");
+    alert(
+      "Please sign in first."
+    );
 
     return;
 
@@ -1684,7 +2602,9 @@ async function() {
 
   if(!username) {
 
-    alert("Enter a username.");
+    alert(
+      "Enter a username."
+    );
 
     return;
 
@@ -1701,114 +2621,163 @@ async function() {
     "<p>Searching...</p>";
 
 
-  const searchQuery =
-    query(
-      collection(db,"users"),
-      where(
-        "username",
-        "==",
-        username
-      )
-    );
+  try {
 
 
-  const snapshot =
-    await getDocs(searchQuery);
+    const searchQuery =
+      query(
+
+        collection(
+          db,
+          "users"
+        ),
+
+        where(
+          "username",
+          "==",
+          username
+        )
+
+      );
 
 
-  results.innerHTML = "";
+    const snapshot =
+      await getDocs(
+        searchQuery
+      );
 
 
-  if(snapshot.empty) {
-
-    results.innerHTML = `
-      <div class="user-result">
-        ❌ User not found
-      </div>
-    `;
-
-    return;
-
-  }
+    results.innerHTML = "";
 
 
-  snapshot.forEach(
-    userDoc => {
+    if(snapshot.empty) {
 
-      const data =
-        userDoc.data();
+      results.innerHTML = `
 
+        <div class="user-result">
 
-      if(
-        userDoc.id ===
-        currentUser.uid
-      ) {
+          ❌ User not found
 
-        results.innerHTML = `
-          <div class="user-result">
-            👤 This is your own username.
-          </div>
-        `;
-
-        return;
-
-      }
-
-
-      const div =
-        document.createElement("div");
-
-
-      div.className =
-        "user-result";
-
-
-      div.innerHTML = `
-
-        <strong>
-          ${escapeHTML(
-            data.displayName ||
-            "QRify User"
-          )}
-        </strong>
-
-        <br>
-
-        <span class="username">
-          @${escapeHTML(
-            data.username
-          )}
-        </span>
-
-        <br>
-
-        <button
-          class="success"
-          onclick="sendQRToUser('${userDoc.id}')">
-
-          📤 Send Current QR
-
-        </button>
+        </div>
 
       `;
 
-
-      results.appendChild(div);
+      return;
 
     }
-  );
+
+
+    snapshot.forEach(
+      userDoc => {
+
+
+        const data =
+          userDoc.data();
+
+
+        if(
+          userDoc.id ===
+          currentUser.uid
+        ) {
+
+          results.innerHTML = `
+
+            <div class="user-result">
+
+              👤 This is your own username.
+
+            </div>
+
+          `;
+
+          return;
+
+        }
+
+
+        const div =
+          document.createElement(
+            "div"
+          );
+
+
+        div.className =
+          "user-result";
+
+
+        div.innerHTML = `
+
+          <strong>
+
+            ${escapeHTML(
+              data.displayName ||
+              "QRify User"
+            )}
+
+          </strong>
+
+          <br>
+
+          <span class="username">
+
+            @${escapeHTML(
+              data.username || ""
+            )}
+
+          </span>
+
+          <br>
+
+          <button
+            class="success"
+            onclick="sendQRToUser('${userDoc.id}')">
+
+            📤 Send Current QR
+
+          </button>
+
+        `;
+
+
+        results.appendChild(
+          div
+        );
+
+      }
+    );
+
+  }
+
+  catch(error) {
+
+    console.error(error);
+
+    results.innerHTML = `
+
+      <div class="user-result">
+
+        ❌ Search failed.
+
+      </div>
+
+    `;
+
+  }
 
 };
 
 
-/* SEND QR */
+/* ================= SEND QR ================= */
 
 window.sendQRToUser =
 async function(receiverId) {
 
+
   if(!currentUser) {
 
-    alert("Please sign in first.");
+    alert(
+      "Please sign in first."
+    );
 
     return;
 
@@ -1826,7 +2795,7 @@ async function(receiverId) {
   }
 
 
-  if(!latestQRData) {
+  if(!window.latestQRData) {
 
     alert(
       "Generate a QR code first."
@@ -1838,6 +2807,7 @@ async function(receiverId) {
 
 
   try {
+
 
     await addDoc(
 
@@ -1862,7 +2832,7 @@ async function(receiverId) {
           receiverId,
 
         qrData:
-          latestQRData,
+          window.latestQRData,
 
         createdAt:
           serverTimestamp()
@@ -1892,11 +2862,13 @@ async function(receiverId) {
 };
 
 
-/* INBOX */
+/* ================= INBOX ================= */
 
 function startInboxListener() {
 
-  if(!currentUser) return;
+
+  if(!currentUser)
+    return;
 
 
   if(unsubscribeInbox) {
@@ -1950,9 +2922,12 @@ function startInboxListener() {
 }
 
 
-/* DISPLAY RECEIVED */
+/* ================= DISPLAY RECEIVED ================= */
 
-function displayReceivedQRs(snapshot) {
+function displayReceivedQRs(
+  snapshot
+) {
+
 
   const container =
     document.getElementById(
@@ -1966,9 +2941,13 @@ function displayReceivedQRs(snapshot) {
   if(snapshot.empty) {
 
     container.innerHTML = `
+
       <p class="small-text">
+
         No QR codes received yet.
+
       </p>
+
     `;
 
     return;
@@ -1979,12 +2958,15 @@ function displayReceivedQRs(snapshot) {
   snapshot.forEach(
     qrDoc => {
 
+
       const data =
         qrDoc.data();
 
 
       const item =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
 
       item.className =
@@ -1999,28 +2981,36 @@ function displayReceivedQRs(snapshot) {
       item.innerHTML = `
 
         <strong>
+
           📩 From:
+
           ${escapeHTML(
             data.senderName ||
             "QRify User"
           )}
+
         </strong>
 
         <br>
 
         <span class="username">
+
           @${escapeHTML(
             data.senderUsername ||
             ""
           )}
+
         </span>
+
 
         <div
           id="${qrId}"
           class="received-qr">
         </div>
 
+
         <br>
+
 
         <button
           class="primary"
@@ -2033,11 +3023,14 @@ function displayReceivedQRs(snapshot) {
       `;
 
 
-      container.prepend(item);
+      container.prepend(
+        item
+      );
 
 
       setTimeout(
         () => {
+
 
           const qrContainer =
             document.getElementById(
@@ -2049,6 +3042,7 @@ function displayReceivedQRs(snapshot) {
             qrContainer &&
             data.qrData
           ) {
+
 
             new QRCode(
 
@@ -2086,39 +3080,43 @@ function displayReceivedQRs(snapshot) {
 }
 
 
-/* COPY RECEIVED */
+/* ================= COPY RECEIVED QR ================= */
 
 window.copyReceivedQR =
 async function(qrId) {
 
-  const qrRef =
-    doc(
-      db,
-      "shared_qr",
-      qrId
-    );
-
-
-  const snapshot =
-    await getDoc(qrRef);
-
-
-  if(!snapshot.exists()) {
-
-    alert(
-      "QR no longer exists."
-    );
-
-    return;
-
-  }
-
-
-  const data =
-    snapshot.data();
-
 
   try {
+
+
+    const qrRef =
+      doc(
+        db,
+        "shared_qr",
+        qrId
+      );
+
+
+    const snapshot =
+      await getDoc(
+        qrRef
+      );
+
+
+    if(!snapshot.exists()) {
+
+      alert(
+        "QR no longer exists."
+      );
+
+      return;
+
+    }
+
+
+    const data =
+      snapshot.data();
+
 
     await navigator.clipboard.writeText(
       data.qrData
@@ -2133,6 +3131,8 @@ async function(qrId) {
 
   catch(error) {
 
+    console.error(error);
+
     alert(
       "Could not copy QR data."
     );
@@ -2142,55 +3142,796 @@ async function(qrId) {
 };
 
 
-/* ESCAPE HTML */
+/* ================= CHAT SEARCH ================= */
+
+window.searchChatUser =
+async function() {
+
+
+  if(!currentUser) {
+
+    alert(
+      "Please sign in first."
+    );
+
+    return;
+
+  }
+
+
+  if(!currentUsername) {
+
+    alert(
+      "First create your QRify username."
+    );
+
+    return;
+
+  }
+
+
+  const input =
+    document.getElementById(
+      "chatSearchUsername"
+    );
+
+
+  const username =
+    input.value
+      .trim()
+      .toLowerCase();
+
+
+  if(!username) {
+
+    alert(
+      "Enter a username."
+    );
+
+    return;
+
+  }
+
+
+  const results =
+    document.getElementById(
+      "chatSearchResults"
+    );
+
+
+  results.innerHTML =
+    "<p>Searching...</p>";
+
+
+  try {
+
+
+    const searchQuery =
+      query(
+
+        collection(
+          db,
+          "users"
+        ),
+
+        where(
+          "username",
+          "==",
+          username
+        )
+
+      );
+
+
+    const snapshot =
+      await getDocs(
+        searchQuery
+      );
+
+
+    results.innerHTML = "";
+
+
+    if(snapshot.empty) {
+
+      results.innerHTML = `
+
+        <div class="chat-user-result">
+
+          ❌ User not found
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    snapshot.forEach(
+      userDoc => {
+
+
+        const data =
+          userDoc.data();
+
+
+        if(
+          userDoc.id ===
+          currentUser.uid
+        ) {
+
+          results.innerHTML = `
+
+            <div class="chat-user-result">
+
+              👤 This is your own username.
+
+            </div>
+
+          `;
+
+          return;
+
+        }
+
+
+        const div =
+          document.createElement(
+            "div"
+          );
+
+
+        div.className =
+          "chat-user-result";
+
+
+        div.innerHTML = `
+
+          <strong>
+
+            ${escapeHTML(
+              data.displayName ||
+              "QRify User"
+            )}
+
+          </strong>
+
+          <br>
+
+          <span class="username">
+
+            @${escapeHTML(
+              data.username ||
+              ""
+            )}
+
+          </span>
+
+          <br>
+
+
+          <button
+            class="success"
+            onclick="openChatWithUser(
+              '${userDoc.id}',
+              '${escapeJS(
+                data.username || ""
+              )}',
+              '${escapeJS(
+                data.displayName ||
+                "QRify User"
+              )}'
+            )">
+
+            💬 Start Chat
+
+          </button>
+
+        `;
+
+
+        results.appendChild(
+          div
+        );
+
+      }
+    );
+
+  }
+
+  catch(error) {
+
+    console.error(error);
+
+    results.innerHTML = `
+
+      <div class="chat-user-result">
+
+        ❌ Could not search users.
+
+      </div>
+
+    `;
+
+  }
+
+};
+
+
+/* ================= OPEN CHAT ================= */
+
+window.openChatWithUser =
+function(
+  userId,
+  username,
+  displayName
+) {
+
+
+  if(!currentUser) {
+
+    alert(
+      "Please sign in first."
+    );
+
+    return;
+
+  }
+
+
+  activeChatUser = {
+
+    uid:
+      userId,
+
+    username:
+      username,
+
+    displayName:
+      displayName
+
+  };
+
+
+  document
+    .getElementById(
+      "chatWindow"
+    )
+    .classList
+    .remove("hidden");
+
+
+  document
+    .getElementById(
+      "chatUserName"
+    )
+    .textContent =
+      "💬 " +
+      displayName;
+
+
+  document
+    .getElementById(
+      "chatUsername"
+    )
+    .textContent =
+      "@" +
+      username;
+
+
+  document
+    .getElementById(
+      "chatMessages"
+    )
+    .innerHTML = `
+
+      <p class="small-text">
+
+        Loading messages...
+
+      </p>
+
+    `;
+
+
+  startChatListener();
+
+
+  setTimeout(
+    () => {
+
+      document
+        .getElementById(
+          "chatInput"
+        )
+        .focus();
+
+    },
+
+    100
+
+  );
+
+};
+
+
+/* ================= CHAT ID ================= */
+
+function createChatId(
+  uid1,
+  uid2
+) {
+
+  return [
+
+    uid1,
+    uid2
+
+  ]
+  .sort()
+  .join("_");
+
+}
+
+
+/* ================= CHAT LISTENER ================= */
+
+function startChatListener() {
+
+
+  if(
+    !currentUser ||
+    !activeChatUser
+  ) {
+
+    return;
+
+  }
+
+
+  if(unsubscribeChat) {
+
+    unsubscribeChat();
+
+    unsubscribeChat = null;
+
+  }
+
+
+  const chatId =
+    createChatId(
+
+      currentUser.uid,
+
+      activeChatUser.uid
+
+    );
+
+
+  const messagesRef =
+    collection(
+
+      db,
+
+      "chats",
+
+      chatId,
+
+      "messages"
+
+    );
+
+
+  const messagesQuery =
+    query(
+
+      messagesRef,
+
+      orderBy(
+        "createdAt",
+        "asc"
+      )
+
+    );
+
+
+  unsubscribeChat =
+    onSnapshot(
+
+      messagesQuery,
+
+      snapshot => {
+
+        displayChatMessages(
+          snapshot
+        );
+
+      },
+
+      error => {
+
+        console.error(
+          "Chat listener error:",
+          error
+        );
+
+      }
+
+    );
+
+}
+
+
+/* ================= DISPLAY CHAT ================= */
+
+function displayChatMessages(
+  snapshot
+) {
+
+
+  const container =
+    document.getElementById(
+      "chatMessages"
+    );
+
+
+  container.innerHTML = "";
+
+
+  if(snapshot.empty) {
+
+    container.innerHTML = `
+
+      <p
+        class="small-text"
+        style="text-align:center;">
+
+        👋 No messages yet.
+        Say hello!
+
+      </p>
+
+    `;
+
+    return;
+
+  }
+
+
+  snapshot.forEach(
+    messageDoc => {
+
+
+      const data =
+        messageDoc.data();
+
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+
+      const isMine =
+        data.senderId ===
+        currentUser.uid;
+
+
+      div.className =
+
+        "chat-message " +
+
+        (
+          isMine
+            ? "sent"
+            : "received"
+        );
+
+
+      let timeText =
+        "";
+
+
+      if(data.createdAt) {
+
+        try {
+
+          timeText =
+
+            data.createdAt
+              .toDate()
+              .toLocaleTimeString(
+                [],
+                {
+                  hour:
+                    "2-digit",
+
+                  minute:
+                    "2-digit"
+                }
+              );
+
+        }
+
+        catch(error) {
+
+          timeText = "";
+
+        }
+
+      }
+
+
+      div.innerHTML = `
+
+        ${escapeHTML(
+          data.text || ""
+        )}
+
+        <span class="chat-time">
+
+          ${timeText}
+
+        </span>
+
+      `;
+
+
+      container.appendChild(
+        div
+      );
+
+    }
+  );
+
+
+  container.scrollTop =
+    container.scrollHeight;
+
+}
+
+
+/* ================= SEND MESSAGE ================= */
+
+window.sendChatMessage =
+async function() {
+
+
+  if(!currentUser) {
+
+    alert(
+      "Please sign in first."
+    );
+
+    return;
+
+  }
+
+
+  if(!activeChatUser) {
+
+    alert(
+      "Select a person to chat with."
+    );
+
+    return;
+
+  }
+
+
+  const input =
+    document.getElementById(
+      "chatInput"
+    );
+
+
+  const text =
+    input.value.trim();
+
+
+  if(!text) {
+
+    return;
+
+  }
+
+
+  const chatId =
+    createChatId(
+
+      currentUser.uid,
+
+      activeChatUser.uid
+
+    );
+
+
+  try {
+
+
+    await addDoc(
+
+      collection(
+
+        db,
+
+        "chats",
+
+        chatId,
+
+        "messages"
+
+      ),
+
+      {
+
+        senderId:
+          currentUser.uid,
+
+        receiverId:
+          activeChatUser.uid,
+
+        senderUsername:
+          currentUsername,
+
+        receiverUsername:
+          activeChatUser.username,
+
+        text:
+          text,
+
+        createdAt:
+          serverTimestamp()
+
+      }
+
+    );
+
+
+    input.value = "";
+
+    input.focus();
+
+  }
+
+  catch(error) {
+
+    console.error(error);
+
+    alert(
+      "Could not send message: " +
+      error.message
+    );
+
+  }
+
+};
+
+
+/* ================= ENTER TO SEND ================= */
+
+window.handleChatKey =
+function(event) {
+
+
+  if(
+    event.key === "Enter" &&
+    !event.shiftKey
+  ) {
+
+    event.preventDefault();
+
+    sendChatMessage();
+
+  }
+
+};
+
+
+/* ================= ESCAPE HTML ================= */
 
 function escapeHTML(value) {
 
   const div =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   div.textContent =
     value || "";
 
+
   return div.innerHTML;
+
+}
+
+
+/* ================= ESCAPE JAVASCRIPT ================= */
+
+function escapeJS(value) {
+
+  return String(
+    value || ""
+  )
+  .replace(
+    /\\/g,
+    "\\\\"
+  )
+  .replace(
+    /'/g,
+    "\\'"
+  )
+  .replace(
+    /"/g,
+    '\\"'
+  )
+  .replace(
+    /\n/g,
+    "\\n"
+  )
+  .replace(
+    /\r/g,
+    "\\r"
+  );
 
 }
 
 </script>
 
 
-<!-- ================= QR FUNCTIONS ================= -->
+<!-- ================= NORMAL JAVASCRIPT ================= -->
 
 <script>
 
+
 let scannedLink = "";
+
 let qrCodeInstance = null;
 
+let html5QrCode = null;
 
-/* PAGE NAVIGATION */
+
+/* ================= PAGE NAVIGATION ================= */
 
 function showPage(pageId) {
+
 
   document
     .querySelectorAll(".page")
     .forEach(
       page => {
-        page.classList.remove("active");
+
+        page
+          .classList
+          .remove("active");
+
       }
     );
 
 
   const page =
-    document.getElementById(pageId);
+    document.getElementById(
+      pageId
+    );
 
 
   if(page) {
 
-    page.classList.add("active");
+    page
+      .classList
+      .add("active");
+
 
     window.scrollTo({
+
       top: 0,
-      behavior: "smooth"
+
+      behavior:
+        "smooth"
+
     });
 
   }
@@ -2201,18 +3942,23 @@ function showPage(pageId) {
 }
 
 
-/* MENU */
+/* ================= MENU ================= */
 
 function openMenu() {
 
+
   document
-    .getElementById("sideMenu")
+    .getElementById(
+      "sideMenu"
+    )
     .classList
     .add("open");
 
 
   document
-    .getElementById("menuOverlay")
+    .getElementById(
+      "menuOverlay"
+    )
     .classList
     .add("show");
 
@@ -2221,34 +3967,44 @@ function openMenu() {
 
 function closeMenu() {
 
+
   document
-    .getElementById("sideMenu")
+    .getElementById(
+      "sideMenu"
+    )
     .classList
     .remove("open");
 
 
   document
-    .getElementById("menuOverlay")
+    .getElementById(
+      "menuOverlay"
+    )
     .classList
     .remove("show");
 
 }
 
 
-/* QR DATA */
+/* ================= QR DATA ================= */
 
 function getQRData() {
 
+
   const type =
     document
-      .getElementById("qrType")
+      .getElementById(
+        "qrType"
+      )
       .value;
 
 
   if(type === "text") {
 
     return document
-      .getElementById("text")
+      .getElementById(
+        "text"
+      )
       .value;
 
   }
@@ -2256,21 +4012,33 @@ function getQRData() {
 
   if(type === "website") {
 
+
     let url =
       document
-        .getElementById("website")
+        .getElementById(
+          "website"
+        )
         .value
         .trim();
 
 
     if(
+
       url &&
-      !url.startsWith("http://") &&
-      !url.startsWith("https://")
+
+      !url.startsWith(
+        "http://"
+      ) &&
+
+      !url.startsWith(
+        "https://"
+      )
+
     ) {
 
       url =
-        "https://" + url;
+        "https://" +
+        url;
 
     }
 
@@ -2283,8 +4051,11 @@ function getQRData() {
   if(type === "phone") {
 
     return "tel:" +
+
       document
-        .getElementById("phone")
+        .getElementById(
+          "phone"
+        )
         .value;
 
   }
@@ -2292,81 +4063,120 @@ function getQRData() {
 
   if(type === "email") {
 
+
     const email =
       document
-        .getElementById("email")
+        .getElementById(
+          "email"
+        )
         .value;
 
 
     const subject =
       encodeURIComponent(
+
         document
-          .getElementById("emailSubject")
+          .getElementById(
+            "emailSubject"
+          )
           .value
+
       );
 
 
     const message =
       encodeURIComponent(
+
         document
-          .getElementById("emailMessage")
+          .getElementById(
+            "emailMessage"
+          )
           .value
+
       );
 
 
-    return `mailto:${email}?subject=${subject}&body=${message}`;
+    return
+
+      `mailto:${email}` +
+
+      `?subject=${subject}` +
+
+      `&body=${message}`;
 
   }
 
 
   if(type === "wifi") {
 
+
     const ssid =
       document
-        .getElementById("wifiSSID")
+        .getElementById(
+          "wifiSSID"
+        )
         .value;
 
 
     const password =
       document
-        .getElementById("wifiPassword")
+        .getElementById(
+          "wifiPassword"
+        )
         .value;
 
 
     const security =
       document
-        .getElementById("wifiSecurity")
+        .getElementById(
+          "wifiSecurity"
+        )
         .value;
 
 
-    return `WIFI:T:${security};S:${ssid};P:${password};;`;
+    return
+
+      `WIFI:T:${security};` +
+
+      `S:${ssid};` +
+
+      `P:${password};;`;
 
   }
 
 
   if(type === "contact") {
 
+
     const name =
       document
-        .getElementById("contactName")
+        .getElementById(
+          "contactName"
+        )
         .value;
 
 
     const phone =
       document
-        .getElementById("contactPhone")
+        .getElementById(
+          "contactPhone"
+        )
         .value;
 
 
     const email =
       document
-        .getElementById("contactEmail")
+        .getElementById(
+          "contactEmail"
+        )
         .value;
 
 
     const org =
       document
-        .getElementById("contactOrg")
+        .getElementById(
+          "contactOrg"
+        )
         .value;
 
 
@@ -2383,15 +4193,20 @@ END:VCARD`;
 
   if(type === "location") {
 
+
     const lat =
       document
-        .getElementById("latitude")
+        .getElementById(
+          "latitude"
+        )
         .value;
 
 
     const lon =
       document
-        .getElementById("longitude")
+        .getElementById(
+          "longitude"
+        )
         .value;
 
 
@@ -2402,15 +4217,19 @@ END:VCARD`;
 }
 
 
-/* GENERATE */
+/* ================= GENERATE QR ================= */
 
 function generateQR() {
+
 
   const data =
     getQRData();
 
 
-  if(!data || !data.trim()) {
+  if(
+    !data ||
+    !data.trim()
+  ) {
 
     alert(
       "Please enter some information."
@@ -2421,27 +4240,35 @@ function generateQR() {
   }
 
 
-  latestQRData =
+  window.latestQRData =
     data;
 
 
   const size =
     parseInt(
+
       document
-        .getElementById("qrSize")
+        .getElementById(
+          "qrSize"
+        )
         .value
+
     );
 
 
   const color =
     document
-      .getElementById("qrColor")
+      .getElementById(
+        "qrColor"
+      )
       .value;
 
 
   const background =
     document
-      .getElementById("bgColor")
+      .getElementById(
+        "bgColor"
+      )
       .value;
 
 
@@ -2485,15 +4312,33 @@ function generateQR() {
 
 
   document
-    .getElementById("downloadBtn")
+    .getElementById(
+      "downloadBtn"
+    )
     .classList
     .remove("hidden");
 
 
   document
-    .getElementById("sendQRBtn")
+    .getElementById(
+      "sendQRBtn"
+    )
     .classList
     .remove("hidden");
+
+
+  const sendStatus =
+    document.getElementById(
+      "sendQRStatus"
+    );
+
+
+  if(sendStatus) {
+
+    sendStatus.textContent =
+      "✅ QR code is ready to send.";
+
+  }
 
 
   saveHistory(data);
@@ -2501,9 +4346,10 @@ function generateQR() {
 }
 
 
-/* DOWNLOAD */
+/* ================= DOWNLOAD QR ================= */
 
 function downloadQR() {
+
 
   const canvas =
     document.querySelector(
@@ -2526,7 +4372,9 @@ function downloadQR() {
 
 
   const newCanvas =
-    document.createElement("canvas");
+    document.createElement(
+      "canvas"
+    );
 
 
   newCanvas.width =
@@ -2540,7 +4388,9 @@ function downloadQR() {
 
 
   const ctx =
-    newCanvas.getContext("2d");
+    newCanvas.getContext(
+      "2d"
+    );
 
 
   ctx.fillStyle =
@@ -2548,22 +4398,33 @@ function downloadQR() {
 
 
   ctx.fillRect(
+
     0,
+
     0,
+
     newCanvas.width,
+
     newCanvas.height
+
   );
 
 
   ctx.drawImage(
+
     canvas,
+
     border,
+
     border
+
   );
 
 
   const link =
-    document.createElement("a");
+    document.createElement(
+      "a"
+    );
 
 
   link.download =
@@ -2581,9 +4442,10 @@ function downloadQR() {
 }
 
 
-/* CLEAR */
+/* ================= CLEAR ================= */
 
 function clearAll() {
+
 
   document
     .querySelectorAll(
@@ -2592,62 +4454,103 @@ function clearAll() {
     .forEach(
       element => {
 
+
         if(
           element.type ===
           "color"
-        ) return;
+        ) {
+
+          return;
+
+        }
 
 
-        element.value = "";
+        element.value =
+          "";
 
       }
     );
 
 
   document
-    .getElementById("qrcode")
-    .innerHTML = "";
+    .getElementById(
+      "qrcode"
+    )
+    .innerHTML =
+      "";
 
 
   document
-    .getElementById("downloadBtn")
+    .getElementById(
+      "downloadBtn"
+    )
     .classList
     .add("hidden");
 
 
   document
-    .getElementById("sendQRBtn")
+    .getElementById(
+      "sendQRBtn"
+    )
     .classList
     .add("hidden");
 
 
-  latestQRData = "";
+  window.latestQRData =
+    "";
+
+
+  const sendStatus =
+    document.getElementById(
+      "sendQRStatus"
+    );
+
+
+  if(sendStatus) {
+
+    sendStatus.textContent =
+      "Generate a QR code first.";
+
+  }
 
 }
 
 
-/* HISTORY */
+/* ================= HISTORY ================= */
 
 function saveHistory(data) {
 
+
   let history =
     JSON.parse(
+
       localStorage.getItem(
         "qrifyHistory"
       ) || "[]"
+
     );
 
 
-  history.unshift(data);
+  history.unshift(
+    data
+  );
 
 
   history =
-    history.slice(0,5);
+    history.slice(
+      0,
+      5
+    );
 
 
   localStorage.setItem(
+
     "qrifyHistory",
-    JSON.stringify(history)
+
+    JSON.stringify(
+      history
+    )
+
   );
 
 
@@ -2658,11 +4561,14 @@ function saveHistory(data) {
 
 function displayHistory() {
 
+
   const history =
     JSON.parse(
+
       localStorage.getItem(
         "qrifyHistory"
       ) || "[]"
+
     );
 
 
@@ -2672,7 +4578,8 @@ function displayHistory() {
     );
 
 
-  container.innerHTML = "";
+  container.innerHTML =
+    "";
 
 
   if(history.length === 0) {
@@ -2688,8 +4595,11 @@ function displayHistory() {
   history.forEach(
     item => {
 
+
       const div =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
 
       div.className =
@@ -2700,7 +4610,9 @@ function displayHistory() {
         item;
 
 
-      container.appendChild(div);
+      container.appendChild(
+        div
+      );
 
     }
   );
@@ -2708,52 +4620,72 @@ function displayHistory() {
 }
 
 
-/* DARK MODE */
+/* ================= DARK MODE ================= */
 
 function toggleDarkMode() {
+
 
   document
     .body
     .classList
-    .toggle("dark");
+    .toggle(
+      "dark"
+    );
 
 
   localStorage.setItem(
+
     "qrifyDarkMode",
-    document.body.classList.contains(
-      "dark"
-    )
+
+    document
+      .body
+      .classList
+      .contains(
+        "dark"
+      )
+
   );
 
 }
 
 
 if(
+
   localStorage.getItem(
     "qrifyDarkMode"
   ) === "true"
+
 ) {
 
   document
     .body
     .classList
-    .add("dark");
+    .add(
+      "dark"
+    );
 
 }
 
 
-/* QR FIELDS */
+/* ================= QR FIELDS ================= */
 
 function showFields() {
+
 
   const fields = [
 
     "textFields",
+
     "websiteFields",
+
     "phoneFields",
+
     "emailFields",
+
     "wifiFields",
+
     "contactFields",
+
     "locationFields"
 
   ];
@@ -2762,10 +4694,15 @@ function showFields() {
   fields.forEach(
     id => {
 
+
       document
-        .getElementById(id)
+        .getElementById(
+          id
+        )
         .classList
-        .add("hidden");
+        .add(
+          "hidden"
+        );
 
     }
   );
@@ -2773,34 +4710,59 @@ function showFields() {
 
   const type =
     document
-      .getElementById("qrType")
+      .getElementById(
+        "qrType"
+      )
       .value;
 
 
   document
     .getElementById(
-      type + "Fields"
+      type +
+      "Fields"
     )
     .classList
-    .remove("hidden");
+    .remove(
+      "hidden"
+    );
 
 }
 
 
-/* CAMERA SCAN */
-
-let html5QrCode = null;
-
+/* ================= CAMERA SCAN ================= */
 
 function startCameraScan() {
 
+
   document
-    .getElementById("reader")
-    .innerHTML = "";
+    .getElementById(
+      "reader"
+    )
+    .innerHTML =
+      "";
+
+
+  if(html5QrCode) {
+
+    try {
+
+      html5QrCode
+        .stop()
+        .catch(
+          () => {}
+        );
+
+    }
+
+    catch(error) {}
+
+  }
 
 
   html5QrCode =
-    new Html5Qrcode("reader");
+    new Html5Qrcode(
+      "reader"
+    );
 
 
   html5QrCode.start(
@@ -2811,18 +4773,30 @@ function startCameraScan() {
     },
 
     {
-      fps: 10,
-      qrbox: 250
+      fps:
+        10,
+
+      qrbox:
+        250
     },
 
     qrCodeMessage => {
+
 
       showScanResult(
         qrCodeMessage
       );
 
 
-      html5QrCode.stop();
+      if(html5QrCode) {
+
+        html5QrCode
+          .stop()
+          .catch(
+            () => {}
+          );
+
+      }
 
     },
 
@@ -2833,7 +4807,11 @@ function startCameraScan() {
   .catch(
     error => {
 
-      console.error(error);
+
+      console.error(
+        error
+      );
+
 
       alert(
         "Camera permission is required to scan QR codes."
@@ -2845,19 +4823,23 @@ function startCameraScan() {
 }
 
 
-/* IMAGE SCAN */
+/* ================= IMAGE SCAN ================= */
 
 function scanImage(event) {
+
 
   const file =
     event.target.files[0];
 
 
-  if(!file) return;
+  if(!file)
+    return;
 
 
   const scanner =
-    new Html5Qrcode("reader");
+    new Html5Qrcode(
+      "reader"
+    );
 
 
   scanner
@@ -2869,6 +4851,7 @@ function scanImage(event) {
     .then(
       decodedText => {
 
+
         showScanResult(
           decodedText
         );
@@ -2879,7 +4862,11 @@ function scanImage(event) {
     .catch(
       error => {
 
-        console.error(error);
+
+        console.error(
+          error
+        );
+
 
         alert(
           "Could not find a QR code in this image."
@@ -2891,9 +4878,12 @@ function scanImage(event) {
 }
 
 
-/* SCAN RESULT */
+/* ================= SCAN RESULT ================= */
 
-function showScanResult(text) {
+function showScanResult(
+  text
+) {
+
 
   const result =
     document.getElementById(
@@ -2919,59 +4909,80 @@ function showScanResult(text) {
 
   result
     .classList
-    .remove("hidden");
+    .remove(
+      "hidden"
+    );
 
 
   if(
 
-    text.startsWith("http://") ||
+    text.startsWith(
+      "http://"
+    ) ||
 
-    text.startsWith("https://") ||
+    text.startsWith(
+      "https://"
+    ) ||
 
-    text.startsWith("www.")
+    text.startsWith(
+      "www."
+    )
 
   ) {
+
 
     scannedLink =
       text;
 
 
     if(
-      text.startsWith("www.")
+      text.startsWith(
+        "www."
+      )
     ) {
 
       scannedLink =
-        "https://" + text;
+        "https://" +
+        text;
 
     }
 
 
     openButton
       .classList
-      .remove("hidden");
+      .remove(
+        "hidden"
+      );
 
   }
 
   else {
 
+
     openButton
       .classList
-      .add("hidden");
+      .add(
+        "hidden"
+      );
 
   }
 
 }
 
 
-/* OPEN LINK */
+/* ================= OPEN LINK ================= */
 
 function openScannedLink() {
+
 
   if(scannedLink) {
 
     window.open(
+
       scannedLink,
+
       "_blank"
+
     );
 
   }
@@ -2979,30 +4990,41 @@ function openScannedLink() {
 }
 
 
-/* INITIALIZE */
+/* ================= INITIALIZE ================= */
 
 displayHistory();
+
 showFields();
 
 
-/* SERVICE WORKER */
+/* ================= SERVICE WORKER ================= */
 
 if(
   "serviceWorker" in navigator
 ) {
 
+
   window.addEventListener(
     "load",
     function() {
 
+
       navigator.serviceWorker
-        .register("./sw.js")
+
+        .register(
+          "./sw.js"
+        )
+
         .catch(
           function(error) {
 
+
             console.log(
+
               "Service Worker error:",
+
               error
+
             );
 
           }
@@ -3016,4 +5038,5 @@ if(
 </script>
 
 </body>
-      </html>
+
+  </html>
