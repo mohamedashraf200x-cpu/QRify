@@ -623,8 +623,6 @@ footer {
 
 <div class="container">
 
-<!-- ================= HOME ================= -->
-
 <section id="home" class="page active">
 
   <div class="card home-title">
@@ -644,75 +642,51 @@ footer {
     <div class="feature-grid">
 
       <div class="feature" onclick="showPage('generate')">
-
         <span class="feature-icon">⚡</span>
-
         <strong>Generate QR</strong>
-
         <p class="small-text">
           Create your own QR code
         </p>
-
       </div>
 
       <div class="feature" onclick="showPage('scan')">
-
         <span class="feature-icon">📷</span>
-
         <strong>Scan QR</strong>
-
         <p class="small-text">
           Scan camera or image
         </p>
-
       </div>
 
       <div class="feature" onclick="showPage('send')">
-
         <span class="feature-icon">📤</span>
-
         <strong>Send QR</strong>
-
         <p class="small-text">
           Send to QRify users
         </p>
-
       </div>
 
       <div class="feature" onclick="showPage('friends')">
-
         <span class="feature-icon">👥</span>
-
         <strong>Friends</strong>
-
         <p class="small-text">
           Add and manage friends
         </p>
-
       </div>
 
       <div class="feature" onclick="showPage('chat')">
-
         <span class="feature-icon">💬</span>
-
         <strong>Chat</strong>
-
         <p class="small-text">
           Chat with QRify users
         </p>
-
       </div>
 
       <div class="feature" onclick="showPage('received')">
-
         <span class="feature-icon">📥</span>
-
         <strong>Received</strong>
-
         <p class="small-text">
           View received QR codes
         </p>
-
       </div>
 
     </div>
@@ -721,8 +695,6 @@ footer {
 
 </section>
 
-
-<!-- ================= GENERATE ================= -->
 
 <section id="generate" class="page">
 
@@ -921,8 +893,6 @@ footer {
 </section>
 
 
-<!-- ================= SCAN ================= -->
-
 <section id="scan" class="page">
 
   <div class="card">
@@ -980,8 +950,6 @@ footer {
 </section>
 
 
-<!-- ================= SEND ================= -->
-
 <section id="send" class="page">
 
   <div id="accountRequired" class="card">
@@ -1035,8 +1003,6 @@ footer {
 </section>
 
 
-<!-- ================= FRIENDS ================= -->
-
 <section id="friends" class="page">
 
   <div id="friendsLoginCard" class="card">
@@ -1085,7 +1051,6 @@ footer {
 
     </div>
 
-
     <div class="card">
 
       <div class="friend-title">
@@ -1111,7 +1076,6 @@ footer {
       </div>
 
     </div>
-
 
     <div class="card">
 
@@ -1143,8 +1107,6 @@ footer {
 
 </section>
 
-
-<!-- ================= CHAT ================= -->
 
 <section id="chat" class="page">
 
@@ -1261,8 +1223,6 @@ footer {
 </section>
 
 
-<!-- ================= RECEIVED ================= -->
-
 <section id="received" class="page">
 
   <div id="inboxCard" class="card hidden">
@@ -1300,8 +1260,6 @@ footer {
 </section>
 
 
-<!-- ================= HISTORY ================= -->
-
 <section id="history" class="page">
 
   <div class="card">
@@ -1314,8 +1272,6 @@ footer {
 
 </section>
 
-
-<!-- ================= PROFILE ================= -->
 
 <section id="profile" class="page">
 
@@ -1381,8 +1337,6 @@ footer {
 
 </section>
 
-
-<!-- ================= SETTINGS ================= -->
 
 <section id="settings" class="page">
 
@@ -1559,31 +1513,23 @@ async function() {
   try {
 
     if(unsubscribeChat) {
-
       unsubscribeChat();
       unsubscribeChat = null;
-
     }
 
     if(unsubscribeInbox) {
-
       unsubscribeInbox();
       unsubscribeInbox = null;
-
     }
 
     if(unsubscribeFriendRequests) {
-
       unsubscribeFriendRequests();
       unsubscribeFriendRequests = null;
-
     }
 
     if(unsubscribeFriends) {
-
       unsubscribeFriends();
       unsubscribeFriends = null;
-
     }
 
     await signOut(auth);
@@ -1816,31 +1762,23 @@ onAuthStateChanged(
 
 
       if(unsubscribeInbox) {
-
         unsubscribeInbox();
         unsubscribeInbox = null;
-
       }
 
       if(unsubscribeChat) {
-
         unsubscribeChat();
         unsubscribeChat = null;
-
       }
 
       if(unsubscribeFriendRequests) {
-
         unsubscribeFriendRequests();
         unsubscribeFriendRequests = null;
-
       }
 
       if(unsubscribeFriends) {
-
         unsubscribeFriends();
         unsubscribeFriends = null;
-
       }
 
       updateFriendRequestBadge(0);
@@ -1907,6 +1845,88 @@ async function loadUserProfile() {
 }
 
 
+/* =====================================================
+   NORMALIZE USERNAME
+   ===================================================== */
+
+function normalizeUsername(value) {
+
+  return String(value || "")
+    .trim()
+    .replace(/^@+/, "")
+    .toLowerCase();
+
+}
+
+
+/* =====================================================
+   FIND USERS BY USERNAME
+   ===================================================== */
+
+async function findUsersByUsername(username) {
+
+  const cleanUsername =
+    normalizeUsername(username);
+
+  if(!cleanUsername) {
+    return [];
+  }
+
+  const usersRef =
+    collection(db, "users");
+
+
+  /*
+    First search the new usernameLower field.
+  */
+
+  const lowerQuery =
+    query(
+      usersRef,
+      where(
+        "usernameLower",
+        "==",
+        cleanUsername
+      )
+    );
+
+
+  const lowerSnapshot =
+    await getDocs(lowerQuery);
+
+
+  if(!lowerSnapshot.empty) {
+
+    return lowerSnapshot.docs;
+
+  }
+
+
+  /*
+    Fallback for older QRify users
+    who don't have usernameLower yet.
+  */
+
+  const oldQuery =
+    query(
+      usersRef,
+      where(
+        "username",
+        "==",
+        cleanUsername
+      )
+    );
+
+
+  const oldSnapshot =
+    await getDocs(oldQuery);
+
+
+  return oldSnapshot.docs;
+
+}
+
+
 /* ================= SAVE USERNAME ================= */
 
 window.saveUsername =
@@ -1925,10 +1945,12 @@ async function() {
       "usernameInput"
     );
 
+
   const username =
-    input.value
-      .trim()
-      .toLowerCase();
+    normalizeUsername(
+      input.value
+    );
+
 
   if(
     !/^[a-z0-9_]{3,20}$/.test(username)
@@ -1942,6 +1964,7 @@ async function() {
 
   }
 
+
   try {
 
     const searchQuery =
@@ -1954,10 +1977,14 @@ async function() {
         )
       );
 
+
     const existingUsers =
       await getDocs(searchQuery);
 
-    let takenByOtherUser = false;
+
+    let takenByOtherUser =
+      false;
+
 
     existingUsers.forEach(
       userDoc => {
@@ -1974,6 +2001,7 @@ async function() {
       }
     );
 
+
     if(takenByOtherUser) {
 
       alert(
@@ -1983,6 +2011,7 @@ async function() {
       return;
 
     }
+
 
     await setDoc(
 
@@ -1999,6 +2028,14 @@ async function() {
 
         username:
           username,
+
+        /*
+          IMPORTANT:
+          New normalized username field.
+        */
+
+        usernameLower:
+          username.toLowerCase(),
 
         displayName:
           currentUser.displayName || "",
@@ -2017,14 +2054,21 @@ async function() {
 
     );
 
+
     currentUsername =
       username;
+
+
+    input.value =
+      username;
+
 
     document.getElementById(
       "usernameStatus"
     ).textContent =
       "✅ Username saved: @" +
       username;
+
 
     alert(
       "Username saved successfully!"
@@ -2034,7 +2078,10 @@ async function() {
 
   catch(error) {
 
-    console.error(error);
+    console.error(
+      "Save username error:",
+      error
+    );
 
     alert(
       "Could not save username: " +
@@ -2053,7 +2100,10 @@ async function() {
 
 /* ================= FRIEND ID ================= */
 
-function createFriendId(uid1, uid2) {
+function createFriendId(
+  uid1,
+  uid2
+) {
 
   return [
     uid1,
@@ -2088,9 +2138,7 @@ async function getFriendStatus(
 ) {
 
   if(!currentUser) {
-
     return "none";
-
   }
 
 
@@ -2114,9 +2162,7 @@ async function getFriendStatus(
 
 
   if(friendSnapshot.exists()) {
-
     return "friends";
-
   }
 
 
@@ -2125,6 +2171,7 @@ async function getFriendStatus(
       currentUser.uid,
       otherUserId
     );
+
 
   const incomingId =
     createFriendRequestId(
@@ -2197,6 +2244,7 @@ async function() {
 
   }
 
+
   if(!currentUsername) {
 
     alert(
@@ -2207,15 +2255,18 @@ async function() {
 
   }
 
+
   const input =
     document.getElementById(
       "friendSearchUsername"
     );
 
+
   const username =
-    input.value
-      .trim()
-      .toLowerCase();
+    normalizeUsername(
+      input.value
+    );
+
 
   if(!username) {
 
@@ -2225,37 +2276,42 @@ async function() {
 
   }
 
+
   const results =
     document.getElementById(
       "friendSearchResults"
     );
 
+
   results.innerHTML =
-    "<p>Searching...</p>";
+    "<p>🔎 Searching...</p>";
+
 
   try {
 
-    const searchQuery =
-      query(
-        collection(db, "users"),
-        where(
-          "username",
-          "==",
-          username
-        )
+    const userDocs =
+      await findUsersByUsername(
+        username
       );
 
-    const snapshot =
-      await getDocs(searchQuery);
 
     results.innerHTML = "";
 
-    if(snapshot.empty) {
+
+    if(userDocs.length === 0) {
 
       results.innerHTML = `
 
         <div class="user-result">
+
           ❌ User not found
+
+          <br><br>
+
+          <span class="small-text">
+            Check the username and try again.
+          </span>
+
         </div>
 
       `;
@@ -2266,7 +2322,7 @@ async function() {
 
 
     for(
-      const userDoc of snapshot.docs
+      const userDoc of userDocs
     ) {
 
       const data =
@@ -2297,7 +2353,8 @@ async function() {
         );
 
 
-      let actionHTML = "";
+      let actionHTML =
+        "";
 
 
       if(status === "friends") {
@@ -2320,6 +2377,7 @@ async function() {
 
       }
 
+
       else if(status === "outgoing") {
 
         actionHTML = `
@@ -2335,6 +2393,7 @@ async function() {
         `;
 
       }
+
 
       else if(status === "incoming") {
 
@@ -2353,6 +2412,7 @@ async function() {
         `;
 
       }
+
 
       else {
 
@@ -2378,8 +2438,10 @@ async function() {
       const div =
         document.createElement("div");
 
+
       div.className =
         "user-result";
+
 
       div.innerHTML = `
 
@@ -2408,6 +2470,7 @@ async function() {
 
       `;
 
+
       results.appendChild(div);
 
     }
@@ -2416,13 +2479,27 @@ async function() {
 
   catch(error) {
 
-    console.error(error);
+    console.error(
+      "Friend search error:",
+      error
+    );
+
 
     results.innerHTML = `
 
       <div class="user-result">
 
         ❌ Search failed.
+
+        <br><br>
+
+        <span class="small-text">
+
+          ${escapeHTML(
+            error.message
+          )}
+
+        </span>
 
       </div>
 
@@ -2449,6 +2526,7 @@ async function(
     return;
 
   }
+
 
   if(!currentUsername) {
 
@@ -2598,17 +2676,9 @@ function startFriendRequestListener() {
 
 
   if(unsubscribeFriendRequests) {
-
     unsubscribeFriendRequests();
-
   }
 
-
-  /*
-    Only receiverId is queried.
-    Status is filtered in JavaScript.
-    This avoids a composite index requirement.
-  */
 
   const requestsQuery =
     query(
@@ -2707,6 +2777,7 @@ function displayFriendRequests(
       const item =
         document.createElement("div");
 
+
       item.className =
         "request-item";
 
@@ -2784,6 +2855,7 @@ function updateFriendRequestBadge(
       "friendRequestBadge"
     );
 
+
   const countElement =
     document.getElementById(
       "friendRequestCount"
@@ -2829,9 +2901,7 @@ window.acceptFriendRequest =
 async function(requestId) {
 
   if(!currentUser) {
-
     return;
-
   }
 
 
@@ -2900,12 +2970,6 @@ async function(requestId) {
         data.receiverId
       );
 
-
-    /*
-      IMPORTANT:
-      Uses "friends" collection.
-      This matches the Firestore rules.
-    */
 
     await setDoc(
 
@@ -3050,9 +3114,7 @@ async function(requestId) {
 
 
     if(!requestSnapshot.exists()) {
-
       return;
-
     }
 
 
@@ -3094,7 +3156,6 @@ async function(requestId) {
 
     );
 
-
   }
 
   catch(error) {
@@ -3122,9 +3183,7 @@ function startFriendsListener() {
 
 
   if(unsubscribeFriends) {
-
     unsubscribeFriends();
-
   }
 
 
@@ -3181,6 +3240,7 @@ function displayFriends(snapshot) {
       "friendsList"
     );
 
+
   const count =
     document.getElementById(
       "friendsCount"
@@ -3235,9 +3295,7 @@ function displayFriends(snapshot) {
 
 
       if(friendIndex === -1) {
-
         return;
-
       }
 
 
@@ -3249,6 +3307,7 @@ function displayFriends(snapshot) {
         usernames[friendIndex] ||
         "";
 
+
       const friendName =
         names[friendIndex] ||
         "QRify User";
@@ -3256,6 +3315,7 @@ function displayFriends(snapshot) {
 
       const item =
         document.createElement("div");
+
 
       item.className =
         "friend-item";
@@ -3351,6 +3411,7 @@ async function() {
 
   }
 
+
   if(!currentUsername) {
 
     alert(
@@ -3361,15 +3422,18 @@ async function() {
 
   }
 
+
   const searchInput =
     document.getElementById(
       "searchUsername"
     );
 
+
   const username =
-    searchInput.value
-      .trim()
-      .toLowerCase();
+    normalizeUsername(
+      searchInput.value
+    );
+
 
   if(!username) {
 
@@ -3379,37 +3443,42 @@ async function() {
 
   }
 
+
   const results =
     document.getElementById(
       "searchResults"
     );
 
+
   results.innerHTML =
-    "<p>Searching...</p>";
+    "<p>🔎 Searching...</p>";
+
 
   try {
 
-    const searchQuery =
-      query(
-        collection(db, "users"),
-        where(
-          "username",
-          "==",
-          username
-        )
+    const userDocs =
+      await findUsersByUsername(
+        username
       );
 
-    const snapshot =
-      await getDocs(searchQuery);
 
     results.innerHTML = "";
 
-    if(snapshot.empty) {
+
+    if(userDocs.length === 0) {
 
       results.innerHTML = `
 
         <div class="user-result">
+
           ❌ User not found
+
+          <br><br>
+
+          <span class="small-text">
+            Check the username and try again.
+          </span>
+
         </div>
 
       `;
@@ -3419,7 +3488,7 @@ async function() {
     }
 
 
-    snapshot.forEach(
+    userDocs.forEach(
       userDoc => {
 
         const data =
@@ -3447,8 +3516,10 @@ async function() {
         const div =
           document.createElement("div");
 
+
         div.className =
           "user-result";
+
 
         div.innerHTML = `
 
@@ -3485,6 +3556,7 @@ async function() {
 
         `;
 
+
         results.appendChild(div);
 
       }
@@ -3494,12 +3566,28 @@ async function() {
 
   catch(error) {
 
-    console.error(error);
+    console.error(
+      "Send QR search error:",
+      error
+    );
+
 
     results.innerHTML = `
 
       <div class="user-result">
+
         ❌ Search failed.
+
+        <br><br>
+
+        <span class="small-text">
+
+          ${escapeHTML(
+            error.message
+          )}
+
+        </span>
+
       </div>
 
     `;
@@ -3522,6 +3610,7 @@ async function(receiverId) {
 
   }
 
+
   if(!currentUsername) {
 
     alert(
@@ -3532,6 +3621,7 @@ async function(receiverId) {
 
   }
 
+
   if(!window.latestQRData) {
 
     alert(
@@ -3541,6 +3631,7 @@ async function(receiverId) {
     return;
 
   }
+
 
   try {
 
@@ -3576,6 +3667,7 @@ async function(receiverId) {
 
     );
 
+
     alert(
       "✅ QR sent successfully!"
     );
@@ -3604,9 +3696,7 @@ function startInboxListener() {
 
 
   if(unsubscribeInbox) {
-
     unsubscribeInbox();
-
   }
 
 
@@ -3663,6 +3753,7 @@ function displayReceivedQRs(snapshot) {
       "receivedQRs"
     );
 
+
   container.innerHTML = "";
 
 
@@ -3687,15 +3778,19 @@ function displayReceivedQRs(snapshot) {
       const data =
         qrDoc.data();
 
+
       const item =
         document.createElement("div");
+
 
       item.className =
         "received-item";
 
+
       const qrId =
         "received-" +
         qrDoc.id;
+
 
       item.innerHTML = `
 
@@ -3737,6 +3832,7 @@ function displayReceivedQRs(snapshot) {
         </button>
 
       `;
+
 
       container.prepend(item);
 
@@ -3805,6 +3901,7 @@ async function(qrId) {
         qrId
       );
 
+
     const snapshot =
       await getDoc(qrRef);
 
@@ -3866,6 +3963,7 @@ async function() {
 
   }
 
+
   if(!currentUsername) {
 
     alert(
@@ -3876,15 +3974,18 @@ async function() {
 
   }
 
+
   const input =
     document.getElementById(
       "chatSearchUsername"
     );
 
+
   const username =
-    input.value
-      .trim()
-      .toLowerCase();
+    normalizeUsername(
+      input.value
+    );
+
 
   if(!username) {
 
@@ -3894,41 +3995,42 @@ async function() {
 
   }
 
+
   const results =
     document.getElementById(
       "chatSearchResults"
     );
 
+
   results.innerHTML =
-    "<p>Searching...</p>";
+    "<p>🔎 Searching...</p>";
+
 
   try {
 
-    const searchQuery =
-      query(
-
-        collection(db, "users"),
-
-        where(
-          "username",
-          "==",
-          username
-        )
-
+    const userDocs =
+      await findUsersByUsername(
+        username
       );
 
-    const snapshot =
-      await getDocs(searchQuery);
 
     results.innerHTML = "";
 
 
-    if(snapshot.empty) {
+    if(userDocs.length === 0) {
 
       results.innerHTML = `
 
         <div class="chat-user-result">
+
           ❌ User not found
+
+          <br><br>
+
+          <span class="small-text">
+            Check the username and try again.
+          </span>
+
         </div>
 
       `;
@@ -3938,7 +4040,7 @@ async function() {
     }
 
 
-    snapshot.forEach(
+    userDocs.forEach(
       userDoc => {
 
         const data =
@@ -3965,6 +4067,7 @@ async function() {
 
         const div =
           document.createElement("div");
+
 
         div.className =
           "chat-user-result";
@@ -4017,12 +4120,28 @@ async function() {
 
   catch(error) {
 
-    console.error(error);
+    console.error(
+      "Chat search error:",
+      error
+    );
+
 
     results.innerHTML = `
 
       <div class="chat-user-result">
+
         ❌ Could not search users.
+
+        <br><br>
+
+        <span class="small-text">
+
+          ${escapeHTML(
+            error.message
+          )}
+
+        </span>
+
       </div>
 
     `;
@@ -4635,8 +4754,10 @@ function escapeHTML(value) {
   const div =
     document.createElement("div");
 
+
   div.textContent =
     value || "";
+
 
   return div.innerHTML;
 
@@ -4705,6 +4826,7 @@ function getHashPage() {
       ""
     );
 
+
   return document.getElementById(id)
     ? id
     : "home";
@@ -4771,9 +4893,7 @@ function showPage(
 
 
   if(!page) {
-
     return;
-
   }
 
 
@@ -5948,4 +6068,4 @@ if(
 
 </body>
 
-        </html>
+      </html>
