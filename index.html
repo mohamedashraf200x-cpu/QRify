@@ -35,7 +35,6 @@ content="5HCcQf2Dkuhb6cXjoyaUMdktFcyYmGymxjnBAaxDoyA">
 
 <script src="https://unpkg.com/html5-qrcode"></script>
 
-
 <style>
 
 * {
@@ -464,9 +463,7 @@ footer {
 
 </head>
 
-
 <body>
-
 
 <header>
 
@@ -484,13 +481,11 @@ footer {
 
 </header>
 
-
 <div
   id="menuOverlay"
   class="menu-overlay"
   onclick="closeMenu()">
 </div>
-
 
 <div
   id="sideMenu"
@@ -510,93 +505,51 @@ footer {
 
   </div>
 
-  <button
-    class="menu-item"
-    onclick="showPage('home')">
-
+  <button class="menu-item" onclick="showPage('home')">
     🏠 Home
-
   </button>
 
-  <button
-    class="menu-item"
-    onclick="showPage('generate')">
-
+  <button class="menu-item" onclick="showPage('generate')">
     ⚡ Generate QR
-
   </button>
 
-  <button
-    class="menu-item"
-    onclick="showPage('scan')">
-
+  <button class="menu-item" onclick="showPage('scan')">
     📷 Scan QR
-
   </button>
 
-  <button
-    class="menu-item"
-    onclick="showPage('send')">
-
+  <button class="menu-item" onclick="showPage('send')">
     📤 Send QR
-
   </button>
 
-  <button
-    class="menu-item"
-    onclick="showPage('chat')">
-
+  <button class="menu-item" onclick="showPage('chat')">
     💬 Chat
-
   </button>
 
-  <button
-    class="menu-item"
-    onclick="showPage('received')">
-
+  <button class="menu-item" onclick="showPage('received')">
     📥 Received
-
   </button>
 
-  <button
-    class="menu-item"
-    onclick="showPage('history')">
-
+  <button class="menu-item" onclick="showPage('history')">
     🕘 History
-
   </button>
 
-  <button
-    class="menu-item"
-    onclick="showPage('profile')">
-
+  <button class="menu-item" onclick="showPage('profile')">
     👤 Profile
-
   </button>
 
-  <button
-    class="menu-item"
-    onclick="showPage('settings')">
-
+  <button class="menu-item" onclick="showPage('settings')">
     ⚙️ Settings
-
   </button>
 
 </div>
 
-
 <div class="container">
 
-
-<section
-  id="home"
-  class="page active">
+<section id="home" class="page active">
 
   <div class="card home-title">
 
-    <h1>
-      Welcome to QRify 👋
-    </h1>
+    <h1>Welcome to QRify 👋</h1>
 
     <p>
       Generate • Scan • Share • Chat • Simplify
@@ -606,23 +559,15 @@ footer {
 
   <div class="card">
 
-    <h2>
-      What do you want to do?
-    </h2>
+    <h2>What do you want to do?</h2>
 
     <div class="feature-grid">
 
-      <div
-        class="feature"
-        onclick="showPage('generate')">
+      <div class="feature" onclick="showPage('generate')">
 
-        <span class="feature-icon">
-          ⚡
-        </span>
+        <span class="feature-icon">⚡</span>
 
-        <strong>
-          Generate QR
-        </strong>
+        <strong>Generate QR</strong>
 
         <p class="small-text">
           Create your own QR code
@@ -630,17 +575,11 @@ footer {
 
       </div>
 
-      <div
-        class="feature"
-        onclick="showPage('scan')">
+      <div class="feature" onclick="showPage('scan')">
 
-        <span class="feature-icon">
-          📷
-        </span>
+        <span class="feature-icon">📷</span>
 
-        <strong>
-          Scan QR
-        </strong>
+        <strong>Scan QR</strong>
 
         <p class="small-text">
           Scan camera or image
@@ -648,17 +587,11 @@ footer {
 
       </div>
 
-      <div
-        class="feature"
-        onclick="showPage('send')">
+      <div class="feature" onclick="showPage('send')">
 
-        <span class="feature-icon">
-          📤
-        </span>
+        <span class="feature-icon">📤</span>
 
-        <strong>
-          Send QR
-        </strong>
+        <strong>Send QR</strong>
 
         <p class="small-text">
           Send to QRify users
@@ -666,17 +599,11 @@ footer {
 
       </div>
 
-      <div
-        class="feature"
-        onclick="showPage('chat')">
+      <div class="feature" onclick="showPage('chat')">
 
-        <span class="feature-icon">
-          💬
-        </span>
+        <span class="feature-icon">💬</span>
 
-        <strong>
-          Chat
-        </strong>
+        <strong>Chat</strong>
 
         <p class="small-text">
           Chat with QRify users
@@ -684,17 +611,11 @@ footer {
 
       </div>
 
-      <div
-        class="feature"
-        onclick="showPage('received')">
+      <div class="feature" onclick="showPage('received')">
 
-        <span class="feature-icon">
-          📥
-        </span>
+        <span class="feature-icon">📥</span>
 
-        <strong>
-          Received
-        </strong>
+        <strong>Received</strong>
 
         <p class="small-text">
           View received QR codes
@@ -702,17 +623,11 @@ footer {
 
       </div>
 
-      <div
-        class="feature"
-        onclick="showPage('profile')">
+      <div class="feature" onclick="showPage('profile')">
 
-        <span class="feature-icon">
-          👤
-        </span>
+        <span class="feature-icon">👤</span>
 
-        <strong>
-          Account
-        </strong>
+        <strong>Account</strong>
 
         <p class="small-text">
           Manage your profile
@@ -726,73 +641,43 @@ footer {
 
 </section>
 
-
-<section
-  id="generate"
-  class="page">
+<section id="generate" class="page">
 
   <div class="card">
 
-    <h2>
-      ⚡ Generate QR Code
-    </h2>
+    <h2>⚡ Generate QR Code</h2>
 
-    <label>
-      QR Type
-    </label>
+    <label>QR Type</label>
 
-    <select
-      id="qrType"
-      onchange="showFields()">
+    <select id="qrType" onchange="showFields()">
 
-      <option value="text">
-        📝 Text
-      </option>
+      <option value="text">📝 Text</option>
 
-      <option value="website">
-        🌐 Website
-      </option>
+      <option value="website">🌐 Website</option>
 
-      <option value="phone">
-        📞 Phone
-      </option>
+      <option value="phone">📞 Phone</option>
 
-      <option value="email">
-        📧 Email
-      </option>
+      <option value="email">📧 Email</option>
 
-      <option value="wifi">
-        📶 Wi-Fi
-      </option>
+      <option value="wifi">📶 Wi-Fi</option>
 
-      <option value="contact">
-        👤 Contact
-      </option>
+      <option value="contact">👤 Contact</option>
 
-      <option value="location">
-        📍 Location
-      </option>
+      <option value="location">📍 Location</option>
 
     </select>
 
     <div id="textFields">
 
-      <label>
-        Message
-      </label>
+      <label>Message</label>
 
-      <textarea
-        id="text"></textarea>
+      <textarea id="text"></textarea>
 
     </div>
 
-    <div
-      id="websiteFields"
-      class="hidden">
+    <div id="websiteFields" class="hidden">
 
-      <label>
-        Website URL
-      </label>
+      <label>Website URL</label>
 
       <input
         id="website"
@@ -800,170 +685,95 @@ footer {
 
     </div>
 
-    <div
-      id="phoneFields"
-      class="hidden">
+    <div id="phoneFields" class="hidden">
 
-      <label>
-        Phone Number
-      </label>
+      <label>Phone Number</label>
 
-      <input
-        id="phone"
-        type="tel">
+      <input id="phone" type="tel">
 
     </div>
 
-    <div
-      id="emailFields"
-      class="hidden">
+    <div id="emailFields" class="hidden">
 
-      <label>
-        Email
-      </label>
+      <label>Email</label>
 
-      <input
-        id="email"
-        type="email">
+      <input id="email" type="email">
 
-      <label>
-        Subject
-      </label>
+      <label>Subject</label>
 
-      <input
-        id="emailSubject">
+      <input id="emailSubject">
 
-      <label>
-        Message
-      </label>
+      <label>Message</label>
 
-      <textarea
-        id="emailMessage"></textarea>
+      <textarea id="emailMessage"></textarea>
 
     </div>
 
-    <div
-      id="wifiFields"
-      class="hidden">
+    <div id="wifiFields" class="hidden">
 
-      <label>
-        Wi-Fi Name (SSID)
-      </label>
+      <label>Wi-Fi Name (SSID)</label>
 
-      <input
-        id="wifiSSID">
+      <input id="wifiSSID">
 
-      <label>
-        Password
-      </label>
+      <label>Password</label>
 
-      <input
-        id="wifiPassword"
-        type="password">
+      <input id="wifiPassword" type="password">
 
-      <label>
-        Security
-      </label>
+      <label>Security</label>
 
-      <select
-        id="wifiSecurity">
+      <select id="wifiSecurity">
 
-        <option value="WPA">
-          WPA/WPA2
-        </option>
+        <option value="WPA">WPA/WPA2</option>
 
-        <option value="WEP">
-          WEP
-        </option>
+        <option value="WEP">WEP</option>
 
-        <option value="nopass">
-          No Password
-        </option>
+        <option value="nopass">No Password</option>
 
       </select>
 
     </div>
 
-    <div
-      id="contactFields"
-      class="hidden">
+    <div id="contactFields" class="hidden">
 
-      <label>
-        Name
-      </label>
+      <label>Name</label>
 
-      <input
-        id="contactName">
+      <input id="contactName">
 
-      <label>
-        Phone
-      </label>
+      <label>Phone</label>
 
-      <input
-        id="contactPhone">
+      <input id="contactPhone">
 
-      <label>
-        Email
-      </label>
+      <label>Email</label>
 
-      <input
-        id="contactEmail">
+      <input id="contactEmail">
 
-      <label>
-        Organization
-      </label>
+      <label>Organization</label>
 
-      <input
-        id="contactOrg">
+      <input id="contactOrg">
 
     </div>
 
-    <div
-      id="locationFields"
-      class="hidden">
+    <div id="locationFields" class="hidden">
 
-      <label>
-        Latitude
-      </label>
+      <label>Latitude</label>
 
-      <input
-        id="latitude"
-        type="number"
-        step="any">
+      <input id="latitude" type="number" step="any">
 
-      <label>
-        Longitude
-      </label>
+      <label>Longitude</label>
 
-      <input
-        id="longitude"
-        type="number"
-        step="any">
+      <input id="longitude" type="number" step="any">
 
     </div>
 
-    <label>
-      QR Size
-    </label>
+    <label>QR Size</label>
 
-    <select
-      id="qrSize">
+    <select id="qrSize">
 
-      <option value="150">
-        Small
-      </option>
+      <option value="150">Small</option>
 
-      <option
-        value="220"
-        selected>
+      <option value="220" selected>Medium</option>
 
-        Medium
-
-      </option>
-
-      <option value="300">
-        Large
-      </option>
+      <option value="300">Large</option>
 
     </select>
 
@@ -971,9 +781,7 @@ footer {
 
       <div>
 
-        <label>
-          QR Color
-        </label>
+        <label>QR Color</label>
 
         <input
           type="color"
@@ -984,9 +792,7 @@ footer {
 
       <div>
 
-        <label>
-          Background
-        </label>
+        <label>Background</label>
 
         <input
           type="color"
@@ -1019,9 +825,7 @@ footer {
 
   <div class="card result">
 
-    <h2>
-      Your QR Code
-    </h2>
+    <h2>Your QR Code</h2>
 
     <div id="qrcode"></div>
 
@@ -1049,16 +853,11 @@ footer {
 
 </section>
 
-
-<section
-  id="scan"
-  class="page">
+<section id="scan" class="page">
 
   <div class="card">
 
-    <h2>
-      📷 Scan QR Code
-    </h2>
+    <h2>📷 Scan QR Code</h2>
 
     <p class="small-text">
       Scan a QR using your camera or an image.
@@ -1089,13 +888,9 @@ footer {
 
     <div id="reader"></div>
 
-    <div
-      id="scanResult"
-      class="hidden">
+    <div id="scanResult" class="hidden">
 
-      <h3>
-        Scan Result
-      </h3>
+      <h3>Scan Result</h3>
 
       <p id="scanText"></p>
 
@@ -1114,18 +909,11 @@ footer {
 
 </section>
 
+<section id="send" class="page">
 
-<section
-  id="send"
-  class="page">
+  <div id="accountRequired" class="card">
 
-  <div
-    id="accountRequired"
-    class="card">
-
-    <h2>
-      📤 Send QR
-    </h2>
+    <h2>📤 Send QR</h2>
 
     <p>
       Sign in and create a QRify username to send QR codes.
@@ -1141,29 +929,19 @@ footer {
 
   </div>
 
-  <div
-    id="sendCard"
-    class="card hidden">
+  <div id="sendCard" class="card hidden">
 
-    <h2>
-      📤 Send QR to Person
-    </h2>
+    <h2>📤 Send QR to Person</h2>
 
     <p class="small-text">
       Search another QRify user using their username.
     </p>
 
-    <div
-      id="sendQRStatus"
-      class="status">
-
+    <div id="sendQRStatus" class="status">
       Generate a QR code first.
-
     </div>
 
-    <label>
-      Search Username
-    </label>
+    <label>Search Username</label>
 
     <input
       id="searchUsername"
@@ -1183,18 +961,11 @@ footer {
 
 </section>
 
+<section id="chat" class="page">
 
-<section
-  id="chat"
-  class="page">
+  <div id="chatLoginCard" class="card">
 
-  <div
-    id="chatLoginCard"
-    class="card">
-
-    <h2>
-      💬 QRify Chat
-    </h2>
+    <h2>💬 QRify Chat</h2>
 
     <p>
       Sign in to chat privately with other QRify users.
@@ -1210,23 +981,17 @@ footer {
 
   </div>
 
-  <div
-    id="chatApp"
-    class="hidden">
+  <div id="chatApp" class="hidden">
 
     <div class="card">
 
-      <h2>
-        💬 Start a Chat
-      </h2>
+      <h2>💬 Start a Chat</h2>
 
       <p class="small-text">
         Search for a QRify username.
       </p>
 
-      <label>
-        Username
-      </label>
+      <label>Username</label>
 
       <input
         id="chatSearchUsername"
@@ -1240,15 +1005,11 @@ footer {
 
       </button>
 
-      <div
-        id="chatSearchResults">
-      </div>
+      <div id="chatSearchResults"></div>
 
     </div>
 
-    <div
-      id="chatWindow"
-      class="card hidden">
+    <div id="chatWindow" class="card hidden">
 
       <div
         style="
@@ -1314,18 +1075,11 @@ footer {
 
 </section>
 
+<section id="received" class="page">
 
-<section
-  id="received"
-  class="page">
+  <div id="inboxCard" class="card hidden">
 
-  <div
-    id="inboxCard"
-    class="card hidden">
-
-    <h2>
-      📥 Received QR Codes
-    </h2>
+    <h2>📥 Received QR Codes</h2>
 
     <div id="receivedQRs">
 
@@ -1337,13 +1091,9 @@ footer {
 
   </div>
 
-  <div
-    id="receivedLoginMessage"
-    class="card">
+  <div id="receivedLoginMessage" class="card">
 
-    <h2>
-      📥 Received QR
-    </h2>
+    <h2>📥 Received QR</h2>
 
     <p>
       Sign in to view QR codes sent to you.
@@ -1361,16 +1111,11 @@ footer {
 
 </section>
 
-
-<section
-  id="history"
-  class="page">
+<section id="history" class="page">
 
   <div class="card">
 
-    <h2>
-      🕘 Recent QR History
-    </h2>
+    <h2>🕘 Recent QR History</h2>
 
     <div id="historyList"></div>
 
@@ -1378,16 +1123,11 @@ footer {
 
 </section>
 
-
-<section
-  id="profile"
-  class="page">
+<section id="profile" class="page">
 
   <div class="card">
 
-    <h2>
-      👤 QRify Account
-    </h2>
+    <h2>👤 QRify Account</h2>
 
     <p id="firebaseStatus">
       Connecting to QRify server...
@@ -1415,21 +1155,15 @@ footer {
 
   </div>
 
-  <div
-    id="profileCard"
-    class="card hidden">
+  <div id="profileCard" class="card hidden">
 
-    <h2>
-      👤 QRify Profile
-    </h2>
+    <h2>👤 QRify Profile</h2>
 
     <p class="small-text">
       Your username is used by other QRify users to find you.
     </p>
 
-    <label>
-      QRify Username
-    </label>
+    <label>QRify Username</label>
 
     <input
       id="usernameInput"
@@ -1453,16 +1187,11 @@ footer {
 
 </section>
 
-
-<section
-  id="settings"
-  class="page">
+<section id="settings" class="page">
 
   <div class="card">
 
-    <h2>
-      ⚙️ Settings
-    </h2>
+    <h2>⚙️ Settings</h2>
 
     <button
       class="secondary"
@@ -1476,9 +1205,7 @@ footer {
 
   <div class="card">
 
-    <h2>
-      ℹ️ About QRify
-    </h2>
+    <h2>ℹ️ About QRify</h2>
 
     <p>
       QRify helps you generate, scan, share and chat easily.
@@ -1496,9 +1223,7 @@ footer {
 
 </section>
 
-
 </div>
-
 
 <footer>
 
@@ -1510,14 +1235,12 @@ footer {
 
 </footer>
 
-
 <script type="module">
 
 import {
   initializeApp
 } from
 "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-
 
 import {
   getAuth,
@@ -1527,7 +1250,6 @@ import {
   signOut
 } from
 "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-
 
 import {
   getFirestore,
@@ -1544,7 +1266,6 @@ import {
   serverTimestamp
 } from
 "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
-
 
 const firebaseConfig = {
 
@@ -1568,33 +1289,23 @@ const firebaseConfig = {
 
 };
 
-
 const app =
   initializeApp(firebaseConfig);
-
 
 const auth =
   getAuth(app);
 
-
 const db =
   getFirestore(app);
-
 
 const provider =
   new GoogleAuthProvider();
 
-
 let currentUser = null;
-
 let currentUsername = "";
-
 window.latestQRData = "";
-
 let unsubscribeInbox = null;
-
 let activeChatUser = null;
-
 let unsubscribeChat = null;
 
 
@@ -1649,9 +1360,7 @@ async function() {
 
     console.error(error);
 
-    alert(
-      "Logout failed."
-    );
+    alert("Logout failed.");
 
   }
 
@@ -1665,76 +1374,49 @@ onAuthStateChanged(
   async user => {
 
     const status =
-      document.getElementById(
-        "firebaseStatus"
-      );
+      document.getElementById("firebaseStatus");
 
     const loginButton =
-      document.getElementById(
-        "googleLoginBtn"
-      );
+      document.getElementById("googleLoginBtn");
 
     const logoutButton =
-      document.getElementById(
-        "logoutBtn"
-      );
+      document.getElementById("logoutBtn");
 
     const userInfo =
-      document.getElementById(
-        "userInfo"
-      );
+      document.getElementById("userInfo");
 
     const profileCard =
-      document.getElementById(
-        "profileCard"
-      );
+      document.getElementById("profileCard");
 
     const sendCard =
-      document.getElementById(
-        "sendCard"
-      );
+      document.getElementById("sendCard");
 
     const inboxCard =
-      document.getElementById(
-        "inboxCard"
-      );
+      document.getElementById("inboxCard");
 
     const accountRequired =
-      document.getElementById(
-        "accountRequired"
-      );
+      document.getElementById("accountRequired");
 
     const receivedLoginMessage =
-      document.getElementById(
-        "receivedLoginMessage"
-      );
+      document.getElementById("receivedLoginMessage");
 
     const chatLoginCard =
-      document.getElementById(
-        "chatLoginCard"
-      );
+      document.getElementById("chatLoginCard");
 
     const chatApp =
-      document.getElementById(
-        "chatApp"
-      );
+      document.getElementById("chatApp");
 
 
     if(user) {
 
-      currentUser =
-        user;
+      currentUser = user;
 
       status.textContent =
         "✅ Connected to QRify";
 
-      loginButton
-        .classList
-        .add("hidden");
+      loginButton.classList.add("hidden");
 
-      logoutButton
-        .classList
-        .remove("hidden");
+      logoutButton.classList.remove("hidden");
 
       userInfo.innerHTML = `
 
@@ -1757,33 +1439,19 @@ onAuthStateChanged(
 
       `;
 
-      profileCard
-        .classList
-        .remove("hidden");
+      profileCard.classList.remove("hidden");
 
-      sendCard
-        .classList
-        .remove("hidden");
+      sendCard.classList.remove("hidden");
 
-      inboxCard
-        .classList
-        .remove("hidden");
+      inboxCard.classList.remove("hidden");
 
-      accountRequired
-        .classList
-        .add("hidden");
+      accountRequired.classList.add("hidden");
 
-      receivedLoginMessage
-        .classList
-        .add("hidden");
+      receivedLoginMessage.classList.add("hidden");
 
-      chatLoginCard
-        .classList
-        .add("hidden");
+      chatLoginCard.classList.add("hidden");
 
-      chatApp
-        .classList
-        .remove("hidden");
+      chatApp.classList.remove("hidden");
 
       await loadUserProfile();
 
@@ -1802,43 +1470,25 @@ onAuthStateChanged(
       status.textContent =
         "Firebase connected. Please sign in.";
 
-      loginButton
-        .classList
-        .remove("hidden");
+      loginButton.classList.remove("hidden");
 
-      logoutButton
-        .classList
-        .add("hidden");
+      logoutButton.classList.add("hidden");
 
       userInfo.innerHTML = "";
 
-      profileCard
-        .classList
-        .add("hidden");
+      profileCard.classList.add("hidden");
 
-      sendCard
-        .classList
-        .add("hidden");
+      sendCard.classList.add("hidden");
 
-      inboxCard
-        .classList
-        .add("hidden");
+      inboxCard.classList.add("hidden");
 
-      accountRequired
-        .classList
-        .remove("hidden");
+      accountRequired.classList.remove("hidden");
 
-      receivedLoginMessage
-        .classList
-        .remove("hidden");
+      receivedLoginMessage.classList.remove("hidden");
 
-      chatLoginCard
-        .classList
-        .remove("hidden");
+      chatLoginCard.classList.remove("hidden");
 
-      chatApp
-        .classList
-        .add("hidden");
+      chatApp.classList.add("hidden");
 
       document
         .getElementById("sendQRBtn")
@@ -1871,8 +1521,7 @@ onAuthStateChanged(
 
 async function loadUserProfile() {
 
-  if(!currentUser)
-    return;
+  if(!currentUser) return;
 
   const userRef =
     doc(
@@ -1885,9 +1534,7 @@ async function loadUserProfile() {
     await getDoc(userRef);
 
   const usernameInput =
-    document.getElementById(
-      "usernameInput"
-    );
+    document.getElementById("usernameInput");
 
   if(snapshot.exists()) {
 
@@ -1931,18 +1578,14 @@ async function() {
 
   if(!currentUser) {
 
-    alert(
-      "Please sign in first."
-    );
+    alert("Please sign in first.");
 
     return;
 
   }
 
   const input =
-    document.getElementById(
-      "usernameInput"
-    );
+    document.getElementById("usernameInput");
 
   const username =
     input.value
@@ -1950,8 +1593,7 @@ async function() {
       .toLowerCase();
 
   if(
-    !/^[a-z0-9_]{3,20}$/
-      .test(username)
+    !/^[a-z0-9_]{3,20}$/.test(username)
   ) {
 
     alert(
@@ -1966,35 +1608,23 @@ async function() {
 
     const searchQuery =
       query(
-        collection(
-          db,
-          "users"
-        ),
-        where(
-          "username",
-          "==",
-          username
-        )
+        collection(db, "users"),
+        where("username", "==", username)
       );
 
     const existingUsers =
-      await getDocs(
-        searchQuery
-      );
+      await getDocs(searchQuery);
 
-    let takenByOtherUser =
-      false;
+    let takenByOtherUser = false;
 
     existingUsers.forEach(
       userDoc => {
 
         if(
-          userDoc.id !==
-          currentUser.uid
+          userDoc.id !== currentUser.uid
         ) {
 
-          takenByOtherUser =
-            true;
+          takenByOtherUser = true;
 
         }
 
@@ -2028,12 +1658,10 @@ async function() {
           username,
 
         displayName:
-          currentUser.displayName ||
-          "",
+          currentUser.displayName || "",
 
         email:
-          currentUser.email ||
-          "",
+          currentUser.email || "",
 
         updatedAt:
           serverTimestamp()
@@ -2046,14 +1674,12 @@ async function() {
 
     );
 
-    currentUsername =
-      username;
+    currentUsername = username;
 
     document.getElementById(
       "usernameStatus"
     ).textContent =
-      "✅ Username saved: @" +
-      username;
+      "✅ Username saved: @" + username;
 
     alert(
       "Username saved successfully!"
@@ -2082,9 +1708,7 @@ async function() {
 
   if(!currentUser) {
 
-    alert(
-      "Please sign in first."
-    );
+    alert("Please sign in first.");
 
     return;
 
@@ -2101,9 +1725,7 @@ async function() {
   }
 
   const searchInput =
-    document.getElementById(
-      "searchUsername"
-    );
+    document.getElementById("searchUsername");
 
   const username =
     searchInput.value
@@ -2112,18 +1734,14 @@ async function() {
 
   if(!username) {
 
-    alert(
-      "Enter a username."
-    );
+    alert("Enter a username.");
 
     return;
 
   }
 
   const results =
-    document.getElementById(
-      "searchResults"
-    );
+    document.getElementById("searchResults");
 
   results.innerHTML =
     "<p>Searching...</p>";
@@ -2132,21 +1750,12 @@ async function() {
 
     const searchQuery =
       query(
-        collection(
-          db,
-          "users"
-        ),
-        where(
-          "username",
-          "==",
-          username
-        )
+        collection(db, "users"),
+        where("username", "==", username)
       );
 
     const snapshot =
-      await getDocs(
-        searchQuery
-      );
+      await getDocs(searchQuery);
 
     results.innerHTML = "";
 
@@ -2173,8 +1782,7 @@ async function() {
           userDoc.data();
 
         if(
-          userDoc.id ===
-          currentUser.uid
+          userDoc.id === currentUser.uid
         ) {
 
           results.innerHTML = `
@@ -2192,9 +1800,7 @@ async function() {
         }
 
         const div =
-          document.createElement(
-            "div"
-          );
+          document.createElement("div");
 
         div.className =
           "user-result";
@@ -2232,9 +1838,7 @@ async function() {
 
         `;
 
-        results.appendChild(
-          div
-        );
+        results.appendChild(div);
 
       }
     );
@@ -2267,9 +1871,7 @@ async function(receiverId) {
 
   if(!currentUser) {
 
-    alert(
-      "Please sign in first."
-    );
+    alert("Please sign in first.");
 
     return;
 
@@ -2299,10 +1901,7 @@ async function(receiverId) {
 
     await addDoc(
 
-      collection(
-        db,
-        "shared_qr"
-      ),
+      collection(db, "shared_qr"),
 
       {
 
@@ -2353,8 +1952,7 @@ async function(receiverId) {
 
 function startInboxListener() {
 
-  if(!currentUser)
-    return;
+  if(!currentUser) return;
 
   if(unsubscribeInbox) {
 
@@ -2365,10 +1963,7 @@ function startInboxListener() {
   const inboxQuery =
     query(
 
-      collection(
-        db,
-        "shared_qr"
-      ),
+      collection(db, "shared_qr"),
 
       where(
         "receiverId",
@@ -2385,9 +1980,7 @@ function startInboxListener() {
 
       snapshot => {
 
-        displayReceivedQRs(
-          snapshot
-        );
+        displayReceivedQRs(snapshot);
 
       },
 
@@ -2407,14 +2000,10 @@ function startInboxListener() {
 
 /* ================= DISPLAY RECEIVED ================= */
 
-function displayReceivedQRs(
-  snapshot
-) {
+function displayReceivedQRs(snapshot) {
 
   const container =
-    document.getElementById(
-      "receivedQRs"
-    );
+    document.getElementById("receivedQRs");
 
   container.innerHTML = "";
 
@@ -2441,16 +2030,13 @@ function displayReceivedQRs(
         qrDoc.data();
 
       const item =
-        document.createElement(
-          "div"
-        );
+        document.createElement("div");
 
       item.className =
         "received-item";
 
       const qrId =
-        "received-" +
-        qrDoc.id;
+        "received-" + qrDoc.id;
 
       item.innerHTML = `
 
@@ -2470,8 +2056,7 @@ function displayReceivedQRs(
         <span class="username">
 
           @${escapeHTML(
-            data.senderUsername ||
-            ""
+            data.senderUsername || ""
           )}
 
         </span>
@@ -2493,17 +2078,13 @@ function displayReceivedQRs(
 
       `;
 
-      container.prepend(
-        item
-      );
+      container.prepend(item);
 
       setTimeout(
         () => {
 
           const qrContainer =
-            document.getElementById(
-              qrId
-            );
+            document.getElementById(qrId);
 
           if(
             qrContainer &&
@@ -2565,9 +2146,7 @@ async function(qrId) {
 
     if(!snapshot.exists()) {
 
-      alert(
-        "QR no longer exists."
-      );
+      alert("QR no longer exists.");
 
       return;
 
@@ -2580,9 +2159,7 @@ async function(qrId) {
       data.qrData
     );
 
-    alert(
-      "✅ QR data copied!"
-    );
+    alert("✅ QR data copied!");
 
   }
 
@@ -2590,9 +2167,7 @@ async function(qrId) {
 
     console.error(error);
 
-    alert(
-      "Could not copy QR data."
-    );
+    alert("Could not copy QR data.");
 
   }
 
@@ -2606,9 +2181,7 @@ async function() {
 
   if(!currentUser) {
 
-    alert(
-      "Please sign in first."
-    );
+    alert("Please sign in first.");
 
     return;
 
@@ -2636,9 +2209,7 @@ async function() {
 
   if(!username) {
 
-    alert(
-      "Enter a username."
-    );
+    alert("Enter a username.");
 
     return;
 
@@ -2657,10 +2228,7 @@ async function() {
     const searchQuery =
       query(
 
-        collection(
-          db,
-          "users"
-        ),
+        collection(db, "users"),
 
         where(
           "username",
@@ -2671,9 +2239,7 @@ async function() {
       );
 
     const snapshot =
-      await getDocs(
-        searchQuery
-      );
+      await getDocs(searchQuery);
 
     results.innerHTML = "";
 
@@ -2700,8 +2266,7 @@ async function() {
           userDoc.data();
 
         if(
-          userDoc.id ===
-          currentUser.uid
+          userDoc.id === currentUser.uid
         ) {
 
           results.innerHTML = `
@@ -2719,9 +2284,7 @@ async function() {
         }
 
         const div =
-          document.createElement(
-            "div"
-          );
+          document.createElement("div");
 
         div.className =
           "chat-user-result";
@@ -2742,8 +2305,7 @@ async function() {
           <span class="username">
 
             @${escapeHTML(
-              data.username ||
-              ""
+              data.username || ""
             )}
 
           </span>
@@ -2754,13 +2316,8 @@ async function() {
             class="success"
             onclick="openChatWithUser(
               '${userDoc.id}',
-              '${escapeJS(
-                data.username || ""
-              )}',
-              '${escapeJS(
-                data.displayName ||
-                "QRify User"
-              )}'
+              '${escapeJS(data.username || "")}',
+              '${escapeJS(data.displayName || "QRify User")}'
             )">
 
             💬 Start Chat
@@ -2769,9 +2326,7 @@ async function() {
 
         `;
 
-        results.appendChild(
-          div
-        );
+        results.appendChild(div);
 
       }
     );
@@ -2839,6 +2394,14 @@ async function ensureChatRoom() {
         activeChatUser.username
       ],
 
+      memberNames: [
+        currentUser.displayName ||
+        "QRify User",
+
+        activeChatUser.displayName ||
+        "QRify User"
+      ],
+
       updatedAt:
         serverTimestamp()
 
@@ -2866,9 +2429,7 @@ async function(
 
   if(!currentUser) {
 
-    alert(
-      "Please sign in first."
-    );
+    alert("Please sign in first.");
 
     return;
 
@@ -2888,32 +2449,22 @@ async function(
   };
 
   document
-    .getElementById(
-      "chatWindow"
-    )
+    .getElementById("chatWindow")
     .classList
     .remove("hidden");
 
   document
-    .getElementById(
-      "chatUserName"
-    )
+    .getElementById("chatUserName")
     .textContent =
-      "💬 " +
-      displayName;
+      "💬 " + displayName;
 
   document
-    .getElementById(
-      "chatUsername"
-    )
+    .getElementById("chatUsername")
     .textContent =
-      "@" +
-      username;
+      "@" + username;
 
   document
-    .getElementById(
-      "chatMessages"
-    )
+    .getElementById("chatMessages")
     .innerHTML = `
 
       <p class="small-text">
@@ -2940,9 +2491,7 @@ async function(
     );
 
     document
-      .getElementById(
-        "chatMessages"
-      )
+      .getElementById("chatMessages")
       .innerHTML = `
 
         <p class="small-text">
@@ -2966,9 +2515,7 @@ async function(
     () => {
 
       document
-        .getElementById(
-          "chatInput"
-        )
+        .getElementById("chatInput")
         .focus();
 
     },
@@ -2982,16 +2529,11 @@ async function(
 
 /* ================= CHAT ID ================= */
 
-function createChatId(
-  uid1,
-  uid2
-) {
+function createChatId(uid1, uid2) {
 
   return [
-
     uid1,
     uid2
-
   ]
   .sort()
   .join("_");
@@ -3022,36 +2564,25 @@ function startChatListener() {
 
   const chatId =
     createChatId(
-
       currentUser.uid,
-
       activeChatUser.uid
-
     );
 
   const messagesRef =
     collection(
-
       db,
-
       "chats",
-
       chatId,
-
       "messages"
-
     );
 
   const messagesQuery =
     query(
-
       messagesRef,
-
       orderBy(
         "createdAt",
         "asc"
       )
-
     );
 
   unsubscribeChat =
@@ -3061,9 +2592,7 @@ function startChatListener() {
 
       snapshot => {
 
-        displayChatMessages(
-          snapshot
-        );
+        displayChatMessages(snapshot);
 
       },
 
@@ -3098,9 +2627,7 @@ function startChatListener() {
 
 /* ================= DISPLAY CHAT ================= */
 
-function displayChatMessages(
-  snapshot
-) {
+function displayChatMessages(snapshot) {
 
   const container =
     document.getElementById(
@@ -3135,43 +2662,34 @@ function displayChatMessages(
         messageDoc.data();
 
       const div =
-        document.createElement(
-          "div"
-        );
+        document.createElement("div");
 
       const isMine =
         data.senderId ===
         currentUser.uid;
 
       div.className =
-
         "chat-message " +
-
         (
           isMine
             ? "sent"
             : "received"
         );
 
-      let timeText =
-        "";
+      let timeText = "";
 
       if(data.createdAt) {
 
         try {
 
           timeText =
-
             data.createdAt
               .toDate()
               .toLocaleTimeString(
                 [],
                 {
-                  hour:
-                    "2-digit",
-
-                  minute:
-                    "2-digit"
+                  hour: "2-digit",
+                  minute: "2-digit"
                 }
               );
 
@@ -3199,9 +2717,7 @@ function displayChatMessages(
 
       `;
 
-      container.appendChild(
-        div
-      );
+      container.appendChild(div);
 
     }
   );
@@ -3219,9 +2735,7 @@ async function() {
 
   if(!currentUser) {
 
-    alert(
-      "Please sign in first."
-    );
+    alert("Please sign in first.");
 
     return;
 
@@ -3245,19 +2759,9 @@ async function() {
   const text =
     input.value.trim();
 
-  if(!text) {
-
-    return;
-
-  }
+  if(!text) return;
 
   try {
-
-    /*
-      IMPORTANT:
-      Make sure the chat room exists
-      before creating the message.
-    */
 
     const chatId =
       await ensureChatRoom();
@@ -3309,11 +2813,6 @@ async function() {
       }
 
     );
-
-    /*
-      Update chat room time
-      so the room knows the latest activity.
-    */
 
     await setDoc(
 
@@ -3382,9 +2881,7 @@ function(event) {
 function escapeHTML(value) {
 
   const div =
-    document.createElement(
-      "div"
-    );
+    document.createElement("div");
 
   div.textContent =
     value || "";
@@ -3398,29 +2895,17 @@ function escapeHTML(value) {
 
 function escapeJS(value) {
 
-  return String(
-    value || ""
-  )
-  .replace(
-    /\\/g,
-    "\\\\"
-  )
-  .replace(
-    /'/g,
-    "\\'"
-  )
-  .replace(
-    /"/g,
-    '\\"'
-  )
-  .replace(
-    /\n/g,
-    "\\n"
-  )
-  .replace(
-    /\r/g,
-    "\\r"
-  );
+  return String(value || "")
+
+    .replace(/\\/g, "\\\\")
+
+    .replace(/'/g, "\\'")
+
+    .replace(/"/g, '\\"')
+
+    .replace(/\n/g, "\\n")
+
+    .replace(/\r/g, "\\r");
 
 }
 
@@ -3429,7 +2914,6 @@ function escapeJS(value) {
 
 <script>
 
-
 let scannedLink = "";
 
 let qrCodeInstance = null;
@@ -3437,9 +2921,96 @@ let qrCodeInstance = null;
 let html5QrCode = null;
 
 
+/* =====================================================
+   PAGE NAVIGATION
+   ANDROID BACK BUTTON FIX
+   ===================================================== */
+
+let isHandlingBrowserBack = false;
+
+
+/*
+  Create the first history entry.
+  This prevents the first page from being blank.
+*/
+
+if(
+  !history.state ||
+  !history.state.qrify
+) {
+
+  history.replaceState(
+    {
+      qrify: true,
+      page: "home"
+    },
+    "",
+    "#home"
+  );
+
+}
+
+
 /* ================= PAGE NAVIGATION ================= */
 
-function showPage(pageId) {
+function showPage(
+  pageId,
+  addHistory = true
+) {
+
+  const currentPage =
+    document.querySelector(
+      ".page.active"
+    );
+
+  const currentPageId =
+    currentPage
+      ? currentPage.id
+      : "home";
+
+
+  /*
+    If the user is already on this page,
+    don't create another history entry.
+  */
+
+  if(
+    addHistory &&
+    currentPageId === pageId
+  ) {
+
+    closeMenu();
+
+    return;
+
+  }
+
+
+  /*
+    Add a browser history entry when
+    the user normally opens a page.
+  */
+
+  if(
+    addHistory &&
+    !isHandlingBrowserBack
+  ) {
+
+    history.pushState(
+
+      {
+        qrify: true,
+        page: pageId
+      },
+
+      "",
+
+      "#" + pageId
+
+    );
+
+  }
+
 
   document
     .querySelectorAll(".page")
@@ -3453,10 +3024,10 @@ function showPage(pageId) {
       }
     );
 
+
   const page =
-    document.getElementById(
-      pageId
-    );
+    document.getElementById(pageId);
+
 
   if(page) {
 
@@ -3468,16 +3039,52 @@ function showPage(pageId) {
 
       top: 0,
 
-      behavior:
-        "smooth"
+      behavior: "smooth"
 
     });
 
   }
 
+
   closeMenu();
 
 }
+
+
+/* ================= ANDROID/BROWSER BACK ================= */
+
+window.addEventListener(
+  "popstate",
+  function(event) {
+
+    isHandlingBrowserBack = true;
+
+
+    let pageId = "home";
+
+
+    if(
+      event.state &&
+      event.state.qrify &&
+      event.state.page
+    ) {
+
+      pageId =
+        event.state.page;
+
+    }
+
+
+    showPage(
+      pageId,
+      false
+    );
+
+
+    isHandlingBrowserBack = false;
+
+  }
+);
 
 
 /* ================= MENU ================= */
@@ -3485,16 +3092,12 @@ function showPage(pageId) {
 function openMenu() {
 
   document
-    .getElementById(
-      "sideMenu"
-    )
+    .getElementById("sideMenu")
     .classList
     .add("open");
 
   document
-    .getElementById(
-      "menuOverlay"
-    )
+    .getElementById("menuOverlay")
     .classList
     .add("show");
 
@@ -3504,16 +3107,12 @@ function openMenu() {
 function closeMenu() {
 
   document
-    .getElementById(
-      "sideMenu"
-    )
+    .getElementById("sideMenu")
     .classList
     .remove("open");
 
   document
-    .getElementById(
-      "menuOverlay"
-    )
+    .getElementById("menuOverlay")
     .classList
     .remove("show");
 
@@ -3526,28 +3125,24 @@ function getQRData() {
 
   const type =
     document
-      .getElementById(
-        "qrType"
-      )
+      .getElementById("qrType")
       .value;
+
 
   if(type === "text") {
 
     return document
-      .getElementById(
-        "text"
-      )
+      .getElementById("text")
       .value;
 
   }
+
 
   if(type === "website") {
 
     let url =
       document
-        .getElementById(
-          "website"
-        )
+        .getElementById("website")
         .value
         .trim();
 
@@ -3555,19 +3150,14 @@ function getQRData() {
 
       url &&
 
-      !url.startsWith(
-        "http://"
-      ) &&
+      !url.startsWith("http://") &&
 
-      !url.startsWith(
-        "https://"
-      )
+      !url.startsWith("https://")
 
     ) {
 
       url =
-        "https://" +
-        url;
+        "https://" + url;
 
     }
 
@@ -3575,34 +3165,30 @@ function getQRData() {
 
   }
 
+
   if(type === "phone") {
 
     return "tel:" +
 
       document
-        .getElementById(
-          "phone"
-        )
+        .getElementById("phone")
         .value;
 
   }
+
 
   if(type === "email") {
 
     const email =
       document
-        .getElementById(
-          "email"
-        )
+        .getElementById("email")
         .value;
 
     const subject =
       encodeURIComponent(
 
         document
-          .getElementById(
-            "emailSubject"
-          )
+          .getElementById("emailSubject")
           .value
 
       );
@@ -3611,9 +3197,7 @@ function getQRData() {
       encodeURIComponent(
 
         document
-          .getElementById(
-            "emailMessage"
-          )
+          .getElementById("emailMessage")
           .value
 
       );
@@ -3628,27 +3212,22 @@ function getQRData() {
 
   }
 
+
   if(type === "wifi") {
 
     const ssid =
       document
-        .getElementById(
-          "wifiSSID"
-        )
+        .getElementById("wifiSSID")
         .value;
 
     const password =
       document
-        .getElementById(
-          "wifiPassword"
-        )
+        .getElementById("wifiPassword")
         .value;
 
     const security =
       document
-        .getElementById(
-          "wifiSecurity"
-        )
+        .getElementById("wifiSecurity")
         .value;
 
     return
@@ -3661,34 +3240,27 @@ function getQRData() {
 
   }
 
+
   if(type === "contact") {
 
     const name =
       document
-        .getElementById(
-          "contactName"
-        )
+        .getElementById("contactName")
         .value;
 
     const phone =
       document
-        .getElementById(
-          "contactPhone"
-        )
+        .getElementById("contactPhone")
         .value;
 
     const email =
       document
-        .getElementById(
-          "contactEmail"
-        )
+        .getElementById("contactEmail")
         .value;
 
     const org =
       document
-        .getElementById(
-          "contactOrg"
-        )
+        .getElementById("contactOrg")
         .value;
 
     return `BEGIN:VCARD
@@ -3701,20 +3273,17 @@ END:VCARD`;
 
   }
 
+
   if(type === "location") {
 
     const lat =
       document
-        .getElementById(
-          "latitude"
-        )
+        .getElementById("latitude")
         .value;
 
     const lon =
       document
-        .getElementById(
-          "longitude"
-        )
+        .getElementById("longitude")
         .value;
 
     return `geo:${lat},${lon}`;
@@ -3751,31 +3320,23 @@ function generateQR() {
     parseInt(
 
       document
-        .getElementById(
-          "qrSize"
-        )
+        .getElementById("qrSize")
         .value
 
     );
 
   const color =
     document
-      .getElementById(
-        "qrColor"
-      )
+      .getElementById("qrColor")
       .value;
 
   const background =
     document
-      .getElementById(
-        "bgColor"
-      )
+      .getElementById("bgColor")
       .value;
 
   const qrContainer =
-    document.getElementById(
-      "qrcode"
-    );
+    document.getElementById("qrcode");
 
   qrContainer.innerHTML = "";
 
@@ -3808,19 +3369,18 @@ function generateQR() {
 
     );
 
+
   document
-    .getElementById(
-      "downloadBtn"
-    )
+    .getElementById("downloadBtn")
     .classList
     .remove("hidden");
 
+
   document
-    .getElementById(
-      "sendQRBtn"
-    )
+    .getElementById("sendQRBtn")
     .classList
     .remove("hidden");
+
 
   const sendStatus =
     document.getElementById(
@@ -3833,6 +3393,7 @@ function generateQR() {
       "✅ QR code is ready to send.";
 
   }
+
 
   saveHistory(data);
 
@@ -3861,9 +3422,7 @@ function downloadQR() {
   const border = 20;
 
   const newCanvas =
-    document.createElement(
-      "canvas"
-    );
+    document.createElement("canvas");
 
   newCanvas.width =
     canvas.width +
@@ -3874,47 +3433,32 @@ function downloadQR() {
     border * 2;
 
   const ctx =
-    newCanvas.getContext(
-      "2d"
-    );
+    newCanvas.getContext("2d");
 
   ctx.fillStyle =
     "#ffffff";
 
   ctx.fillRect(
-
     0,
-
     0,
-
     newCanvas.width,
-
     newCanvas.height
-
   );
 
   ctx.drawImage(
-
     canvas,
-
     border,
-
     border
-
   );
 
   const link =
-    document.createElement(
-      "a"
-    );
+    document.createElement("a");
 
   link.download =
     "QRify-QR.png";
 
   link.href =
-    newCanvas.toDataURL(
-      "image/png"
-    );
+    newCanvas.toDataURL("image/png");
 
   link.click();
 
@@ -3933,48 +3477,44 @@ function clearAll() {
       element => {
 
         if(
-          element.type ===
-          "color"
+          element.type === "color"
         ) {
 
           return;
 
         }
 
-        element.value =
-          "";
+        element.value = "";
 
       }
     );
 
-  document
-    .getElementById(
-      "qrcode"
-    )
-    .innerHTML =
-      "";
 
   document
-    .getElementById(
-      "downloadBtn"
-    )
+    .getElementById("qrcode")
+    .innerHTML = "";
+
+
+  document
+    .getElementById("downloadBtn")
     .classList
     .add("hidden");
 
+
   document
-    .getElementById(
-      "sendQRBtn"
-    )
+    .getElementById("sendQRBtn")
     .classList
     .add("hidden");
 
-  window.latestQRData =
-    "";
+
+  window.latestQRData = "";
+
 
   const sendStatus =
     document.getElementById(
       "sendQRStatus"
     );
+
 
   if(sendStatus) {
 
@@ -3999,25 +3539,22 @@ function saveHistory(data) {
 
     );
 
-  history.unshift(
-    data
-  );
+
+  history.unshift(data);
+
 
   history =
-    history.slice(
-      0,
-      5
-    );
+    history.slice(0, 5);
+
 
   localStorage.setItem(
 
     "qrifyHistory",
 
-    JSON.stringify(
-      history
-    )
+    JSON.stringify(history)
 
   );
+
 
   displayHistory();
 
@@ -4035,13 +3572,15 @@ function displayHistory() {
 
     );
 
+
   const container =
     document.getElementById(
       "historyList"
     );
 
-  container.innerHTML =
-    "";
+
+  container.innerHTML = "";
+
 
   if(history.length === 0) {
 
@@ -4052,13 +3591,12 @@ function displayHistory() {
 
   }
 
+
   history.forEach(
     item => {
 
       const div =
-        document.createElement(
-          "div"
-        );
+        document.createElement("div");
 
       div.className =
         "history-item";
@@ -4066,9 +3604,7 @@ function displayHistory() {
       div.textContent =
         item;
 
-      container.appendChild(
-        div
-      );
+      container.appendChild(div);
 
     }
   );
@@ -4083,9 +3619,8 @@ function toggleDarkMode() {
   document
     .body
     .classList
-    .toggle(
-      "dark"
-    );
+    .toggle("dark");
+
 
   localStorage.setItem(
 
@@ -4094,9 +3629,7 @@ function toggleDarkMode() {
     document
       .body
       .classList
-      .contains(
-        "dark"
-      )
+      .contains("dark")
 
   );
 
@@ -4114,9 +3647,7 @@ if(
   document
     .body
     .classList
-    .add(
-      "dark"
-    );
+    .add("dark");
 
 }
 
@@ -4128,52 +3659,40 @@ function showFields() {
   const fields = [
 
     "textFields",
-
     "websiteFields",
-
     "phoneFields",
-
     "emailFields",
-
     "wifiFields",
-
     "contactFields",
-
     "locationFields"
 
   ];
+
 
   fields.forEach(
     id => {
 
       document
-        .getElementById(
-          id
-        )
+        .getElementById(id)
         .classList
-        .add(
-          "hidden"
-        );
+        .add("hidden");
 
     }
   );
 
+
   const type =
     document
-      .getElementById(
-        "qrType"
-      )
+      .getElementById("qrType")
       .value;
+
 
   document
     .getElementById(
-      type +
-      "Fields"
+      type + "Fields"
     )
     .classList
-    .remove(
-      "hidden"
-    );
+    .remove("hidden");
 
 }
 
@@ -4183,11 +3702,9 @@ function showFields() {
 function startCameraScan() {
 
   document
-    .getElementById(
-      "reader"
-    )
-    .innerHTML =
-      "";
+    .getElementById("reader")
+    .innerHTML = "";
+
 
   if(html5QrCode) {
 
@@ -4195,9 +3712,7 @@ function startCameraScan() {
 
       html5QrCode
         .stop()
-        .catch(
-          () => {}
-        );
+        .catch(() => {});
 
     }
 
@@ -4205,24 +3720,20 @@ function startCameraScan() {
 
   }
 
+
   html5QrCode =
-    new Html5Qrcode(
-      "reader"
-    );
+    new Html5Qrcode("reader");
+
 
   html5QrCode.start(
 
     {
-      facingMode:
-        "environment"
+      facingMode: "environment"
     },
 
     {
-      fps:
-        10,
-
-      qrbox:
-        250
+      fps: 10,
+      qrbox: 250
     },
 
     qrCodeMessage => {
@@ -4231,13 +3742,12 @@ function startCameraScan() {
         qrCodeMessage
       );
 
+
       if(html5QrCode) {
 
         html5QrCode
           .stop()
-          .catch(
-            () => {}
-          );
+          .catch(() => {});
 
       }
 
@@ -4250,9 +3760,7 @@ function startCameraScan() {
   .catch(
     error => {
 
-      console.error(
-        error
-      );
+      console.error(error);
 
       alert(
         "Camera permission is required to scan QR codes."
@@ -4271,19 +3779,15 @@ function scanImage(event) {
   const file =
     event.target.files[0];
 
-  if(!file)
-    return;
+  if(!file) return;
+
 
   const scanner =
-    new Html5Qrcode(
-      "reader"
-    );
+    new Html5Qrcode("reader");
+
 
   scanner
-    .scanFile(
-      file,
-      true
-    )
+    .scanFile(file, true)
 
     .then(
       decodedText => {
@@ -4298,9 +3802,7 @@ function scanImage(event) {
     .catch(
       error => {
 
-        console.error(
-          error
-        );
+        console.error(error);
 
         alert(
           "Could not find a QR code in this image."
@@ -4314,9 +3816,7 @@ function scanImage(event) {
 
 /* ================= SCAN RESULT ================= */
 
-function showScanResult(
-  text
-) {
+function showScanResult(text) {
 
   const result =
     document.getElementById(
@@ -4333,51 +3833,43 @@ function showScanResult(
       "openLinkBtn"
     );
 
+
   scanText.textContent =
     text;
 
+
   result
     .classList
-    .remove(
-      "hidden"
-    );
+    .remove("hidden");
+
 
   if(
 
-    text.startsWith(
-      "http://"
-    ) ||
+    text.startsWith("http://") ||
 
-    text.startsWith(
-      "https://"
-    ) ||
+    text.startsWith("https://") ||
 
-    text.startsWith(
-      "www."
-    )
+    text.startsWith("www.")
 
   ) {
 
     scannedLink =
       text;
 
+
     if(
-      text.startsWith(
-        "www."
-      )
+      text.startsWith("www.")
     ) {
 
       scannedLink =
-        "https://" +
-        text;
+        "https://" + text;
 
     }
 
+
     openButton
       .classList
-      .remove(
-        "hidden"
-      );
+      .remove("hidden");
 
   }
 
@@ -4385,9 +3877,7 @@ function showScanResult(
 
     openButton
       .classList
-      .add(
-        "hidden"
-      );
+      .add("hidden");
 
   }
 
@@ -4401,11 +3891,8 @@ function openScannedLink() {
   if(scannedLink) {
 
     window.open(
-
       scannedLink,
-
       "_blank"
-
     );
 
   }
@@ -4432,19 +3919,14 @@ if(
 
       navigator.serviceWorker
 
-        .register(
-          "./sw.js"
-        )
+        .register("./sw.js")
 
         .catch(
           function(error) {
 
             console.log(
-
               "Service Worker error:",
-
               error
-
             );
 
           }
