@@ -5,12 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>QRify - Free QR Code Generator & Scanner</title>
 
-<meta name="description"
-content="QRify is a free QR code generator and scanner for text, websites, phone numbers, email, Wi-Fi, contacts and locations.">
-
-<meta name="google-site-verification"
-content="5HCcQf2Dkuhb6cXjoyaUMdktFcyYmGymxjnBAaxDoyA">
-
+<meta name="description" content="QRify is a free QR code generator and scanner for text, websites, phone numbers, email, Wi-Fi, contacts and locations.">
+<meta name="google-site-verification" content="5HCcQf2Dkuhb6cXjoyaUMdktFcyYmGymxjnBAaxDoyA">
 <meta name="theme-color" content="#111827">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -25,377 +21,83 @@ content="5HCcQf2Dkuhb6cXjoyaUMdktFcyYmGymxjnBAaxDoyA">
 <style>
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f4f6;color:#111827;transition:.3s}
+body.dark{background:#111827;color:#f9fafb}
 
-body{
- margin:0;
- font-family:Arial,sans-serif;
- background:#f3f4f6;
- color:#111827;
- transition:.3s
-}
+header{background:#111827;color:white;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:1000}
+header img{width:130px;max-width:55%}
+.menu-btn{background:#2563eb;color:white;border:none;width:48px;height:44px;border-radius:12px;font-size:24px;cursor:pointer;margin:0}
 
-body.dark{
- background:#111827;
- color:#f9fafb
-}
+.menu-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1500;display:none}
+.menu-overlay.show{display:block}
+.side-menu{position:fixed;top:0;right:-300px;width:285px;height:100%;background:white;z-index:1600;padding:20px;box-shadow:-5px 0 20px rgba(0,0,0,.2);transition:.3s;overflow-y:auto}
+body.dark .side-menu{background:#1f2937;color:white}
+.side-menu.open{right:0}
+.menu-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:15px;border-bottom:1px solid #d1d5db;margin-bottom:15px}
+.menu-header h2{margin:0}
+.close-menu{background:transparent;color:inherit;font-size:26px;margin:0;padding:5px}
+.menu-item{width:100%;text-align:left;background:transparent;color:inherit;padding:14px;margin:3px 0;border-radius:10px;font-size:16px}
+.menu-item:hover{background:#e5e7eb}
+body.dark .menu-item:hover{background:#374151}
+.menu-badge{float:right;background:#dc2626;color:white;border-radius:20px;padding:2px 8px;font-size:12px}
 
-header{
- background:#111827;
- color:white;
- padding:12px 16px;
- display:flex;
- align-items:center;
- justify-content:space-between;
- position:sticky;
- top:0;
- z-index:1000
-}
+.container{max-width:700px;margin:20px auto;padding:15px}
+.page{display:none}
+.page.active{display:block}
+.card{background:white;padding:20px;border-radius:16px;box-shadow:0 5px 20px rgba(0,0,0,.08);margin-bottom:20px}
+body.dark .card{background:#1f2937}
 
-header img{
- width:130px;
- max-width:55%
-}
+label{display:block;margin-top:12px;margin-bottom:6px;font-weight:bold}
+input,textarea,select{width:100%;padding:12px;border:1px solid #d1d5db;border-radius:10px;font-size:15px;background:white;color:#111827}
+body.dark input,body.dark textarea,body.dark select{background:#374151;color:white;border-color:#4b5563}
+textarea{min-height:100px;resize:vertical}
 
-.menu-btn{
- background:#2563eb;
- color:white;
- border:none;
- width:48px;
- height:44px;
- border-radius:12px;
- font-size:24px;
- cursor:pointer;
- margin:0
-}
+button{border:none;padding:12px 18px;border-radius:10px;cursor:pointer;font-size:15px;margin:6px 4px 0 0}
+button:disabled{opacity:.65;cursor:not-allowed}
+.primary{background:#2563eb;color:white}
+.secondary{background:#e5e7eb;color:#111827}
+body.dark .secondary{background:#374151;color:white}
+.danger{background:#dc2626;color:white}
+.success{background:#059669;color:white}
+.warning{background:#d97706;color:white}
+.hidden{display:none!important}
 
-.menu-overlay{
- position:fixed;
- inset:0;
- background:rgba(0,0,0,.45);
- z-index:1500;
- display:none
-}
+.home-title{text-align:center;padding:15px 0}
+.home-title h1{margin-bottom:8px}
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.feature{background:#f3f4f6;padding:18px;border-radius:14px;text-align:center;cursor:pointer;transition:.2s}
+.feature:hover{transform:translateY(-2px)}
+body.dark .feature{background:#374151}
+.feature-icon{font-size:30px;display:block;margin-bottom:8px}
 
-.menu-overlay.show{
- display:block
-}
+.result{text-align:center}
+#qrcode{display:inline-block;background:white;padding:15px;border-radius:8px;margin-top:10px}
+#reader{width:100%;margin-top:15px}
 
-.side-menu{
- position:fixed;
- top:0;
- right:-300px;
- width:285px;
- height:100%;
- background:white;
- z-index:1600;
- padding:20px;
- box-shadow:-5px 0 20px rgba(0,0,0,.2);
- transition:.3s;
- overflow-y:auto
-}
+.history-item,.received-item,.user-result,.friend-item,.request-item{background:#f3f4f6;padding:14px;border-radius:12px;margin-top:10px;word-break:break-word}
+body.dark .history-item,body.dark .received-item,body.dark .user-result,body.dark .friend-item,body.dark .request-item{background:#374151}
+.received-qr{background:white;display:inline-block;padding:10px;margin-top:10px;border-radius:8px}
+.small-text{font-size:13px;color:#6b7280}
+body.dark .small-text{color:#d1d5db}
+.account-name{font-weight:bold;font-size:18px}
+.username{color:#2563eb;font-weight:bold}
+.status{padding:10px;border-radius:10px;margin-top:10px;background:#ecfdf5;color:#065f46}
+.row{display:flex;gap:10px}
+.row>*{flex:1}
 
-body.dark .side-menu{
- background:#1f2937;
- color:white
-}
-
-.side-menu.open{
- right:0
-}
-
-.menu-header{
- display:flex;
- justify-content:space-between;
- align-items:center;
- padding-bottom:15px;
- border-bottom:1px solid #d1d5db;
- margin-bottom:15px
-}
-
-.menu-header h2{
- margin:0
-}
-
-.close-menu{
- background:transparent;
- color:inherit;
- font-size:26px;
- margin:0;
- padding:5px
-}
-
-.menu-item{
- width:100%;
- text-align:left;
- background:transparent;
- color:inherit;
- padding:14px;
- margin:3px 0;
- border-radius:10px;
- font-size:16px
-}
-
-.menu-item:hover{
- background:#e5e7eb
-}
-
-body.dark .menu-item:hover{
- background:#374151
-}
-
-.menu-badge{
- float:right;
- background:#dc2626;
- color:white;
- border-radius:20px;
- padding:2px 8px;
- font-size:12px
-}
-
-.container{
- max-width:700px;
- margin:20px auto;
- padding:15px
-}
-
-.page{
- display:none
-}
-
-.page.active{
- display:block
-}
-
-.card{
- background:white;
- padding:20px;
- border-radius:16px;
- box-shadow:0 5px 20px rgba(0,0,0,.08);
- margin-bottom:20px
-}
-
-body.dark .card{
- background:#1f2937
-}
-
-label{
- display:block;
- margin-top:12px;
- margin-bottom:6px;
- font-weight:bold
-}
-
-input,textarea,select{
- width:100%;
- padding:12px;
- border:1px solid #d1d5db;
- border-radius:10px;
- font-size:15px;
- background:white;
- color:#111827
-}
-
-body.dark input,
-body.dark textarea,
-body.dark select{
- background:#374151;
- color:white;
- border-color:#4b5563
-}
-
-textarea{
- min-height:100px;
- resize:vertical
-}
-
-button{
- border:none;
- padding:12px 18px;
- border-radius:10px;
- cursor:pointer;
- font-size:15px;
- margin:6px 4px 0 0
-}
-
-button:disabled{
- opacity:.65;
- cursor:not-allowed
-}
-
-.primary{
- background:#2563eb;
- color:white
-}
-
-.secondary{
- background:#e5e7eb;
- color:#111827
-}
-
-body.dark .secondary{
- background:#374151;
- color:white
-}
-
-.danger{
- background:#dc2626;
- color:white
-}
-
-.success{
- background:#059669;
- color:white
-}
-
-.warning{
- background:#d97706;
- color:white
-}
-
-.hidden{
- display:none!important
-}
-
-.home-title{
- text-align:center;
- padding:15px 0
-}
-
-.home-title h1{
- margin-bottom:8px
-}
-
-.feature-grid{
- display:grid;
- grid-template-columns:1fr 1fr;
- gap:12px
-}
-
-.feature{
- background:#f3f4f6;
- padding:18px;
- border-radius:14px;
- text-align:center;
- cursor:pointer;
- transition:.2s
-}
-
-.feature:hover{
- transform:translateY(-2px)
-}
-
-body.dark .feature{
- background:#374151
-}
-
-.feature-icon{
- font-size:30px;
- display:block;
- margin-bottom:8px
-}
-
-.result{
- text-align:center
-}
-
-#qrcode{
- display:inline-block;
- background:white;
- padding:15px;
- border-radius:8px;
- margin-top:10px
-}
-
-#reader{
- width:100%;
- margin-top:15px
-}
-
-.history-item,
-.received-item,
-.user-result,
-.friend-item,
-.request-item{
- background:#f3f4f6;
- padding:14px;
- border-radius:12px;
- margin-top:10px;
- word-break:break-word
-}
-
-body.dark .history-item,
-body.dark .received-item,
-body.dark .user-result,
-body.dark .friend-item,
-body.dark .request-item{
- background:#374151
-}
-
-.received-qr{
- background:white;
- display:inline-block;
- padding:10px;
- margin-top:10px;
- border-radius:8px
-}
-
-.small-text{
- font-size:13px;
- color:#6b7280
-}
-
-body.dark .small-text{
- color:#d1d5db
-}
-
-.account-name{
- font-weight:bold;
- font-size:18px
-}
-
-.username{
- color:#2563eb;
- font-weight:bold
-}
-
-.status{
- padding:10px;
- border-radius:10px;
- margin-top:10px;
- background:#ecfdf5;
- color:#065f46
-}
-
-.row{
- display:flex;
- gap:10px
-}
-
-.row>*{
- flex:1
-}
-
-.chat-user-result{
- background:#f3f4f6;
- padding:14px;
- border-radius:12px;
- margin-top:10px
-}
-
-body.dark .chat-user-result{
- background:#374151
-}
-
-.chat-user-result button{
- margin-top:10px
-}
+.chat-user-result{background:#f3f4f6;padding:14px;border-radius:12px;margin-top:10px}
+body.dark .chat-user-result{background:#374151}
+.chat-user-result button{margin-top:10px}
 
 .chat-message{
  max-width:80%;
  padding:10px 13px;
  border-radius:14px;
  margin:7px 0;
- word-break:break-word
+ word-break:break-word;
+ user-select:none;
+ -webkit-user-select:none;
+ -webkit-touch-callout:none;
 }
 
 .chat-message.sent{
@@ -430,8 +132,7 @@ body.dark .chat-message.received{
  padding:10px 0
 }
 
-/* ================= CHAT CONTROLS ================= */
-
+/* CHAT HEADER */
 .chat-header-actions{
  display:flex;
  justify-content:flex-end;
@@ -445,128 +146,141 @@ body.dark .chat-message.received{
  font-size:13px
 }
 
-.chat-message-text{
- word-break:break-word
+/* MESSAGE LONG PRESS MENU */
+.message-action-menu{
+ position:fixed;
+ left:50%;
+ top:50%;
+ transform:translate(-50%,-50%);
+ width:230px;
+ background:white;
+ border-radius:15px;
+ padding:8px;
+ box-shadow:0 10px 35px rgba(0,0,0,.3);
+ z-index:9999;
+ border:1px solid #d1d5db
 }
 
-.chat-message-actions{
- display:flex;
- justify-content:flex-end;
- gap:5px;
- margin-top:7px
-}
-
-.chat-message-actions button{
- width:auto;
- padding:5px 8px;
- margin:0;
- border-radius:7px;
- font-size:11px
-}
-
-.message-delete-btn{
- background:#6b7280;
- color:white
-}
-
-.message-unsend-btn{
- background:#b91c1c;
- color:white
-}
-
-body.dark .message-delete-btn{
- background:#4b5563
-}
-
-.friend-title{
- display:flex;
- justify-content:space-between;
- align-items:center
-}
-
-.friend-count{
- background:#2563eb;
- color:white;
- border-radius:20px;
- padding:4px 10px;
- font-size:13px
-}
-
-.request-actions{
- display:flex;
- gap:8px;
- margin-top:10px
-}
-
-.request-actions button{
- flex:1
-}
-
-.friend-buttons{
- display:flex;
- gap:8px;
- margin-top:10px
-}
-
-.friend-buttons button{
- flex:1
-}
-
-.empty-message{
- text-align:center;
- padding:15px
-}
-
-footer{
- text-align:center;
- padding:25px;
+.message-action-title{
+ font-size:13px;
+ font-weight:bold;
+ padding:10px 12px;
  color:#6b7280
 }
 
+.message-action-menu button{
+ display:block;
+ width:100%;
+ border:0;
+ background:none;
+ padding:12px;
+ margin:0;
+ text-align:left;
+ font-size:14px;
+ border-radius:8px;
+ cursor:pointer
+}
+
+.message-action-menu button:hover{
+ background:#f3f4f6
+}
+
+.message-action-menu .unsend-option{
+ color:#dc2626
+}
+
+.message-action-menu .cancel-option{
+ border-top:1px solid #e5e7eb;
+ margin-top:5px;
+ color:#6b7280
+}
+
+body.dark .message-action-menu{
+ background:#1f2937;
+ border-color:#374151;
+ color:white
+}
+
+body.dark .message-action-title{
+ color:#9ca3af
+}
+
+body.dark .message-action-menu button{
+ color:white
+}
+
+body.dark .message-action-menu button:hover{
+ background:#374151
+}
+
+body.dark .message-action-menu .unsend-option{
+ color:#f87171
+}
+
+/* REPLY */
+.chat-reply-preview{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ background:#f3f4f6;
+ border-left:4px solid #2563eb;
+ padding:8px 10px;
+ margin-bottom:6px;
+ border-radius:8px;
+ font-size:12px
+}
+
+.chat-reply-preview strong{
+ display:block;
+ margin-top:3px;
+ max-width:240px;
+ overflow:hidden;
+ text-overflow:ellipsis;
+ white-space:nowrap
+}
+
+.chat-reply-preview button{
+ width:auto;
+ padding:4px 8px;
+ margin:0;
+ background:none;
+ border:0;
+ font-size:16px
+}
+
+body.dark .chat-reply-preview{
+ background:#374151;
+ color:white
+}
+
+.reply-preview{
+ background:rgba(0,0,0,.08);
+ border-left:3px solid #2563eb;
+ padding:5px 8px;
+ margin-bottom:6px;
+ border-radius:5px;
+ font-size:11px;
+ opacity:.9
+}
+
+.friend-title{display:flex;justify-content:space-between;align-items:center}
+.friend-count{background:#2563eb;color:white;border-radius:20px;padding:4px 10px;font-size:13px}
+.request-actions{display:flex;gap:8px;margin-top:10px}
+.request-actions button{flex:1}
+.friend-buttons{display:flex;gap:8px;margin-top:10px}
+.friend-buttons button{flex:1}
+.empty-message{text-align:center;padding:15px}
+footer{text-align:center;padding:25px;color:#6b7280}
+
 @media(max-width:600px){
-
- .container{
-  padding:12px
- }
-
- .row{
-  flex-direction:column
- }
-
- button{
-  width:100%;
-  margin-right:0
- }
-
- .feature-grid{
-  grid-template-columns:1fr 1fr
- }
-
- .chat-message{
-  max-width:88%
- }
-
- .request-actions,
- .friend-buttons{
-  flex-direction:column
- }
-
- .chat-message-actions{
-  flex-wrap:wrap
- }
-
- .chat-message-actions button{
-  width:auto
- }
-
- .chat-header-actions{
-  flex-wrap:wrap
- }
-
- .chat-header-actions button{
-  width:auto
- }
-
+ .container{padding:12px}
+ .row{flex-direction:column}
+ button{width:100%;margin-right:0}
+ .feature-grid{grid-template-columns:1fr 1fr}
+ .chat-message{max-width:88%}
+ .request-actions,.friend-buttons{flex-direction:column}
+ .chat-header-actions{flex-wrap:wrap}
+ .chat-header-actions button{width:auto}
 }
 </style>
 </head>
@@ -615,7 +329,6 @@ footer{
 </div>
 
 <div class="card">
-
 <h2>What do you want to do?</h2>
 
 <div class="feature-grid">
@@ -669,7 +382,6 @@ footer{
 <label>QR Type</label>
 
 <select id="qrType" onchange="showFields()">
-
 <option value="text">📝 Text</option>
 <option value="website">🌐 Website</option>
 <option value="phone">📞 Phone</option>
@@ -677,113 +389,79 @@ footer{
 <option value="wifi">📶 Wi-Fi</option>
 <option value="contact">👤 Contact</option>
 <option value="location">📍 Location</option>
-
 </select>
 
 <div id="textFields">
-
 <label>Message</label>
 <textarea id="text"></textarea>
-
 </div>
 
 <div id="websiteFields" class="hidden">
-
 <label>Website URL</label>
 <input id="website" placeholder="https://example.com">
-
 </div>
 
 <div id="phoneFields" class="hidden">
-
 <label>Phone Number</label>
 <input id="phone" type="tel">
-
 </div>
 
 <div id="emailFields" class="hidden">
-
 <label>Email</label>
 <input id="email" type="email">
-
 <label>Subject</label>
 <input id="emailSubject">
-
 <label>Message</label>
 <textarea id="emailMessage"></textarea>
-
 </div>
 
 <div id="wifiFields" class="hidden">
-
 <label>Wi-Fi Name (SSID)</label>
 <input id="wifiSSID">
-
 <label>Password</label>
 <input id="wifiPassword" type="password">
-
 <label>Security</label>
-
 <select id="wifiSecurity">
 <option value="WPA">WPA/WPA2</option>
 <option value="WEP">WEP</option>
 <option value="nopass">No Password</option>
 </select>
-
 </div>
 
 <div id="contactFields" class="hidden">
-
 <label>Name</label>
 <input id="contactName">
-
 <label>Phone</label>
 <input id="contactPhone">
-
 <label>Email</label>
 <input id="contactEmail">
-
 <label>Organization</label>
 <input id="contactOrg">
-
 </div>
 
 <div id="locationFields" class="hidden">
-
 <label>Latitude</label>
 <input id="latitude" type="number" step="any">
-
 <label>Longitude</label>
 <input id="longitude" type="number" step="any">
-
 </div>
 
 <label>QR Size</label>
-
 <select id="qrSize">
-
 <option value="150">Small</option>
 <option value="220" selected>Medium</option>
 <option value="300">Large</option>
-
 </select>
 
 <div class="row">
-
 <div>
-
 <label>QR Color</label>
 <input type="color" id="qrColor" value="#000000">
-
 </div>
-
 <div>
-
 <label>Background</label>
 <input type="color" id="bgColor" value="#ffffff">
-
 </div>
-
 </div>
 
 <br>
@@ -794,22 +472,13 @@ footer{
 </div>
 
 <div class="card result">
-
 <h2>Your QR Code</h2>
-
 <div id="qrcode"></div>
-
 <br>
 
-<button id="downloadBtn"
-class="primary hidden"
-onclick="downloadQR()">
-Download QR
-</button>
+<button id="downloadBtn" class="primary hidden" onclick="downloadQR()">Download QR</button>
 
-<button id="sendQRBtn"
-class="success hidden"
-onclick="showPage('send')">
+<button id="sendQRBtn" class="success hidden" onclick="showPage('send')">
 📤 Send to Person
 </button>
 
@@ -827,42 +496,27 @@ onclick="showPage('send')">
 Scan a QR using your camera or an image.
 </p>
 
-<button class="primary"
-onclick="startCameraScan()">
-📷 Camera Scan
-</button>
+<button class="primary" onclick="startCameraScan()">📷 Camera Scan</button>
 
-<button class="secondary"
-onclick="document.getElementById('qrFile').click()">
+<button class="secondary" onclick="document.getElementById('qrFile').click()">
 🖼️ Scan Image
 </button>
 
-<input
-type="file"
-id="qrFile"
-accept="image/*"
-class="hidden"
-onchange="scanImage(event)">
+<input type="file" id="qrFile" accept="image/*" class="hidden" onchange="scanImage(event)">
 
 <div id="reader"></div>
 
 <div id="scanResult" class="hidden">
 
 <h3>Scan Result</h3>
-
 <p id="scanText"></p>
 
-<button
-id="openLinkBtn"
-class="primary hidden"
-onclick="openScannedLink()">
+<button id="openLinkBtn" class="primary hidden" onclick="openScannedLink()">
 Open Link
 </button>
 
 </div>
-
 </div>
-
 </section>
 
 <section id="send" class="page">
@@ -875,8 +529,7 @@ Open Link
 Sign in and create a QRify username to send QR codes.
 </p>
 
-<button class="primary"
-onclick="showPage('profile')">
+<button class="primary" onclick="showPage('profile')">
 👤 Open Profile
 </button>
 
@@ -896,12 +549,9 @@ Generate a QR code first.
 
 <label>Search Username</label>
 
-<input
-id="searchUsername"
-placeholder="Enter username">
+<input id="searchUsername" placeholder="Enter username">
 
-<button class="primary"
-onclick="searchUser()">
+<button class="primary" onclick="searchUser()">
 🔎 Search User
 </button>
 
@@ -921,8 +571,7 @@ onclick="searchUser()">
 Sign in to add friends and manage friend requests.
 </p>
 
-<button class="primary"
-onclick="showPage('profile')">
+<button class="primary" onclick="showPage('profile')">
 👤 Open Profile
 </button>
 
@@ -940,13 +589,9 @@ Search for another QRify username.
 
 <label>Username</label>
 
-<input
-id="friendSearchUsername"
-placeholder="Enter username or @username">
+<input id="friendSearchUsername" placeholder="Enter username or @username">
 
-<button
-class="primary"
-onclick="searchFriendUser()">
+<button class="primary" onclick="searchFriendUser()">
 🔎 Search User
 </button>
 
@@ -957,22 +602,14 @@ onclick="searchFriendUser()">
 <div class="card">
 
 <div class="friend-title">
-
 <h2>📩 Friend Requests</h2>
-
-<span id="friendRequestCount"
-class="friend-count">
-0
-</span>
-
+<span id="friendRequestCount" class="friend-count">0</span>
 </div>
 
 <div id="friendRequestsList">
-
 <p class="small-text empty-message">
 No pending friend requests.
 </p>
-
 </div>
 
 </div>
@@ -980,29 +617,22 @@ No pending friend requests.
 <div class="card">
 
 <div class="friend-title">
-
 <h2>👥 My Friends</h2>
-
-<span id="friendsCount"
-class="friend-count">
-0
-</span>
-
+<span id="friendsCount" class="friend-count">0</span>
 </div>
 
 <div id="friendsList">
-
 <p class="small-text empty-message">
 You have no friends yet.
 </p>
-
 </div>
 
 </div>
 
 </div>
-
 </section>
+
+<!-- CHAT -->
 
 <section id="chat" class="page">
 
@@ -1014,8 +644,7 @@ You have no friends yet.
 Sign in to chat privately with your QRify friends.
 </p>
 
-<button class="primary"
-onclick="showPage('profile')">
+<button class="primary" onclick="showPage('profile')">
 👤 Open Profile
 </button>
 
@@ -1079,8 +708,7 @@ onclick="deleteCurrentChat()">
 
 </div>
 
-<div id="chatMessages"
-class="chat-messages">
+<div id="chatMessages" class="chat-messages">
 
 <p class="small-text">
 Select a user to start chatting.
@@ -1109,7 +737,6 @@ onclick="sendChatMessage()">
 </div>
 
 </div>
-
 </section>
 
 <section id="received" class="page">
@@ -1136,9 +763,7 @@ No QR codes received yet.
 Sign in to view QR codes sent to you.
 </p>
 
-<button
-class="primary"
-onclick="showPage('profile')">
+<button class="primary" onclick="showPage('profile')">
 👤 Open Profile
 </button>
 
@@ -1156,9 +781,7 @@ onclick="showPage('profile')">
 🕘 Recent QR History
 </h2>
 
-<button
-class="danger"
-onclick="clearHistory()">
+<button class="danger" onclick="clearHistory()">
 🧹 Clear All
 </button>
 
@@ -1219,9 +842,7 @@ onclick="saveUsername()">
 Save Username
 </button>
 
-<p id="usernameStatus"
-class="small-text">
-</p>
+<p id="usernameStatus" class="small-text"></p>
 
 </div>
 
@@ -1233,9 +854,7 @@ class="small-text">
 
 <h2>⚙️ Settings</h2>
 
-<button
-class="secondary"
-onclick="toggleDarkMode()">
+<button class="secondary" onclick="toggleDarkMode()">
 🌙 Dark Mode
 </button>
 
@@ -1243,9 +862,7 @@ onclick="toggleDarkMode()">
 
 <h3>🔔 Message Notifications</h3>
 
-<p
-id="notificationStatus"
-class="small-text">
+<p id="notificationStatus" class="small-text">
 🔕 Message notifications are OFF.
 </p>
 
@@ -1281,13 +898,10 @@ By Ashraf
 </div>
 
 <footer>
-
 QRify — Generate • Scan • Share • Chat • Connect
 <br>
 By Ashraf
-
 </footer>
-
 
 <script type="module">
 
@@ -1330,7 +944,6 @@ onMessage
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-messaging.js";
 
-
 const firebaseConfig={
 apiKey:"AIzaSyD0EFlJAk8pR8NaHDR3DpBActrr1obh_qY",
 authDomain:"qrify-d02da.firebaseapp.com",
@@ -1341,160 +954,79 @@ appId:"1:745508886217:web:ec2e9d549260ad28e11f18"
 };
 
 const app=initializeApp(firebaseConfig);
-
 const auth=getAuth(app);
-
 const db=getFirestore(app);
-
 const provider=new GoogleAuthProvider();
-
 const messaging=getMessaging(app);
 
-
-/* =====================================================
-   FIREBASE CLOUD MESSAGING
-===================================================== */
-
-const VAPID_KEY=
-"BBvpdCVJig7SDMUiCqLDtI_NIQxj8wONLt0GhJNEhDk_PQey9VSJDHNg1oegiVtIsZ7yDIYwT-koaggq9QXfBYg";
-
-const FCM_SW_SCOPE=
-"./firebase-messaging-scope/";
-
+const VAPID_KEY="BBvpdCVJig7SDMUiCqLDtI_NIQxj8wONLt0GhJNEhDk_PQey9VSJDHNg1oegiVtIsZ7yDIYwT-koaggq9QXfBYg";
+const FCM_SW_SCOPE="./firebase-messaging-scope/";
 
 let currentUser=null;
-
 let currentUsername="";
-
 window.latestQRData="";
-
 let unsubscribeInbox=null;
-
 let activeChatUser=null;
-
 let unsubscribeChat=null;
-
 let unsubscribeFriendRequests=null;
-
 let unsubscribeFriends=null;
 
-
-/* =====================================================
-   NOTIFICATION UI
-===================================================== */
+/* NOTIFICATIONS */
 
 function updateNotificationUI(enabled){
 
-const button=
-document.getElementById(
-"notificationButton"
-);
-
-const status=
-document.getElementById(
-"notificationStatus"
-);
+const button=document.getElementById("notificationButton");
+const status=document.getElementById("notificationStatus");
 
 if(!button||!status)return;
 
 if(enabled){
-
-button.textContent=
-"🔕 Disable Message Notifications";
-
+button.textContent="🔕 Disable Message Notifications";
 button.className="danger";
-
-status.textContent=
-"🔔 Message notifications are ON.";
-
+status.textContent="🔔 Message notifications are ON.";
 }else{
-
-button.textContent=
-"🔔 Enable Message Notifications";
-
+button.textContent="🔔 Enable Message Notifications";
 button.className="primary";
-
-status.textContent=
-"🔕 Message notifications are OFF.";
-
+status.textContent="🔕 Message notifications are OFF.";
 }
 
 }
-
-
-/* =====================================================
-   ENABLE PUSH NOTIFICATIONS
-===================================================== */
 
 async function enablePushNotifications(){
 
 if(!currentUser){
-
 alert("Please sign in first.");
-
 return;
-
 }
 
 if(!("Notification" in window)){
-
-alert(
-"This browser does not support notifications."
-);
-
+alert("This browser does not support notifications.");
 return;
-
 }
 
 if(!("serviceWorker" in navigator)){
-
-alert(
-"Service Worker is not supported."
-);
-
+alert("Service Worker is not supported.");
 return;
-
-}
-
-if(!VAPID_KEY){
-
-alert(
-"Firebase Web Push VAPID key is missing."
-);
-
-return;
-
 }
 
 try{
 
-const permission=
-await Notification.requestPermission();
+const permission=await Notification.requestPermission();
 
 if(permission!=="granted"){
-
-alert(
-"Notification permission was not granted."
-);
-
+alert("Notification permission was not granted.");
 updateNotificationUI(false);
-
 return;
-
 }
 
-const registration=
-await navigator.serviceWorker.register(
+const registration=await navigator.serviceWorker.register(
 "./firebase-messaging-sw.js",
-{
-scope:FCM_SW_SCOPE
-}
+{scope:FCM_SW_SCOPE}
 );
 
 await navigator.serviceWorker.ready;
 
-const token=
-await getToken(
+const token=await getToken(
 messaging,
 {
 vapidKey:VAPID_KEY,
@@ -1503,23 +1035,12 @@ serviceWorkerRegistration:registration
 );
 
 if(!token){
-
-alert(
-"Could not create notification token."
-);
-
+alert("Could not create notification token.");
 return;
-
 }
 
 await setDoc(
-doc(
-db,
-"users",
-currentUser.uid,
-"fcmTokens",
-token
-),
+doc(db,"users",currentUser.uid,"fcmTokens",token),
 {
 token:token,
 uid:currentUser.uid,
@@ -1527,66 +1048,39 @@ disabled:false,
 createdAt:serverTimestamp(),
 updatedAt:serverTimestamp()
 },
-{
-merge:true
-}
+{merge:true}
 );
 
-localStorage.setItem(
-"qrifyNotifications",
-"enabled"
-);
-
+localStorage.setItem("qrifyNotifications","enabled");
 updateNotificationUI(true);
-
-alert(
-"🔔 Message notifications enabled!"
-);
+alert("🔔 Message notifications enabled!");
 
 }catch(error){
 
-console.error(
-"Notification setup error:",
-error
-);
-
-alert(
-"Could not enable notifications: "+
-error.message
-);
+console.error("Notification setup error:",error);
+alert("Could not enable notifications: "+error.message);
 
 }
 
 }
-
-
-/* =====================================================
-   DISABLE PUSH NOTIFICATIONS
-===================================================== */
 
 async function disablePushNotifications(){
 
 if(!currentUser){
-
 alert("Please sign in first.");
-
 return;
-
 }
 
 try{
 
 const registration=
-await navigator.serviceWorker.getRegistration(
-FCM_SW_SCOPE
-);
+await navigator.serviceWorker.getRegistration(FCM_SW_SCOPE);
 
 if(registration){
 
 try{
 
-const token=
-await getToken(
+const token=await getToken(
 messaging,
 {
 vapidKey:VAPID_KEY,
@@ -1597,170 +1091,77 @@ serviceWorkerRegistration:registration
 if(token){
 
 await setDoc(
-doc(
-db,
-"users",
-currentUser.uid,
-"fcmTokens",
-token
-),
+doc(db,"users",currentUser.uid,"fcmTokens",token),
 {
 disabled:true,
 updatedAt:serverTimestamp()
 },
-{
-merge:true
-}
+{merge:true}
 );
 
 try{
-
 await deleteToken(messaging);
-
-}catch(tokenError){
-
-console.log(
-"FCM token deletion skipped:",
-tokenError.message
-);
+}catch(e){}
 
 }
 
-}
-
-}catch(tokenError){
-
-console.log(
-"Token cleanup skipped:",
-tokenError.message
-);
+}catch(e){}
 
 }
 
-}
-
-localStorage.setItem(
-"qrifyNotifications",
-"disabled"
-);
-
+localStorage.setItem("qrifyNotifications","disabled");
 updateNotificationUI(false);
-
-alert(
-"🔕 Message notifications disabled."
-);
+alert("🔕 Message notifications disabled.");
 
 }catch(error){
 
-console.error(
-"Disable notification error:",
-error
-);
-
-alert(
-"Could not disable notifications."
-);
+console.error(error);
+alert("Could not disable notifications.");
 
 }
 
 }
 
-
-/* =====================================================
-   TOGGLE PUSH NOTIFICATIONS
-===================================================== */
-
-window.togglePushNotifications=
-async function(){
+window.togglePushNotifications=async function(){
 
 if(!currentUser){
-
-alert(
-"Please sign in first."
-);
-
+alert("Please sign in first.");
 showPage("profile");
-
 return;
-
 }
 
 const enabled=
-localStorage.getItem(
-"qrifyNotifications"
-)==="enabled";
+localStorage.getItem("qrifyNotifications")==="enabled";
 
 if(enabled){
-
 await disablePushNotifications();
-
 }else{
-
 await enablePushNotifications();
-
 }
 
 };
 
-
-/* =====================================================
-   RESTORE NOTIFICATION UI
-===================================================== */
-
 async function setupNotificationState(){
 
-const saved=
-localStorage.getItem(
-"qrifyNotifications"
-);
+const saved=localStorage.getItem("qrifyNotifications");
 
 if(
 typeof Notification!=="undefined" &&
 Notification.permission==="denied"
 ){
-
 updateNotificationUI(false);
-
 return;
+}
+
+updateNotificationUI(saved==="enabled");
 
 }
 
-if(saved==="enabled"){
+onMessage(messaging,payload=>{
 
-updateNotificationUI(true);
-
-}else{
-
-updateNotificationUI(false);
-
-}
-
-}
-
-
-/* =====================================================
-   FOREGROUND NOTIFICATION
-===================================================== */
-
-onMessage(
-messaging,
-payload=>{
-
-console.log(
-"Foreground FCM message:",
-payload
-);
-
-const notification=
-payload.notification||{};
-
-const title=
-notification.title||
-"QRify";
-
-const body=
-notification.body||
-"You received a new message.";
+const notification=payload.notification||{};
+const title=notification.title||"QRify";
+const body=notification.body||"You received a new message.";
 
 if(
 "Notification" in window &&
@@ -1768,7 +1169,6 @@ Notification.permission==="granted"
 ){
 
 try{
-
 new Notification(
 title,
 {
@@ -1777,25 +1177,13 @@ icon:"./logo.png",
 badge:"./logo.png"
 }
 );
-
-}catch(error){
-
-console.log(
-"Foreground notification error:",
-error
-);
+}catch(error){}
 
 }
 
-}
+});
 
-}
-);
-
-
-/* =====================================================
-   USERNAME NORMALIZER
-===================================================== */
+/* USERNAME */
 
 function normalizeUsername(value){
 
@@ -1806,104 +1194,53 @@ return String(value||"")
 
 }
 
-
-/* =====================================================
-   FIND USERS
-===================================================== */
-
 async function findUsersByUsername(username){
 
-const cleanUsername=
-normalizeUsername(username);
+const cleanUsername=normalizeUsername(username);
 
 if(!cleanUsername)return [];
 
-const usersRef=
-collection(db,"users");
+const usersRef=collection(db,"users");
 
 try{
 
-const lowerQuery=
-query(
+const lowerQuery=query(
 usersRef,
-where(
-"usernameLower",
-"==",
-cleanUsername
-)
+where("usernameLower","==",cleanUsername)
 );
 
-const lowerSnapshot=
-await getDocs(lowerQuery);
+const lowerSnapshot=await getDocs(lowerQuery);
 
-if(!lowerSnapshot.empty){
+if(!lowerSnapshot.empty)return lowerSnapshot.docs;
 
-return lowerSnapshot.docs;
-
-}
-
-}catch(error){
-
-console.log(
-"usernameLower search skipped:",
-error.message
-);
-
-}
+}catch(error){}
 
 try{
 
-const oldQuery=
-query(
+const oldQuery=query(
 usersRef,
-where(
-"username",
-"==",
-cleanUsername
-)
+where("username","==",cleanUsername)
 );
 
-const oldSnapshot=
-await getDocs(oldQuery);
+const oldSnapshot=await getDocs(oldQuery);
 
-if(!oldSnapshot.empty){
+if(!oldSnapshot.empty)return oldSnapshot.docs;
 
-return oldSnapshot.docs;
-
-}
-
-}catch(error){
-
-console.log(
-"old username search skipped:",
-error.message
-);
-
-}
+}catch(error){}
 
 try{
 
-const allUsersSnapshot=
-await getDocs(usersRef);
-
+const allUsersSnapshot=await getDocs(usersRef);
 const matchingDocs=[];
 
-allUsersSnapshot.forEach(
-userDoc=>{
+allUsersSnapshot.forEach(userDoc=>{
 
 const data=userDoc.data();
 
-const savedUsername=
-normalizeUsername(
-data.username||""
-);
-
 if(
-savedUsername===cleanUsername
+normalizeUsername(data.username||"")===cleanUsername
 ){
-
 matchingDocs.push(userDoc);
-
 }
 
 });
@@ -1912,81 +1249,47 @@ return matchingDocs;
 
 }catch(error){
 
-console.error(
-"Fallback username search error:",
-error
-);
-
 return [];
 
 }
 
 }
 
+/* LOGIN */
 
-/* =====================================================
-   LOGIN
-===================================================== */
-
-window.loginWithGoogle=
-async function(){
+window.loginWithGoogle=async function(){
 
 try{
-
-await signInWithPopup(
-auth,
-provider
-);
-
+await signInWithPopup(auth,provider);
 }catch(error){
-
 console.error(error);
-
-alert(
-"Google sign-in failed: "+
-error.message
-);
-
+alert("Google sign-in failed: "+error.message);
 }
 
 };
 
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-window.logoutUser=
-async function(){
+window.logoutUser=async function(){
 
 try{
 
 if(unsubscribeChat){
-
 unsubscribeChat();
 unsubscribeChat=null;
-
 }
 
 if(unsubscribeInbox){
-
 unsubscribeInbox();
 unsubscribeInbox=null;
-
 }
 
 if(unsubscribeFriendRequests){
-
 unsubscribeFriendRequests();
 unsubscribeFriendRequests=null;
-
 }
 
 if(unsubscribeFriends){
-
 unsubscribeFriends();
 unsubscribeFriends=null;
-
 }
 
 await signOut(auth);
@@ -1994,317 +1297,146 @@ await signOut(auth);
 }catch(error){
 
 console.error(error);
-
-alert(
-"Logout failed."
-);
+alert("Logout failed.");
 
 }
 
 };
 
+/* AUTH */
 
-/* =====================================================
-   AUTH STATE
-===================================================== */
+onAuthStateChanged(auth,async user=>{
 
-onAuthStateChanged(
-auth,
-async user=>{
-
-const status=
-document.getElementById(
-"firebaseStatus"
-);
-
-const loginButton=
-document.getElementById(
-"googleLoginBtn"
-);
-
-const logoutButton=
-document.getElementById(
-"logoutBtn"
-);
-
-const userInfo=
-document.getElementById(
-"userInfo"
-);
-
-const profileCard=
-document.getElementById(
-"profileCard"
-);
-
-const sendCard=
-document.getElementById(
-"sendCard"
-);
-
-const inboxCard=
-document.getElementById(
-"inboxCard"
-);
-
-const accountRequired=
-document.getElementById(
-"accountRequired"
-);
-
-const receivedLoginMessage=
-document.getElementById(
-"receivedLoginMessage"
-);
-
-const chatLoginCard=
-document.getElementById(
-"chatLoginCard"
-);
-
-const chatApp=
-document.getElementById(
-"chatApp"
-);
-
-const friendsLoginCard=
-document.getElementById(
-"friendsLoginCard"
-);
-
-const friendsApp=
-document.getElementById(
-"friendsApp"
-);
+const status=document.getElementById("firebaseStatus");
+const loginButton=document.getElementById("googleLoginBtn");
+const logoutButton=document.getElementById("logoutBtn");
+const userInfo=document.getElementById("userInfo");
+const profileCard=document.getElementById("profileCard");
+const sendCard=document.getElementById("sendCard");
+const inboxCard=document.getElementById("inboxCard");
+const accountRequired=document.getElementById("accountRequired");
+const receivedLoginMessage=document.getElementById("receivedLoginMessage");
+const chatLoginCard=document.getElementById("chatLoginCard");
+const chatApp=document.getElementById("chatApp");
+const friendsLoginCard=document.getElementById("friendsLoginCard");
+const friendsApp=document.getElementById("friendsApp");
 
 if(user){
 
 currentUser=user;
 
-status.textContent=
-"✅ Connected to QRify";
+status.textContent="✅ Connected to QRify";
 
-loginButton.classList.add(
-"hidden"
-);
-
-logoutButton.classList.remove(
-"hidden"
-);
+loginButton.classList.add("hidden");
+logoutButton.classList.remove("hidden");
 
 userInfo.innerHTML=`
-
 <p class="account-name">
-${escapeHTML(
-user.displayName||
-"QRify User"
-)}
+${escapeHTML(user.displayName||"QRify User")}
 </p>
-
-<p>
-${escapeHTML(
-user.email||""
-)}
-</p>
-
+<p>${escapeHTML(user.email||"")}</p>
 `;
 
-profileCard.classList.remove(
-"hidden"
-);
+profileCard.classList.remove("hidden");
+sendCard.classList.remove("hidden");
+inboxCard.classList.remove("hidden");
 
-sendCard.classList.remove(
-"hidden"
-);
+accountRequired.classList.add("hidden");
+receivedLoginMessage.classList.add("hidden");
 
-inboxCard.classList.remove(
-"hidden"
-);
+chatLoginCard.classList.add("hidden");
+chatApp.classList.remove("hidden");
 
-accountRequired.classList.add(
-"hidden"
-);
-
-receivedLoginMessage.classList.add(
-"hidden"
-);
-
-chatLoginCard.classList.add(
-"hidden"
-);
-
-chatApp.classList.remove(
-"hidden"
-);
-
-friendsLoginCard.classList.add(
-"hidden"
-);
-
-friendsApp.classList.remove(
-"hidden"
-);
+friendsLoginCard.classList.add("hidden");
+friendsApp.classList.remove("hidden");
 
 await loadUserProfile();
-
 await setupNotificationState();
 
 startInboxListener();
-
 startFriendRequestListener();
-
 startFriendsListener();
 
 }else{
 
 currentUser=null;
-
 currentUsername="";
-
 activeChatUser=null;
 
-status.textContent=
-"Firebase connected. Please sign in.";
+status.textContent="Firebase connected. Please sign in.";
 
-loginButton.classList.remove(
-"hidden"
-);
-
-logoutButton.classList.add(
-"hidden"
-);
+loginButton.classList.remove("hidden");
+logoutButton.classList.add("hidden");
 
 userInfo.innerHTML="";
 
-profileCard.classList.add(
-"hidden"
-);
+profileCard.classList.add("hidden");
+sendCard.classList.add("hidden");
+inboxCard.classList.add("hidden");
 
-sendCard.classList.add(
-"hidden"
-);
+accountRequired.classList.remove("hidden");
+receivedLoginMessage.classList.remove("hidden");
 
-inboxCard.classList.add(
-"hidden"
-);
+chatLoginCard.classList.remove("hidden");
+chatApp.classList.add("hidden");
 
-accountRequired.classList.remove(
-"hidden"
-);
+friendsLoginCard.classList.remove("hidden");
+friendsApp.classList.add("hidden");
 
-receivedLoginMessage.classList.remove(
-"hidden"
-);
-
-chatLoginCard.classList.remove(
-"hidden"
-);
-
-chatApp.classList.add(
-"hidden"
-);
-
-friendsLoginCard.classList.remove(
-"hidden"
-);
-
-friendsApp.classList.add(
-"hidden"
-);
-
-document.getElementById(
-"sendQRBtn"
-).classList.add(
-"hidden"
-);
+document.getElementById("sendQRBtn").classList.add("hidden");
 
 if(unsubscribeInbox){
-
 unsubscribeInbox();
-
 unsubscribeInbox=null;
-
 }
 
 if(unsubscribeChat){
-
 unsubscribeChat();
-
 unsubscribeChat=null;
-
 }
 
 if(unsubscribeFriendRequests){
-
 unsubscribeFriendRequests();
-
 unsubscribeFriendRequests=null;
-
 }
 
 if(unsubscribeFriends){
-
 unsubscribeFriends();
-
 unsubscribeFriends=null;
-
 }
 
 updateFriendRequestBadge(0);
-
 updateNotificationUI(false);
 
 }
 
 });
 
-
-/* =====================================================
-   LOAD PROFILE
-===================================================== */
+/* PROFILE */
 
 async function loadUserProfile(){
 
 if(!currentUser)return;
 
-const userRef=
-doc(
-db,
-"users",
-currentUser.uid
-);
+const userRef=doc(db,"users",currentUser.uid);
+const snapshot=await getDoc(userRef);
 
-const snapshot=
-await getDoc(userRef);
-
-const usernameInput=
-document.getElementById(
-"usernameInput"
-);
+const usernameInput=document.getElementById("usernameInput");
 
 if(snapshot.exists()){
 
 const data=snapshot.data();
 
-currentUsername=
-normalizeUsername(
-data.username||""
-);
+currentUsername=normalizeUsername(data.username||"");
 
-usernameInput.value=
-currentUsername;
+usernameInput.value=currentUsername;
 
-document.getElementById(
-"usernameStatus"
-).textContent=
+document.getElementById("usernameStatus").textContent=
 currentUsername
 ?"✅ Your QRify username is ready."
 :"Create your username.";
 
-if(
-currentUsername &&
-!data.usernameLower
-){
+if(currentUsername&&!data.usernameLower){
 
 try{
 
@@ -2318,14 +1450,7 @@ updatedAt:serverTimestamp()
 {merge:true}
 );
 
-}catch(error){
-
-console.error(
-"Username upgrade error:",
-error
-);
-
-}
+}catch(error){}
 
 }
 
@@ -2333,83 +1458,41 @@ error
 
 usernameInput.value="";
 
-document.getElementById(
-"usernameStatus"
-).textContent=
+document.getElementById("usernameStatus").textContent=
 "Choose a username so other QRify users can find you.";
 
 }
 
 }
 
-
-/* =====================================================
-   SAVE USERNAME
-===================================================== */
-
-window.saveUsername=
-async function(){
+window.saveUsername=async function(){
 
 if(!currentUser){
-
-alert(
-"Please sign in first."
-);
-
+alert("Please sign in first.");
 return;
-
 }
 
-const input=
-document.getElementById(
-"usernameInput"
-);
+const input=document.getElementById("usernameInput");
+const username=normalizeUsername(input.value);
 
-const username=
-normalizeUsername(
-input.value
-);
-
-if(
-!/^[a-z0-9_]{3,20}$/.test(
-username
-)
-){
-
-alert(
-"Username must be 3-20 characters and use only letters, numbers or _."
-);
-
+if(!/^[a-z0-9_]{3,20}$/.test(username)){
+alert("Username must be 3-20 characters and use only letters, numbers or _.");
 return;
-
 }
 
 try{
 
-const oldQuery=
-query(
+const oldQuery=query(
 collection(db,"users"),
-where(
-"username",
-"==",
-username
-)
+where("username","==",username)
 );
 
-const lowerQuery=
-query(
+const lowerQuery=query(
 collection(db,"users"),
-where(
-"usernameLower",
-"==",
-username
-)
+where("usernameLower","==",username)
 );
 
-const [
-oldSnapshot,
-lowerSnapshot
-]=
+const [oldSnapshot,lowerSnapshot]=
 await Promise.all([
 getDocs(oldQuery),
 getDocs(lowerQuery)
@@ -2417,415 +1500,217 @@ getDocs(lowerQuery)
 
 let takenByOtherUser=false;
 
-oldSnapshot.forEach(
-userDoc=>{
-
-if(
-userDoc.id!==currentUser.uid
-){
-
+oldSnapshot.forEach(userDoc=>{
+if(userDoc.id!==currentUser.uid)
 takenByOtherUser=true;
-
-}
-
 });
 
-lowerSnapshot.forEach(
-userDoc=>{
-
-if(
-userDoc.id!==currentUser.uid
-){
-
+lowerSnapshot.forEach(userDoc=>{
+if(userDoc.id!==currentUser.uid)
 takenByOtherUser=true;
-
-}
-
 });
 
 if(takenByOtherUser){
-
-alert(
-"That username is already taken. Try another one."
-);
-
+alert("That username is already taken. Try another one.");
 return;
-
 }
 
 await setDoc(
-doc(
-db,
-"users",
-currentUser.uid
-),
+doc(db,"users",currentUser.uid),
 {
 uid:currentUser.uid,
 username:username,
 usernameLower:username,
-displayName:
-currentUser.displayName||"",
-email:
-currentUser.email||"",
+displayName:currentUser.displayName||"",
+email:currentUser.email||"",
 updatedAt:serverTimestamp()
 },
 {merge:true}
 );
 
 currentUsername=username;
-
 input.value=username;
 
-document.getElementById(
-"usernameStatus"
-).textContent=
+document.getElementById("usernameStatus").textContent=
 "✅ Username saved: @"+username;
 
-alert(
-"Username saved successfully!"
-);
+alert("Username saved successfully!");
 
 }catch(error){
 
-console.error(
-"Save username error:",
-error
-);
-
-alert(
-"Could not save username: "+
-error.message
-);
+console.error(error);
+alert("Could not save username: "+error.message);
 
 }
 
 };
 
+/* FRIENDS */
 
-/* =====================================================
-   FRIEND SYSTEM
-===================================================== */
-
-function createFriendId(
-uid1,
-uid2
-){
-
-return [
-uid1,
-uid2
-].sort().join("_");
-
+function createFriendId(uid1,uid2){
+return [uid1,uid2].sort().join("_");
 }
 
-function createFriendRequestId(
-senderId,
-receiverId
-){
-
+function createFriendRequestId(senderId,receiverId){
 return senderId+"_"+receiverId;
-
 }
 
-async function getFriendStatus(
-otherUserId
-){
+async function getFriendStatus(otherUserId){
 
-if(!currentUser)
-return "none";
+if(!currentUser)return "none";
 
-const friendId=
-createFriendId(
-currentUser.uid,
-otherUserId
-);
+const friendId=createFriendId(currentUser.uid,otherUserId);
 
 const friendSnapshot=
-await getDoc(
-doc(
-db,
-"friends",
-friendId
-)
-);
+await getDoc(doc(db,"friends",friendId));
 
-if(friendSnapshot.exists()){
-
-return "friends";
-
-}
+if(friendSnapshot.exists())return "friends";
 
 const outgoingId=
-createFriendRequestId(
-currentUser.uid,
-otherUserId
-);
+createFriendRequestId(currentUser.uid,otherUserId);
 
 const incomingId=
-createFriendRequestId(
-otherUserId,
-currentUser.uid
-);
+createFriendRequestId(otherUserId,currentUser.uid);
 
 const outgoingSnapshot=
-await getDoc(
-doc(
-db,
-"friend_requests",
-outgoingId
-)
-);
+await getDoc(doc(db,"friend_requests",outgoingId));
 
 if(
 outgoingSnapshot.exists() &&
 outgoingSnapshot.data().status==="pending"
-){
-
-return "outgoing";
-
-}
+)return "outgoing";
 
 const incomingSnapshot=
-await getDoc(
-doc(
-db,
-"friend_requests",
-incomingId
-)
-);
+await getDoc(doc(db,"friend_requests",incomingId));
 
 if(
 incomingSnapshot.exists() &&
 incomingSnapshot.data().status==="pending"
-){
-
-return "incoming";
-
-}
+)return "incoming";
 
 return "none";
 
 }
 
-
-/* =====================================================
-   FRIEND SEARCH
-===================================================== */
-
-window.searchFriendUser=
-async function(){
+window.searchFriendUser=async function(){
 
 if(!currentUser){
-
-alert(
-"Please sign in first."
-);
-
+alert("Please sign in first.");
 return;
-
 }
 
 if(!currentUsername){
-
-alert(
-"First create your QRify username."
-);
-
+alert("First create your QRify username.");
 return;
-
 }
 
-const input=
-document.getElementById(
-"friendSearchUsername"
-);
-
-const username=
-normalizeUsername(
-input.value
-);
+const input=document.getElementById("friendSearchUsername");
+const username=normalizeUsername(input.value);
 
 if(!username){
-
-alert(
-"Enter a username."
-);
-
+alert("Enter a username.");
 return;
-
 }
 
-const results=
-document.getElementById(
-"friendSearchResults"
-);
-
-results.innerHTML=
-"<p>🔎 Searching...</p>";
+const results=document.getElementById("friendSearchResults");
+results.innerHTML="<p>🔎 Searching...</p>";
 
 try{
 
-const userDocs=
-await findUsersByUsername(
-username
-);
-
+const userDocs=await findUsersByUsername(username);
 results.innerHTML="";
 
 if(userDocs.length===0){
 
 results.innerHTML=`
-
 <div class="user-result">
-
 ❌ User not found
-
 <br><br>
-
 <span class="small-text">
 Check the username and try again.
 </span>
-
 </div>
-
 `;
 
 return;
 
 }
 
-for(
-const userDoc of userDocs
-){
+for(const userDoc of userDocs){
 
 const data=userDoc.data();
 
-if(
-userDoc.id===currentUser.uid
-){
+if(userDoc.id===currentUser.uid){
 
 results.innerHTML=`
-
 <div class="user-result">
-
 👤 This is your own username.
-
 </div>
-
 `;
 
 continue;
 
 }
 
-const status=
-await getFriendStatus(
-userDoc.id
-);
-
+const status=await getFriendStatus(userDoc.id);
 let actionHTML="";
 
 if(status==="friends"){
 
 actionHTML=`
-
-<button
-class="secondary"
+<button class="secondary"
 onclick="openChatFromFriend(
 '${escapeJS(userDoc.id)}',
 '${escapeJS(data.username||"")}',
 '${escapeJS(data.displayName||"QRify User")}'
 )">
-
 💬 Chat
-
 </button>
-
 `;
 
-}else if(
-status==="outgoing"
-){
+}else if(status==="outgoing"){
 
 actionHTML=`
-
-<button
-class="secondary"
-disabled>
-
+<button class="secondary" disabled>
 ⏳ Request Sent
-
 </button>
-
 `;
 
-}else if(
-status==="incoming"
-){
+}else if(status==="incoming"){
 
 actionHTML=`
-
-<button
-class="success"
+<button class="success"
 onclick="acceptFriendRequestByUser(
 '${escapeJS(userDoc.id)}'
 )">
-
 ✅ Accept Request
-
 </button>
-
 `;
 
 }else{
 
 actionHTML=`
-
-<button
-class="success"
+<button class="success"
 onclick="sendFriendRequest(
 '${escapeJS(userDoc.id)}',
 '${escapeJS(data.username||"")}',
 '${escapeJS(data.displayName||"QRify User")}'
 )">
-
 ➕ Add Friend
-
 </button>
-
 `;
 
 }
 
-const div=
-document.createElement(
-"div"
-);
-
-div.className=
-"user-result";
+const div=document.createElement("div");
+div.className="user-result";
 
 div.innerHTML=`
-
-<strong>
-${escapeHTML(
-data.displayName||
-"QRify User"
-)}
-</strong>
-
+<strong>${escapeHTML(data.displayName||"QRify User")}</strong>
 <br>
-
-<span class="username">
-@${escapeHTML(
-data.username||""
-)}
-</span>
-
+<span class="username">@${escapeHTML(data.username||"")}</span>
 <br>
-
 ${actionHTML}
-
 `;
 
 results.appendChild(div);
@@ -2834,114 +1719,60 @@ results.appendChild(div);
 
 }catch(error){
 
-console.error(
-"Friend search error:",
-error
-);
+console.error(error);
 
 results.innerHTML=`
-
 <div class="user-result">
-
 ❌ Search failed.
-
 <br><br>
-
 <span class="small-text">
-
-${escapeHTML(
-error.message
-)}
-
+${escapeHTML(error.message)}
 </span>
-
 </div>
-
 `;
 
 }
 
 };
 
-
-/* =====================================================
-   SEND FRIEND REQUEST
-===================================================== */
-
-window.sendFriendRequest=
-async function(
+window.sendFriendRequest=async function(
 receiverId,
 receiverUsername,
 receiverName
 ){
 
 if(!currentUser){
-
-alert(
-"Please sign in first."
-);
-
+alert("Please sign in first.");
 return;
-
 }
 
 if(!currentUsername){
-
-alert(
-"Create your QRify username first."
-);
-
+alert("Create your QRify username first.");
 return;
-
 }
 
-if(
-receiverId===currentUser.uid
-){
-
-alert(
-"You cannot send a friend request to yourself."
-);
-
+if(receiverId===currentUser.uid){
+alert("You cannot send a friend request to yourself.");
 return;
-
 }
 
 try{
 
-const status=
-await getFriendStatus(
-receiverId
-);
+const status=await getFriendStatus(receiverId);
 
 if(status==="friends"){
-
-alert(
-"You are already friends."
-);
-
+alert("You are already friends.");
 return;
-
 }
 
 if(status==="outgoing"){
-
-alert(
-"Friend request already sent."
-);
-
+alert("Friend request already sent.");
 return;
-
 }
 
 if(status==="incoming"){
-
-alert(
-"This person already sent you a request. Check Friend Requests."
-);
-
+alert("This person already sent you a request. Check Friend Requests.");
 return;
-
 }
 
 const requestId=
@@ -2951,88 +1782,41 @@ receiverId
 );
 
 await setDoc(
-doc(
-db,
-"friend_requests",
-requestId
-),
+doc(db,"friend_requests",requestId),
 {
-senderId:
-currentUser.uid,
-
-senderUsername:
-currentUsername,
-
-senderName:
-currentUser.displayName||
-"QRify User",
-
-receiverId:
-receiverId,
-
-receiverUsername:
-receiverUsername,
-
-receiverName:
-receiverName,
-
+senderId:currentUser.uid,
+senderUsername:currentUsername,
+senderName:currentUser.displayName||"QRify User",
+receiverId:receiverId,
+receiverUsername:receiverUsername,
+receiverName:receiverName,
 status:"pending",
-
-createdAt:
-serverTimestamp()
-
+createdAt:serverTimestamp()
 }
 );
 
-alert(
-"✅ Friend request sent to @"+
-receiverUsername
-);
-
+alert("✅ Friend request sent to @"+receiverUsername);
 await searchFriendUser();
 
 }catch(error){
 
-console.error(
-"Friend request error:",
-error
-);
-
-alert(
-"Could not send friend request: "+
-error.message
-);
+console.error(error);
+alert("Could not send friend request: "+error.message);
 
 }
 
 };
 
-
-/* =====================================================
-   FRIEND REQUEST LISTENER
-===================================================== */
-
 function startFriendRequestListener(){
 
 if(!currentUser)return;
 
-if(unsubscribeFriendRequests){
-
+if(unsubscribeFriendRequests)
 unsubscribeFriendRequests();
 
-}
-
-const requestsQuery=
-query(
-collection(
-db,
-"friend_requests"
-),
-where(
-"receiverId",
-"==",
-currentUser.uid
-)
+const requestsQuery=query(
+collection(db,"friend_requests"),
+where("receiverId","==",currentUser.uid)
 );
 
 unsubscribeFriendRequests=
@@ -3040,124 +1824,70 @@ onSnapshot(
 requestsQuery,
 snapshot=>{
 
-const pendingRequests=
-snapshot.docs.filter(
-requestDoc=>
-requestDoc.data().status===
-"pending"
+const pendingRequests=snapshot.docs.filter(
+requestDoc=>requestDoc.data().status==="pending"
 );
 
-displayFriendRequests(
-pendingRequests
-);
-
-updateFriendRequestBadge(
-pendingRequests.length
-);
+displayFriendRequests(pendingRequests);
+updateFriendRequestBadge(pendingRequests.length);
 
 },
-error=>{
-
-console.error(
-"Friend request listener error:",
-error
-);
-
-}
+error=>console.error(error)
 );
 
 }
 
+function displayFriendRequests(requests){
 
-/* =====================================================
-   DISPLAY REQUESTS
-===================================================== */
-
-function displayFriendRequests(
-requests
-){
-
-const container=
-document.getElementById(
-"friendRequestsList"
-);
-
+const container=document.getElementById("friendRequestsList");
 container.innerHTML="";
 
 if(requests.length===0){
 
 container.innerHTML=`
-
 <p class="small-text empty-message">
 No pending friend requests.
 </p>
-
 `;
 
 return;
 
 }
 
-requests.forEach(
-requestDoc=>{
+requests.forEach(requestDoc=>{
 
-const data=
-requestDoc.data();
+const data=requestDoc.data();
+const item=document.createElement("div");
 
-const item=
-document.createElement(
-"div"
-);
-
-item.className=
-"request-item";
+item.className="request-item";
 
 item.innerHTML=`
-
-<strong>
-${escapeHTML(
-data.senderName||
-"QRify User"
-)}
-</strong>
-
+<strong>${escapeHTML(data.senderName||"QRify User")}</strong>
 <br>
-
 <span class="username">
-@${escapeHTML(
-data.senderUsername||
-""
-)}
+@${escapeHTML(data.senderUsername||"")}
 </span>
-
 <p class="small-text">
 Wants to be your friend.
 </p>
 
 <div class="request-actions">
 
-<button
-class="success"
+<button class="success"
 onclick="acceptFriendRequest(
 '${escapeJS(requestDoc.id)}'
 )">
-
 ✅ Accept
-
 </button>
 
-<button
-class="danger"
+<button class="danger"
 onclick="rejectFriendRequest(
 '${escapeJS(requestDoc.id)}'
 )">
-
 ❌ Reject
-
 </button>
 
 </div>
-
 `;
 
 container.appendChild(item);
@@ -3166,115 +1896,53 @@ container.appendChild(item);
 
 }
 
+function updateFriendRequestBadge(count){
 
-/* =====================================================
-   BADGE
-===================================================== */
+const badge=document.getElementById("friendRequestBadge");
+const countElement=document.getElementById("friendRequestCount");
 
-function updateFriendRequestBadge(
-count
-){
-
-const badge=
-document.getElementById(
-"friendRequestBadge"
-);
-
-const countElement=
-document.getElementById(
-"friendRequestCount"
-);
-
-if(countElement){
-
-countElement.textContent=
-count;
-
-}
+if(countElement)
+countElement.textContent=count;
 
 if(!badge)return;
 
 if(count>0){
 
 badge.textContent=count;
-
-badge.classList.remove(
-"hidden"
-);
+badge.classList.remove("hidden");
 
 }else{
 
-badge.classList.add(
-"hidden"
-);
+badge.classList.add("hidden");
 
 }
 
 }
 
-
-/* =====================================================
-   ACCEPT FRIEND REQUEST
-===================================================== */
-
-window.acceptFriendRequest=
-async function(
-requestId
-){
+window.acceptFriendRequest=async function(requestId){
 
 if(!currentUser)return;
 
 try{
 
-const requestRef=
-doc(
-db,
-"friend_requests",
-requestId
-);
+const requestRef=doc(db,"friend_requests",requestId);
+const requestSnapshot=await getDoc(requestRef);
 
-const requestSnapshot=
-await getDoc(
-requestRef
-);
-
-if(
-!requestSnapshot.exists()
-){
-
-alert(
-"Friend request no longer exists."
-);
-
+if(!requestSnapshot.exists()){
+alert("Friend request no longer exists.");
 return;
-
 }
 
-const data=
-requestSnapshot.data();
+const data=requestSnapshot.data();
 
-if(
-data.receiverId!==currentUser.uid
-){
-
-alert(
-"You cannot accept this request."
-);
-
+if(data.receiverId!==currentUser.uid){
+alert("You cannot accept this request.");
 return;
-
 }
 
-if(
-data.status!=="pending"
-){
-
-alert(
-"This request is no longer pending."
-);
-
+if(data.status!=="pending"){
+alert("This request is no longer pending.");
 return;
-
 }
 
 const friendId=
@@ -3284,77 +1952,43 @@ data.receiverId
 );
 
 await setDoc(
-doc(
-db,
-"friends",
-friendId
-),
+doc(db,"friends",friendId),
 {
-members:[
-data.senderId,
-data.receiverId
-],
-
+members:[data.senderId,data.receiverId],
 memberUsernames:[
 data.senderUsername,
 data.receiverUsername
 ],
-
 memberNames:[
 data.senderName,
 data.receiverName
 ],
-
-createdAt:
-serverTimestamp()
-
+createdAt:serverTimestamp()
 },
-{
-merge:true
-}
+{merge:true}
 );
 
 await setDoc(
 requestRef,
 {
 status:"accepted",
-respondedAt:
-serverTimestamp()
+respondedAt:serverTimestamp()
 },
-{
-merge:true
-}
+{merge:true}
 );
 
-alert(
-"✅ Friend request accepted!"
-);
+alert("✅ Friend request accepted!");
 
 }catch(error){
 
-console.error(
-"Accept request error:",
-error
-);
-
-alert(
-"Could not accept friend request: "+
-error.message
-);
+console.error(error);
+alert("Could not accept friend request: "+error.message);
 
 }
 
 };
 
-
-/* =====================================================
-   ACCEPT FROM SEARCH
-===================================================== */
-
-window.acceptFriendRequestByUser=
-async function(
-senderId
-){
+window.acceptFriendRequestByUser=async function(senderId){
 
 if(!currentUser)return;
 
@@ -3366,249 +2000,131 @@ senderId,
 currentUser.uid
 );
 
-await acceptFriendRequest(
-requestId
-);
-
+await acceptFriendRequest(requestId);
 await searchFriendUser();
 
 }catch(error){
-
 console.error(error);
-
 }
 
 };
 
-
-/* =====================================================
-   REJECT REQUEST
-===================================================== */
-
-window.rejectFriendRequest=
-async function(
-requestId
-){
+window.rejectFriendRequest=async function(requestId){
 
 if(!currentUser)return;
 
 try{
 
-const requestRef=
-doc(
-db,
-"friend_requests",
-requestId
-);
+const requestRef=doc(db,"friend_requests",requestId);
+const requestSnapshot=await getDoc(requestRef);
 
-const requestSnapshot=
-await getDoc(
-requestRef
-);
+if(!requestSnapshot.exists())return;
 
-if(
-!requestSnapshot.exists()
-)
+const data=requestSnapshot.data();
+
+if(data.receiverId!==currentUser.uid){
+alert("You cannot reject this request.");
 return;
-
-const data=
-requestSnapshot.data();
-
-if(
-data.receiverId!==currentUser.uid
-){
-
-alert(
-"You cannot reject this request."
-);
-
-return;
-
 }
 
 await setDoc(
 requestRef,
 {
 status:"rejected",
-respondedAt:
-serverTimestamp()
+respondedAt:serverTimestamp()
 },
-{
-merge:true
-}
+{merge:true}
 );
 
 }catch(error){
 
-console.error(
-"Reject request error:",
-error
-);
-
-alert(
-"Could not reject request: "+
-error.message
-);
+console.error(error);
+alert("Could not reject friend request: "+error.message);
 
 }
 
 };
 
-
-/* =====================================================
-   FRIENDS LISTENER
-===================================================== */
-
 function startFriendsListener(){
 
 if(!currentUser)return;
 
-if(unsubscribeFriends){
-
+if(unsubscribeFriends)
 unsubscribeFriends();
 
-}
-
-const friendsQuery=
-query(
+const friendsQuery=query(
 collection(db,"friends"),
-where(
-"members",
-"array-contains",
-currentUser.uid
-)
+where("members","array-contains",currentUser.uid)
 );
 
 unsubscribeFriends=
 onSnapshot(
 friendsQuery,
-snapshot=>{
-
-displayFriends(
-snapshot
-);
-
-},
-error=>{
-
-console.error(
-"Friends listener error:",
-error
-);
-
-}
+snapshot=>displayFriends(snapshot),
+error=>console.error(error)
 );
 
 }
 
+function displayFriends(snapshot){
 
-/* =====================================================
-   DISPLAY FRIENDS
-===================================================== */
-
-function displayFriends(
-snapshot
-){
-
-const container=
-document.getElementById(
-"friendsList"
-);
-
-const count=
-document.getElementById(
-"friendsCount"
-);
+const container=document.getElementById("friendsList");
+const count=document.getElementById("friendsCount");
 
 container.innerHTML="";
-
-count.textContent=
-snapshot.size;
+count.textContent=snapshot.size;
 
 if(snapshot.empty){
 
 container.innerHTML=`
-
 <p class="small-text empty-message">
 You have no friends yet.
 </p>
-
 `;
 
 return;
 
 }
 
-snapshot.forEach(
-friendDoc=>{
+snapshot.forEach(friendDoc=>{
 
-const data=
-friendDoc.data();
+const data=friendDoc.data();
+const members=data.members||[];
+const usernames=data.memberUsernames||[];
+const names=data.memberNames||[];
 
-const members=
-data.members||[];
-
-const usernames=
-data.memberUsernames||[];
-
-const names=
-data.memberNames||[];
-
-const friendIndex=
-members.findIndex(
-uid=>
-uid!==currentUser.uid
+const friendIndex=members.findIndex(
+uid=>uid!==currentUser.uid
 );
 
-if(friendIndex===-1)
-return;
+if(friendIndex===-1)return;
 
-const friendId=
-members[friendIndex];
+const friendId=members[friendIndex];
+const friendUsername=usernames[friendIndex]||"";
+const friendName=names[friendIndex]||"QRify User";
 
-const friendUsername=
-usernames[friendIndex]||"";
-
-const friendName=
-names[friendIndex]||
-"QRify User";
-
-const item=
-document.createElement(
-"div"
-);
-
-item.className=
-"friend-item";
+const item=document.createElement("div");
+item.className="friend-item";
 
 item.innerHTML=`
-
-<strong>
-${escapeHTML(friendName)}
-</strong>
-
+<strong>${escapeHTML(friendName)}</strong>
 <br>
-
 <span class="username">
 @${escapeHTML(friendUsername)}
 </span>
 
 <div class="friend-buttons">
 
-<button
-class="primary"
+<button class="primary"
 onclick="openChatFromFriend(
 '${escapeJS(friendId)}',
 '${escapeJS(friendUsername)}',
 '${escapeJS(friendName)}'
 )">
-
 💬 Chat
-
 </button>
 
 </div>
-
 `;
 
 container.appendChild(item);
@@ -3617,13 +2133,7 @@ container.appendChild(item);
 
 }
 
-
-/* =====================================================
-   OPEN CHAT FROM FRIEND
-===================================================== */
-
-window.openChatFromFriend=
-function(
+window.openChatFromFriend=function(
 userId,
 username,
 displayName
@@ -3631,169 +2141,93 @@ displayName
 
 showPage("chat");
 
-setTimeout(
-()=>{
-
+setTimeout(()=>{
 openChatWithUser(
 userId,
 username,
 displayName
 );
-
-},
-100
-);
+},100);
 
 };
 
+/* SEND QR */
 
-/* =====================================================
-   SEND QR USER SEARCH
-===================================================== */
-
-window.searchUser=
-async function(){
+window.searchUser=async function(){
 
 if(!currentUser){
-
-alert(
-"Please sign in first."
-);
-
+alert("Please sign in first.");
 return;
-
 }
 
 if(!currentUsername){
-
-alert(
-"First create your QRify username."
-);
-
+alert("First create your QRify username.");
 return;
-
 }
 
-const searchInput=
-document.getElementById(
-"searchUsername"
-);
-
-const username=
-normalizeUsername(
-searchInput.value
-);
+const searchInput=document.getElementById("searchUsername");
+const username=normalizeUsername(searchInput.value);
 
 if(!username){
-
-alert(
-"Enter a username."
-);
-
+alert("Enter a username.");
 return;
-
 }
 
-const results=
-document.getElementById(
-"searchResults"
-);
-
-results.innerHTML=
-"<p>🔎 Searching...</p>";
+const results=document.getElementById("searchResults");
+results.innerHTML="<p>🔎 Searching...</p>";
 
 try{
 
-const userDocs=
-await findUsersByUsername(
-username
-);
-
+const userDocs=await findUsersByUsername(username);
 results.innerHTML="";
 
 if(userDocs.length===0){
 
 results.innerHTML=`
-
 <div class="user-result">
-
 ❌ User not found
-
 <br><br>
-
 <span class="small-text">
 Check the username and try again.
 </span>
-
 </div>
-
 `;
 
 return;
 
 }
 
-userDocs.forEach(
-userDoc=>{
+userDocs.forEach(userDoc=>{
 
-const data=
-userDoc.data();
+const data=userDoc.data();
 
-if(
-userDoc.id===currentUser.uid
-){
+if(userDoc.id===currentUser.uid){
 
 results.innerHTML=`
-
 <div class="user-result">
-
 👤 This is your own username.
-
 </div>
-
 `;
 
 return;
 
 }
 
-const div=
-document.createElement(
-"div"
-);
-
-div.className=
-"user-result";
+const div=document.createElement("div");
+div.className="user-result";
 
 div.innerHTML=`
-
-<strong>
-${escapeHTML(
-data.displayName||
-"QRify User"
-)}
-</strong>
-
+<strong>${escapeHTML(data.displayName||"QRify User")}</strong>
+<br>
+<span class="username">@${escapeHTML(data.username||"")}</span>
 <br>
 
-<span class="username">
-@${escapeHTML(
-data.username||""
-)}
-</span>
-
-<br>
-
-<button
-class="success"
+<button class="success"
 onclick="sendQRToUser(
 '${escapeJS(userDoc.id)}'
 )">
-
 📤 Send Current QR
-
 </button>
-
 `;
 
 results.appendChild(div);
@@ -3802,264 +2236,143 @@ results.appendChild(div);
 
 }catch(error){
 
-console.error(
-"Send QR search error:",
-error
-);
+console.error(error);
 
 results.innerHTML=`
-
 <div class="user-result">
-
 ❌ Search failed.
-
 <br><br>
-
 <span class="small-text">
 ${escapeHTML(error.message)}
 </span>
-
 </div>
-
 `;
 
 }
 
 };
 
-
-/* =====================================================
-   SEND QR
-===================================================== */
-
-window.sendQRToUser=
-async function(
-receiverId
-){
+window.sendQRToUser=async function(receiverId){
 
 if(!currentUser){
-
-alert(
-"Please sign in first."
-);
-
+alert("Please sign in first.");
 return;
-
 }
 
 if(!currentUsername){
-
-alert(
-"Create your QRify username first."
-);
-
+alert("Create your QRify username first.");
 return;
-
 }
 
 if(!window.latestQRData){
-
-alert(
-"Generate a QR code first."
-);
-
+alert("Generate a QR code first.");
 return;
-
 }
 
 try{
 
 await addDoc(
-collection(
-db,
-"shared_qr"
-),
+collection(db,"shared_qr"),
 {
-senderId:
-currentUser.uid,
-
-senderName:
-currentUser.displayName||
-"QRify User",
-
-senderUsername:
-currentUsername,
-
-receiverId:
-receiverId,
-
-qrData:
-window.latestQRData,
-
-createdAt:
-serverTimestamp()
-
+senderId:currentUser.uid,
+senderName:currentUser.displayName||"QRify User",
+senderUsername:currentUsername,
+receiverId:receiverId,
+qrData:window.latestQRData,
+createdAt:serverTimestamp()
 }
 );
 
-alert(
-"✅ QR sent successfully!"
-);
+alert("✅ QR sent successfully!");
 
 }catch(error){
 
 console.error(error);
-
-alert(
-"Could not send QR: "+
-error.message
-);
+alert("Could not send QR: "+error.message);
 
 }
 
 };
 
-
-/* =====================================================
-   INBOX
-===================================================== */
+/* INBOX */
 
 function startInboxListener(){
 
 if(!currentUser)return;
 
-if(unsubscribeInbox){
-
+if(unsubscribeInbox)
 unsubscribeInbox();
 
-}
-
-const inboxQuery=
-query(
+const inboxQuery=query(
 collection(db,"shared_qr"),
-where(
-"receiverId",
-"==",
-currentUser.uid
-)
+where("receiverId","==",currentUser.uid)
 );
 
 unsubscribeInbox=
 onSnapshot(
 inboxQuery,
-snapshot=>{
-
-displayReceivedQRs(
-snapshot
-);
-
-},
-error=>{
-
-console.error(
-"Inbox error:",
-error
-);
-
-}
+snapshot=>displayReceivedQRs(snapshot),
+error=>console.error(error)
 );
 
 }
 
+function displayReceivedQRs(snapshot){
 
-/* =====================================================
-   DISPLAY RECEIVED
-===================================================== */
-
-function displayReceivedQRs(
-snapshot
-){
-
-const container=
-document.getElementById(
-"receivedQRs"
-);
-
+const container=document.getElementById("receivedQRs");
 container.innerHTML="";
 
 if(snapshot.empty){
 
 container.innerHTML=`
-
 <p class="small-text">
 No QR codes received yet.
 </p>
-
 `;
 
 return;
 
 }
 
-snapshot.forEach(
-qrDoc=>{
+snapshot.forEach(qrDoc=>{
 
-const data=
-qrDoc.data();
+const data=qrDoc.data();
+const item=document.createElement("div");
 
-const item=
-document.createElement(
-"div"
-);
+item.className="received-item";
 
-item.className=
-"received-item";
-
-const qrId=
-"received-"+qrDoc.id;
+const qrId="received-"+qrDoc.id;
 
 item.innerHTML=`
-
 <strong>
 📩 From:
-${escapeHTML(
-data.senderName||
-"QRify User"
-)}
+${escapeHTML(data.senderName||"QRify User")}
 </strong>
-
 <br>
 
 <span class="username">
-@${escapeHTML(
-data.senderUsername||
-""
-)}
+@${escapeHTML(data.senderUsername||"")}
 </span>
 
-<div
-id="${qrId}"
-class="received-qr">
-</div>
+<div id="${qrId}" class="received-qr"></div>
 
 <br>
 
-<button
-class="primary"
+<button class="primary"
 onclick="copyReceivedQR(
 '${escapeJS(qrDoc.id)}'
 )">
-
 📋 Copy Data
-
 </button>
-
 `;
 
 container.prepend(item);
 
-setTimeout(
-()=>{
+setTimeout(()=>{
 
-const qrContainer=
-document.getElementById(
-qrId
-);
+const qrContainer=document.getElementById(qrId);
 
-if(
-qrContainer &&
-data.qrData
-){
+if(qrContainer&&data.qrData){
 
 new QRCode(
 qrContainer,
@@ -4067,226 +2380,124 @@ qrContainer,
 text:data.qrData,
 width:180,
 height:180,
-correctLevel:
-QRCode.CorrectLevel.H
+correctLevel:QRCode.CorrectLevel.H
 }
 );
 
 }
 
-},
-50
-);
+},50);
 
 });
 
 }
 
-
-/* =====================================================
-   COPY RECEIVED QR
-===================================================== */
-
-window.copyReceivedQR=
-async function(
-qrId
-){
+window.copyReceivedQR=async function(qrId){
 
 try{
 
-const qrRef=
-doc(
-db,
-"shared_qr",
-qrId
-);
-
-const snapshot=
-await getDoc(qrRef);
+const qrRef=doc(db,"shared_qr",qrId);
+const snapshot=await getDoc(qrRef);
 
 if(!snapshot.exists()){
-
-alert(
-"QR no longer exists."
-);
-
+alert("QR no longer exists.");
 return;
-
 }
 
-const data=
-snapshot.data();
+const data=snapshot.data();
 
-await navigator.clipboard.writeText(
-data.qrData
-);
+await navigator.clipboard.writeText(data.qrData);
 
-alert(
-"✅ QR data copied!"
-);
+alert("✅ QR data copied!");
 
 }catch(error){
 
 console.error(error);
-
-alert(
-"Could not copy QR data."
-);
+alert("Could not copy QR data.");
 
 }
 
 };
 
+/* CHAT SEARCH */
 
-/* =====================================================
-   CHAT SEARCH
-===================================================== */
-
-window.searchChatUser=
-async function(){
+window.searchChatUser=async function(){
 
 if(!currentUser){
-
-alert(
-"Please sign in first."
-);
-
+alert("Please sign in first.");
 return;
-
 }
 
 if(!currentUsername){
-
-alert(
-"First create your QRify username."
-);
-
+alert("First create your QRify username.");
 return;
-
 }
 
-const input=
-document.getElementById(
-"chatSearchUsername"
-);
-
-const username=
-normalizeUsername(
-input.value
-);
+const input=document.getElementById("chatSearchUsername");
+const username=normalizeUsername(input.value);
 
 if(!username){
-
-alert(
-"Enter a username."
-);
-
+alert("Enter a username.");
 return;
-
 }
 
-const results=
-document.getElementById(
-"chatSearchResults"
-);
-
-results.innerHTML=
-"<p>🔎 Searching...</p>";
+const results=document.getElementById("chatSearchResults");
+results.innerHTML="<p>🔎 Searching...</p>";
 
 try{
 
-const userDocs=
-await findUsersByUsername(
-username
-);
-
+const userDocs=await findUsersByUsername(username);
 results.innerHTML="";
 
 if(userDocs.length===0){
 
 results.innerHTML=`
-
 <div class="chat-user-result">
-
 ❌ User not found
-
 <br><br>
-
 <span class="small-text">
 Check the username and try again.
 </span>
-
 </div>
-
 `;
 
 return;
 
 }
 
-userDocs.forEach(
-userDoc=>{
+userDocs.forEach(userDoc=>{
 
-const data=
-userDoc.data();
+const data=userDoc.data();
 
-if(
-userDoc.id===currentUser.uid
-){
+if(userDoc.id===currentUser.uid){
 
 results.innerHTML=`
-
 <div class="chat-user-result">
-
 👤 This is your own username.
-
 </div>
-
 `;
 
 return;
 
 }
 
-const div=
-document.createElement(
-"div"
-);
-
-div.className=
-"chat-user-result";
+const div=document.createElement("div");
+div.className="chat-user-result";
 
 div.innerHTML=`
-
-<strong>
-${escapeHTML(
-data.displayName||
-"QRify User"
-)}
-</strong>
-
+<strong>${escapeHTML(data.displayName||"QRify User")}</strong>
+<br>
+<span class="username">@${escapeHTML(data.username||"")}</span>
 <br>
 
-<span class="username">
-@${escapeHTML(
-data.username||""
-)}
-</span>
-
-<br>
-
-<button
-class="success"
+<button class="success"
 onclick="openChatWithUser(
 '${escapeJS(userDoc.id)}',
 '${escapeJS(data.username||"")}',
 '${escapeJS(data.displayName||"QRify User")}'
 )">
-
 💬 Start Chat
-
 </button>
-
 `;
 
 results.appendChild(div);
@@ -4295,63 +2506,33 @@ results.appendChild(div);
 
 }catch(error){
 
-console.error(
-"Chat search error:",
-error
-);
+console.error(error);
 
 results.innerHTML=`
-
 <div class="chat-user-result">
-
 ❌ Could not search users.
-
 <br><br>
-
 <span class="small-text">
 ${escapeHTML(error.message)}
 </span>
-
 </div>
-
 `;
 
 }
 
 };
 
+/* CHAT ID */
 
-/* =====================================================
-   CHAT ID
-===================================================== */
-
-function createChatId(
-uid1,
-uid2
-){
-
-return [
-uid1,
-uid2
-].sort().join("_");
-
+function createChatId(uid1,uid2){
+return [uid1,uid2].sort().join("_");
 }
 
-
-/* =====================================================
-   ENSURE CHAT ROOM
-===================================================== */
+/* ENSURE CHAT */
 
 async function ensureChatRoom(){
 
-if(
-!currentUser ||
-!activeChatUser
-){
-
-return null;
-
-}
+if(!currentUser||!activeChatUser)return null;
 
 const chatId=
 createChatId(
@@ -4359,12 +2540,7 @@ currentUser.uid,
 activeChatUser.uid
 );
 
-const chatRef=
-doc(
-db,
-"chats",
-chatId
-);
+const chatRef=doc(db,"chats",chatId);
 
 await setDoc(
 chatRef,
@@ -4373,162 +2549,94 @@ members:[
 currentUser.uid,
 activeChatUser.uid
 ],
-
 memberUsernames:[
 currentUsername,
 activeChatUser.username
 ],
-
 memberNames:[
-currentUser.displayName||
-"QRify User",
-
-activeChatUser.displayName||
-"QRify User"
+currentUser.displayName||"QRify User",
+activeChatUser.displayName||"QRify User"
 ],
-
-updatedAt:
-serverTimestamp()
-
+updatedAt:serverTimestamp()
 },
-{
-merge:true
-}
+{merge:true}
 );
 
 return chatId;
 
 }
 
+/* OPEN CHAT */
 
-/* =====================================================
-   OPEN CHAT
-===================================================== */
-
-window.openChatWithUser=
-async function(
+window.openChatWithUser=async function(
 userId,
 username,
 displayName
 ){
 
 if(!currentUser){
-
-alert(
-"Please sign in first."
-);
-
+alert("Please sign in first.");
 return;
-
 }
 
 activeChatUser={
-
 uid:userId,
-
-username:
-normalizeUsername(
-username
-),
-
-displayName:
-displayName
-
+username:normalizeUsername(username),
+displayName:displayName
 };
 
-document.getElementById(
-"chatWindow"
-).classList.remove(
-"hidden"
-);
+document.getElementById("chatWindow")
+.classList.remove("hidden");
 
-document.getElementById(
-"chatUserName"
-).textContent=
-"💬 "+displayName;
+document.getElementById("chatUserName")
+.textContent="💬 "+displayName;
 
-document.getElementById(
-"chatUsername"
-).textContent=
-"@"+activeChatUser.username;
+document.getElementById("chatUsername")
+.textContent="@"+activeChatUser.username;
 
-document.getElementById(
-"chatMessages"
-).innerHTML=`
-
+document.getElementById("chatMessages").innerHTML=`
 <p class="small-text">
 Connecting to chat...
 </p>
-
 `;
+
+cancelReply();
 
 try{
 
 await ensureChatRoom();
-
 startChatListener();
 
 }catch(error){
 
-console.error(
-"Could not create chat:",
-error
-);
+console.error(error);
 
-document.getElementById(
-"chatMessages"
-).innerHTML=`
-
+document.getElementById("chatMessages").innerHTML=`
 <p class="small-text">
 ❌ Could not open chat.
 </p>
-
 `;
 
-alert(
-"Could not open chat: "+
-error.message
-);
-
+alert("Could not open chat: "+error.message);
 return;
 
 }
 
-setTimeout(
-()=>{
-
-document.getElementById(
-"chatInput"
-).focus();
-
-},
-100
-);
+setTimeout(()=>{
+document.getElementById("chatInput").focus();
+},100);
 
 };
 
-
-/* =====================================================
-   CHAT LISTENER
-===================================================== */
+/* CHAT LISTENER */
 
 function startChatListener(){
 
-if(
-!currentUser ||
-!activeChatUser
-){
-
-return;
-
-}
+if(!currentUser||!activeChatUser)return;
 
 if(unsubscribeChat){
-
 unsubscribeChat();
-
 unsubscribeChat=null;
-
 }
 
 const chatId=
@@ -4548,37 +2656,23 @@ chatId,
 const messagesQuery=
 query(
 messagesRef,
-orderBy(
-"createdAt",
-"asc"
-)
+orderBy("createdAt","asc")
 );
 
 unsubscribeChat=
 onSnapshot(
 messagesQuery,
 snapshot=>{
-
-displayChatMessages(
-snapshot
-);
-
+displayChatMessages(snapshot);
 },
 error=>{
 
-console.error(
-"Chat listener error:",
-error
-);
+console.error("Chat listener error:",error);
 
-document.getElementById(
-"chatMessages"
-).innerHTML=`
-
+document.getElementById("chatMessages").innerHTML=`
 <p class="small-text">
 ❌ Could not load messages.
 </p>
-
 `;
 
 }
@@ -4586,71 +2680,45 @@ document.getElementById(
 
 }
 
-
 /* =====================================================
    DISPLAY CHAT
+   LONG PRESS = REPLY / DELETE / UNSEND
 ===================================================== */
 
-function displayChatMessages(
-snapshot
-){
+function displayChatMessages(snapshot){
 
 const container=
-document.getElementById(
-"chatMessages"
-);
+document.getElementById("chatMessages");
 
 container.innerHTML="";
 
 let visibleMessageCount=0;
 
-snapshot.forEach(
-messageDoc=>{
+snapshot.forEach(messageDoc=>{
 
-const data=
-messageDoc.data();
+const data=messageDoc.data();
 
 const deletedFor=
 Array.isArray(data.deletedFor)
 ?data.deletedFor
 :[];
 
-if(
-deletedFor.includes(
-currentUser.uid
-)
-){
-
+if(deletedFor.includes(currentUser.uid))
 return;
 
-}
-
-if(
-data.unsent===true
-){
-
+if(data.unsent===true)
 return;
-
-}
 
 visibleMessageCount++;
 
-const div=
-document.createElement(
-"div"
-);
+const div=document.createElement("div");
 
 const isMine=
-data.senderId===
-currentUser.uid;
+data.senderId===currentUser.uid;
 
 div.className=
 "chat-message "+
-(
-isMine
-?"sent"
-:"received"
-);
+(isMine?"sent":"received");
 
 let timeText="";
 
@@ -4669,77 +2737,108 @@ minute:"2-digit"
 }
 );
 
-}catch(error){
-
-timeText="";
+}catch(error){}
 
 }
 
-}
+let replyHTML="";
 
-const messageId=
-escapeJS(
-messageDoc.id
-);
+if(data.replyTo){
+
+replyHTML=`
+<div class="reply-preview">
+↪️ ${escapeHTML(data.replyTo.text||"")}
+</div>
+`;
+
+}
 
 div.innerHTML=`
 
+${replyHTML}
+
 <div class="chat-message-text">
-
-${escapeHTML(
-data.text||""
-)}
-
+${escapeHTML(data.text||"")}
 </div>
 
 <span class="chat-time">
 ${timeText}
 </span>
 
-<div class="chat-message-actions">
-
-<button
-class="message-delete-btn"
-onclick="deleteChatMessageForMe(
-'${messageId}'
-)">
-
-🗑️ Delete
-
-</button>
-
-${
-isMine
-?`
-
-<button
-class="message-unsend-btn"
-onclick="unsendChatMessage(
-'${messageId}'
-)">
-
-↩️ Unsend
-
-</button>
-
-`
-:""
-}
-
-</div>
-
 `;
+
+const messageId=escapeJS(messageDoc.id);
+
+/* LONG PRESS */
+
+let pressTimer=null;
+
+div.addEventListener(
+"touchstart",
+function(){
+
+pressTimer=setTimeout(
+function(){
+
+showMessageMenu(
+messageId,
+data.text||"",
+isMine
+);
+
+},
+600
+);
+
+},
+{passive:true}
+);
+
+div.addEventListener(
+"touchend",
+function(){
+clearTimeout(pressTimer);
+}
+);
+
+div.addEventListener(
+"touchmove",
+function(){
+clearTimeout(pressTimer);
+}
+);
+
+div.addEventListener(
+"touchcancel",
+function(){
+clearTimeout(pressTimer);
+}
+);
+
+/* DESKTOP RIGHT CLICK */
+
+div.addEventListener(
+"contextmenu",
+function(event){
+
+event.preventDefault();
+
+showMessageMenu(
+messageId,
+data.text||"",
+isMine
+);
+
+}
+);
 
 container.appendChild(div);
 
 });
 
-if(
-visibleMessageCount===0
-){
+if(visibleMessageCount===0){
 
 container.innerHTML=`
-
 <p
 class="small-text"
 style="text-align:center">
@@ -4748,7 +2847,6 @@ style="text-align:center">
 Say hello!
 
 </p>
-
 `;
 
 }
@@ -4758,6 +2856,227 @@ container.scrollHeight;
 
 }
 
+/* =====================================================
+   MESSAGE ACTION MENU
+===================================================== */
+
+window.showMessageMenu=
+function(
+messageId,
+messageText,
+isMine
+){
+
+const oldMenu=
+document.getElementById(
+"messageActionMenu"
+);
+
+if(oldMenu)
+oldMenu.remove();
+
+const menu=
+document.createElement("div");
+
+menu.id="messageActionMenu";
+menu.className="message-action-menu";
+
+menu.innerHTML=`
+
+<div class="message-action-title">
+Message options
+</div>
+
+<button
+onclick="replyToMessage(
+'${escapeJS(messageId)}',
+'${escapeJS(messageText)}'
+)">
+↪️ Reply
+</button>
+
+<button
+onclick="deleteChatMessageForMe(
+'${escapeJS(messageId)}'
+)">
+🗑️ Delete for me
+</button>
+
+${
+isMine
+?
+`
+<button
+class="unsend-option"
+onclick="unsendChatMessage(
+'${escapeJS(messageId)}'
+)">
+↩️ Unsend
+</button>
+`
+:""
+}
+
+<button
+class="cancel-option"
+onclick="closeMessageMenu()">
+Cancel
+</button>
+
+`;
+
+document.body.appendChild(menu);
+
+/* outside click */
+
+setTimeout(()=>{
+
+document.addEventListener(
+"click",
+closeMessageMenuOutside,
+{once:true}
+);
+
+},10);
+
+};
+
+function closeMessageMenuOutside(event){
+
+const menu=
+document.getElementById(
+"messageActionMenu"
+);
+
+if(
+menu &&
+!menu.contains(event.target)
+){
+
+menu.remove();
+
+}
+
+}
+
+window.closeMessageMenu=function(){
+
+const menu=
+document.getElementById(
+"messageActionMenu"
+);
+
+if(menu)
+menu.remove();
+
+};
+
+/* =====================================================
+   REPLY
+===================================================== */
+
+window.replyToMessage=
+function(
+messageId,
+messageText
+){
+
+closeMessageMenu();
+
+const input=
+document.getElementById(
+"chatInput"
+);
+
+input.dataset.replyToId=
+messageId;
+
+input.dataset.replyToText=
+messageText;
+
+showReplyPreview(messageText);
+
+input.focus();
+
+};
+
+window.showReplyPreview=
+function(text){
+
+const old=
+document.getElementById(
+"chatReplyPreview"
+);
+
+if(old)
+old.remove();
+
+const input=
+document.getElementById(
+"chatInput"
+);
+
+const preview=
+document.createElement(
+"div"
+);
+
+preview.id=
+"chatReplyPreview";
+
+preview.className=
+"chat-reply-preview";
+
+preview.innerHTML=`
+
+<div>
+
+↪️ Replying to:
+
+<strong>
+${escapeHTML(text)}
+</strong>
+
+</div>
+
+<button
+onclick="cancelReply()">
+✕
+</button>
+
+`;
+
+input.parentElement.insertBefore(
+preview,
+input
+);
+
+};
+
+window.cancelReply=
+function(){
+
+const input=
+document.getElementById(
+"chatInput"
+);
+
+if(input){
+
+delete input.dataset.replyToId;
+delete input.dataset.replyToText;
+
+}
+
+const preview=
+document.getElementById(
+"chatReplyPreview"
+);
+
+if(preview)
+preview.remove();
+
+};
 
 /* =====================================================
    SEND CHAT MESSAGE
@@ -4768,28 +3087,20 @@ async function(){
 
 if(!currentUser){
 
-alert(
-"Please sign in first."
-);
-
+alert("Please sign in first.");
 return;
 
 }
 
 if(!activeChatUser){
 
-alert(
-"Select a person to chat with."
-);
-
+alert("Select a person to chat with.");
 return;
 
 }
 
 const input=
-document.getElementById(
-"chatInput"
-);
+document.getElementById("chatInput");
 
 const text=
 input.value.trim();
@@ -4803,10 +3114,7 @@ await ensureChatRoom();
 
 if(!chatId){
 
-alert(
-"Could not create chat."
-);
-
+alert("Could not create chat.");
 return;
 
 }
@@ -4817,6 +3125,22 @@ db,
 "chats",
 chatId
 );
+
+/* REPLY DATA */
+
+let replyTo=null;
+
+if(input.dataset.replyToId){
+
+replyTo={
+messageId:
+input.dataset.replyToId,
+
+text:
+input.dataset.replyToText||""
+};
+
+}
 
 await addDoc(
 collection(
@@ -4838,6 +3162,8 @@ receiverUsername:
 activeChatUser.username,
 
 text:text,
+
+replyTo:replyTo,
 
 deletedFor:[],
 
@@ -4867,6 +3193,8 @@ merge:true
 
 input.value="";
 
+cancelReply();
+
 input.focus();
 
 }catch(error){
@@ -4885,24 +3213,17 @@ error.message
 
 };
 
-
 /* =====================================================
    DELETE MESSAGE FOR ME
 ===================================================== */
 
 window.deleteChatMessageForMe=
-async function(
-messageId
-){
+async function(messageId){
 
-if(
-!currentUser ||
-!activeChatUser
-){
+closeMessageMenu();
 
+if(!currentUser||!activeChatUser)
 return;
-
-}
 
 const confirmed=
 confirm(
@@ -4910,11 +3231,7 @@ confirm(
 "The other person will still see it."
 );
 
-if(!confirmed){
-
-return;
-
-}
+if(!confirmed)return;
 
 try{
 
@@ -4934,18 +3251,11 @@ messageId
 );
 
 const messageSnapshot=
-await getDoc(
-messageRef
-);
+await getDoc(messageRef);
 
-if(
-!messageSnapshot.exists()
-){
+if(!messageSnapshot.exists()){
 
-alert(
-"Message no longer exists."
-);
-
+alert("Message no longer exists.");
 return;
 
 }
@@ -4979,24 +3289,17 @@ error.message
 
 };
 
-
 /* =====================================================
    UNSEND MESSAGE
 ===================================================== */
 
 window.unsendChatMessage=
-async function(
-messageId
-){
+async function(messageId){
 
-if(
-!currentUser ||
-!activeChatUser
-){
+closeMessageMenu();
 
+if(!currentUser||!activeChatUser)
 return;
-
-}
 
 const confirmed=
 confirm(
@@ -5004,11 +3307,7 @@ confirm(
 "It will be removed for both users."
 );
 
-if(!confirmed){
-
-return;
-
-}
+if(!confirmed)return;
 
 try{
 
@@ -5028,18 +3327,11 @@ messageId
 );
 
 const messageSnapshot=
-await getDoc(
-messageRef
-);
+await getDoc(messageRef);
 
-if(
-!messageSnapshot.exists()
-){
+if(!messageSnapshot.exists()){
 
-alert(
-"Message no longer exists."
-);
-
+alert("Message no longer exists.");
 return;
 
 }
@@ -5047,9 +3339,7 @@ return;
 const data=
 messageSnapshot.data();
 
-if(
-data.senderId!==currentUser.uid
-){
+if(data.senderId!==currentUser.uid){
 
 alert(
 "You can only unsend your own messages."
@@ -5059,9 +3349,7 @@ return;
 
 }
 
-await deleteDoc(
-messageRef
-);
+await deleteDoc(messageRef);
 
 }catch(error){
 
@@ -5079,23 +3367,16 @@ error.message
 
 };
 
-
 /* =====================================================
-   CLEAR ALL CHAT MESSAGES
+   CLEAR ALL CHAT
 ===================================================== */
 
 window.clearAllChatMessages=
 async function(){
 
-if(
-!currentUser ||
-!activeChatUser
-){
+if(!currentUser||!activeChatUser){
 
-alert(
-"Select a chat first."
-);
-
+alert("Select a chat first.");
 return;
 
 }
@@ -5106,11 +3387,7 @@ confirm(
 "All messages in this conversation will be permanently deleted for both users."
 );
 
-if(!confirmed){
-
-return;
-
-}
+if(!confirmed)return;
 
 try{
 
@@ -5129,9 +3406,7 @@ chatId,
 );
 
 const messagesSnapshot=
-await getDocs(
-messagesRef
-);
+await getDocs(messagesRef);
 
 const messageDocs=
 messagesSnapshot.docs;
@@ -5153,13 +3428,8 @@ i,
 i+BATCH_SIZE
 );
 
-chunk.forEach(
-messageDoc=>{
-
-batch.delete(
-messageDoc.ref
-);
-
+chunk.forEach(messageDoc=>{
+batch.delete(messageDoc.ref);
 });
 
 await batch.commit();
@@ -5167,19 +3437,12 @@ await batch.commit();
 }
 
 await setDoc(
-doc(
-db,
-"chats",
-chatId
-),
+doc(db,"chats",chatId),
 {
 lastMessage:"",
-updatedAt:
-serverTimestamp()
+updatedAt:serverTimestamp()
 },
-{
-merge:true
-}
+{merge:true}
 );
 
 alert(
@@ -5202,7 +3465,6 @@ error.message
 
 };
 
-
 /* =====================================================
    DELETE CURRENT CHAT
 ===================================================== */
@@ -5212,20 +3474,14 @@ async function(){
 
 if(!currentUser){
 
-alert(
-"Please sign in first."
-);
-
+alert("Please sign in first.");
 return;
 
 }
 
 if(!activeChatUser){
 
-alert(
-"Select a chat first."
-);
-
+alert("Select a chat first.");
 return;
 
 }
@@ -5240,11 +3496,7 @@ confirm(
 `All messages in this conversation will be permanently deleted for both users.`
 );
 
-if(!confirmed){
-
-return;
-
-}
+if(!confirmed)return;
 
 try{
 
@@ -5263,9 +3515,7 @@ chatId,
 );
 
 const messagesSnapshot=
-await getDocs(
-messagesRef
-);
+await getDocs(messagesRef);
 
 const messageDocs=
 messagesSnapshot.docs;
@@ -5287,13 +3537,8 @@ i,
 i+BATCH_SIZE
 );
 
-chunk.forEach(
-messageDoc=>{
-
-batch.delete(
-messageDoc.ref
-);
-
+chunk.forEach(messageDoc=>{
+batch.delete(messageDoc.ref);
 });
 
 await batch.commit();
@@ -5311,27 +3556,24 @@ chatId
 if(unsubscribeChat){
 
 unsubscribeChat();
-
 unsubscribeChat=null;
 
 }
 
 activeChatUser=null;
 
+cancelReply();
+
 document.getElementById(
 "chatWindow"
-).classList.add(
-"hidden"
-);
+).classList.add("hidden");
 
 document.getElementById(
 "chatMessages"
 ).innerHTML=`
-
 <p class="small-text">
 Select a user to start chatting.
 </p>
-
 `;
 
 document.getElementById(
@@ -5347,9 +3589,7 @@ document.getElementById(
 "chatInput"
 ).value="";
 
-alert(
-"🗑️ Chat deleted successfully."
-);
+alert("🗑️ Chat deleted successfully.");
 
 }catch(error){
 
@@ -5367,10 +3607,7 @@ error.message
 
 };
 
-
-/* =====================================================
-   ENTER TO SEND
-===================================================== */
+/* ENTER TO SEND */
 
 window.handleChatKey=
 function(event){
@@ -5381,76 +3618,45 @@ event.key==="Enter" &&
 ){
 
 event.preventDefault();
-
 sendChatMessage();
 
 }
 
 };
 
-
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
+/* ESCAPE */
 
 function escapeHTML(value){
 
 const div=
-document.createElement(
-"div"
-);
+document.createElement("div");
 
-div.textContent=
-value||"";
+div.textContent=value||"";
 
 return div.innerHTML;
 
 }
 
-
-/* =====================================================
-   ESCAPE JAVASCRIPT
-===================================================== */
-
 function escapeJS(value){
 
 return String(value||"")
-.replace(
-/\\/g,
-"\\\\"
-)
-.replace(
-/'/g,
-"\\'"
-)
-.replace(
-/"/g,
-'\\"'
-)
-.replace(
-/\n/g,
-"\\n"
-)
-.replace(
-/\r/g,
-"\\r"
-);
+.replace(/\\/g,"\\\\")
+.replace(/'/g,"\\'")
+.replace(/"/g,'\\"')
+.replace(/\n/g,"\\n")
+.replace(/\r/g,"\\r");
 
 }
 
 </script>
 
-
 <script>
 
 let scannedLink="";
-
 let qrCodeInstance=null;
-
 let html5QrCode=null;
 
-
-/* ================= NAVIGATION ================= */
+/* NAVIGATION */
 
 function getHashPage(){
 
@@ -5463,31 +3669,19 @@ return document.getElementById(id)
 
 }
 
-function setActivePage(
-pageId
-){
+function setActivePage(pageId){
 
-document.querySelectorAll(
-".page"
-)
-.forEach(
-page=>{
-page.classList.remove(
-"active"
-);
-}
-);
+document.querySelectorAll(".page")
+.forEach(page=>{
+page.classList.remove("active");
+});
 
 const page=
-document.getElementById(
-pageId
-);
+document.getElementById(pageId);
 
 if(page){
 
-page.classList.add(
-"active"
-);
+page.classList.add("active");
 
 window.scrollTo({
 top:0,
@@ -5498,29 +3692,19 @@ behavior:"smooth"
 
 }
 
-function showPage(
-pageId,
-addHistory=true
-){
+function showPage(pageId,addHistory=true){
 
 const page=
-document.getElementById(
-pageId
-);
+document.getElementById(pageId);
 
 if(!page)return;
 
 const currentPageId=
-document.querySelector(
-".page.active"
-)?.id||"";
+document.querySelector(".page.active")?.id||"";
 
-if(
-currentPageId===pageId
-){
+if(currentPageId===pageId){
 
 closeMenu();
-
 return;
 
 }
@@ -5538,22 +3722,16 @@ page:pageId
 
 }
 
-setActivePage(
-pageId
-);
-
+setActivePage(pageId);
 closeMenu();
 
 }
 
 function initializePageHistory(){
 
-const initialPage=
-getHashPage();
+const initialPage=getHashPage();
 
-setActivePage(
-initialPage
-);
+setActivePage(initialPage);
 
 history.replaceState(
 {
@@ -5576,10 +3754,7 @@ event.state.page
 ?event.state.page
 :getHashPage();
 
-setActivePage(
-pageId
-);
-
+setActivePage(pageId);
 closeMenu();
 
 }
@@ -5589,8 +3764,7 @@ window.addEventListener(
 "hashchange",
 function(){
 
-const pageId=
-getHashPage();
+const pageId=getHashPage();
 
 if(
 !history.state||
@@ -5609,76 +3783,51 @@ page:pageId
 
 }
 
-setActivePage(
-pageId
-);
-
+setActivePage(pageId);
 closeMenu();
 
 }
 );
 
-
-/* ================= MENU ================= */
+/* MENU */
 
 function openMenu(){
 
-document.getElementById(
-"sideMenu"
-).classList.add(
-"open"
-);
+document.getElementById("sideMenu")
+.classList.add("open");
 
-document.getElementById(
-"menuOverlay"
-).classList.add(
-"show"
-);
+document.getElementById("menuOverlay")
+.classList.add("show");
 
 }
 
 function closeMenu(){
 
-document.getElementById(
-"sideMenu"
-).classList.remove(
-"open"
-);
+document.getElementById("sideMenu")
+.classList.remove("open");
 
-document.getElementById(
-"menuOverlay"
-).classList.remove(
-"show"
-);
+document.getElementById("menuOverlay")
+.classList.remove("show");
 
 }
 
-
-/* =====================================================
-   QR DATA
-===================================================== */
+/* QR DATA */
 
 function getQRData(){
 
 const type=
-document.getElementById(
-"qrType"
-).value;
+document.getElementById("qrType").value;
 
 if(type==="text"){
 
-return document.getElementById(
-"text"
-).value;
+return document.getElementById("text").value;
 
 }
 
 if(type==="website"){
 
 let url=
-document.getElementById(
-"website"
-).value.trim();
+document.getElementById("website").value.trim();
 
 if(
 url &&
@@ -5697,31 +3846,23 @@ return url;
 if(type==="phone"){
 
 return "tel:"+
-document.getElementById(
-"phone"
-).value;
+document.getElementById("phone").value;
 
 }
 
 if(type==="email"){
 
 const email=
-document.getElementById(
-"email"
-).value;
+document.getElementById("email").value;
 
 const subject=
 encodeURIComponent(
-document.getElementById(
-"emailSubject"
-).value
+document.getElementById("emailSubject").value
 );
 
 const message=
 encodeURIComponent(
-document.getElementById(
-"emailMessage"
-).value
+document.getElementById("emailMessage").value
 );
 
 return `mailto:${email}?subject=${subject}&body=${message}`;
@@ -5731,19 +3872,13 @@ return `mailto:${email}?subject=${subject}&body=${message}`;
 if(type==="wifi"){
 
 const ssid=
-document.getElementById(
-"wifiSSID"
-).value;
+document.getElementById("wifiSSID").value;
 
 const password=
-document.getElementById(
-"wifiPassword"
-).value;
+document.getElementById("wifiPassword").value;
 
 const security=
-document.getElementById(
-"wifiSecurity"
-).value;
+document.getElementById("wifiSecurity").value;
 
 return `WIFI:T:${security};S:${ssid};P:${password};;`;
 
@@ -5752,24 +3887,16 @@ return `WIFI:T:${security};S:${ssid};P:${password};;`;
 if(type==="contact"){
 
 const name=
-document.getElementById(
-"contactName"
-).value;
+document.getElementById("contactName").value;
 
 const phone=
-document.getElementById(
-"contactPhone"
-).value;
+document.getElementById("contactPhone").value;
 
 const email=
-document.getElementById(
-"contactEmail"
-).value;
+document.getElementById("contactEmail").value;
 
 const org=
-document.getElementById(
-"contactOrg"
-).value;
+document.getElementById("contactOrg").value;
 
 return `BEGIN:VCARD
 VERSION:3.0
@@ -5784,14 +3911,10 @@ END:VCARD`;
 if(type==="location"){
 
 const lat=
-document.getElementById(
-"latitude"
-).value;
+document.getElementById("latitude").value;
 
 const lon=
-document.getElementById(
-"longitude"
-).value;
+document.getElementById("longitude").value;
 
 return `geo:${lat},${lon}`;
 
@@ -5799,53 +3922,33 @@ return `geo:${lat},${lon}`;
 
 }
 
-
-/* =====================================================
-   GENERATE QR
-===================================================== */
+/* GENERATE */
 
 function generateQR(){
 
-const data=
-getQRData();
+const data=getQRData();
 
-if(
-!data ||
-!data.trim()
-){
+if(!data||!data.trim()){
 
-alert(
-"Please enter some information."
-);
-
+alert("Please enter some information.");
 return;
 
 }
 
-window.latestQRData=
-data;
+window.latestQRData=data;
 
-const size=
-parseInt(
-document.getElementById(
-"qrSize"
-).value
+const size=parseInt(
+document.getElementById("qrSize").value
 );
 
 const color=
-document.getElementById(
-"qrColor"
-).value;
+document.getElementById("qrColor").value;
 
 const background=
-document.getElementById(
-"bgColor"
-).value;
+document.getElementById("bgColor").value;
 
 const qrContainer=
-document.getElementById(
-"qrcode"
-);
+document.getElementById("qrcode");
 
 qrContainer.innerHTML="";
 
@@ -5858,57 +3961,37 @@ width:size,
 height:size,
 colorDark:color,
 colorLight:background,
-correctLevel:
-QRCode.CorrectLevel.H
+correctLevel:QRCode.CorrectLevel.H
 }
 );
 
-document.getElementById(
-"downloadBtn"
-).classList.remove(
-"hidden"
-);
+document.getElementById("downloadBtn")
+.classList.remove("hidden");
 
-document.getElementById(
-"sendQRBtn"
-).classList.remove(
-"hidden"
-);
+document.getElementById("sendQRBtn")
+.classList.remove("hidden");
 
 const sendStatus=
-document.getElementById(
-"sendQRStatus"
-);
+document.getElementById("sendQRStatus");
 
-if(sendStatus){
-
+if(sendStatus)
 sendStatus.textContent=
 "✅ QR code is ready to send.";
-
-}
 
 saveHistory(data);
 
 }
 
-
-/* =====================================================
-   DOWNLOAD
-===================================================== */
+/* DOWNLOAD */
 
 function downloadQR(){
 
 const canvas=
-document.querySelector(
-"#qrcode canvas"
-);
+document.querySelector("#qrcode canvas");
 
 if(!canvas){
 
-alert(
-"Generate a QR code first."
-);
-
+alert("Generate a QR code first.");
 return;
 
 }
@@ -5916,22 +3999,16 @@ return;
 const border=20;
 
 const newCanvas=
-document.createElement(
-"canvas"
-);
+document.createElement("canvas");
 
 newCanvas.width=
-canvas.width+
-border*2;
+canvas.width+border*2;
 
 newCanvas.height=
-canvas.height+
-border*2;
+canvas.height+border*2;
 
 const ctx=
-newCanvas.getContext(
-"2d"
-);
+newCanvas.getContext("2d");
 
 ctx.fillStyle="#ffffff";
 
@@ -5949,96 +4026,63 @@ border
 );
 
 const link=
-document.createElement(
-"a"
-);
+document.createElement("a");
 
-link.download=
-"QRify-QR.png";
+link.download="QRify-QR.png";
 
 link.href=
-newCanvas.toDataURL(
-"image/png"
-);
+newCanvas.toDataURL("image/png");
 
 link.click();
 
 }
 
-
-/* =====================================================
-   CLEAR
-===================================================== */
+/* CLEAR QR */
 
 function clearAll(){
 
 document.querySelectorAll(
 "#generate input,#generate textarea"
 )
-.forEach(
-element=>{
+.forEach(element=>{
 
-if(
-element.type==="color"
-)return;
+if(element.type==="color")return;
 
 element.value="";
 
 });
 
-document.getElementById(
-"qrcode"
-).innerHTML="";
+document.getElementById("qrcode").innerHTML="";
 
-document.getElementById(
-"downloadBtn"
-).classList.add(
-"hidden"
-);
+document.getElementById("downloadBtn")
+.classList.add("hidden");
 
-document.getElementById(
-"sendQRBtn"
-).classList.add(
-"hidden"
-);
+document.getElementById("sendQRBtn")
+.classList.add("hidden");
 
 window.latestQRData="";
 
 const sendStatus=
-document.getElementById(
-"sendQRStatus"
-);
+document.getElementById("sendQRStatus");
 
-if(sendStatus){
-
+if(sendStatus)
 sendStatus.textContent=
 "Generate a QR code first.";
 
 }
 
-}
-
-
-/* =====================================================
-   HISTORY
-===================================================== */
+/* HISTORY */
 
 function saveHistory(data){
 
 let history=
 JSON.parse(
-localStorage.getItem(
-"qrifyHistory"
-)||"[]"
+localStorage.getItem("qrifyHistory")||"[]"
 );
 
 history.unshift(data);
 
-history=
-history.slice(
-0,
-5
-);
+history=history.slice(0,5);
 
 localStorage.setItem(
 "qrifyHistory",
@@ -6049,20 +4093,15 @@ displayHistory();
 
 }
 
-
 function displayHistory(){
 
 const history=
 JSON.parse(
-localStorage.getItem(
-"qrifyHistory"
-)||"[]"
+localStorage.getItem("qrifyHistory")||"[]"
 );
 
 const container=
-document.getElementById(
-"historyList"
-);
+document.getElementById("historyList");
 
 container.innerHTML="";
 
@@ -6075,16 +4114,12 @@ return;
 
 }
 
-history.forEach(
-(item,index)=>{
+history.forEach((item,index)=>{
 
 const div=
-document.createElement(
-"div"
-);
+document.createElement("div");
 
-div.className=
-"history-item";
+div.className="history-item";
 
 div.innerHTML=`
 
@@ -6110,45 +4145,24 @@ container.appendChild(div);
 
 }
 
-
-/* =====================================================
-   DELETE HISTORY ITEM
-===================================================== */
-
-window.deleteHistoryItem=
-function(index){
+window.deleteHistoryItem=function(index){
 
 const confirmed=
 confirm(
 "Delete this QR from your history?"
 );
 
-if(!confirmed){
-
-return;
-
-}
+if(!confirmed)return;
 
 let history=
 JSON.parse(
-localStorage.getItem(
-"qrifyHistory"
-)||"[]"
+localStorage.getItem("qrifyHistory")||"[]"
 );
 
-if(
-index<0 ||
-index>=history.length
-){
-
+if(index<0||index>=history.length)
 return;
 
-}
-
-history.splice(
-index,
-1
-);
+history.splice(index,1);
 
 localStorage.setItem(
 "qrifyHistory",
@@ -6159,27 +4173,16 @@ displayHistory();
 
 };
 
-
-/* =====================================================
-   CLEAR ALL HISTORY
-===================================================== */
-
-window.clearHistory=
-function(){
+window.clearHistory=function(){
 
 const history=
 JSON.parse(
-localStorage.getItem(
-"qrifyHistory"
-)||"[]"
+localStorage.getItem("qrifyHistory")||"[]"
 );
 
 if(history.length===0){
 
-alert(
-"History is already empty."
-);
-
+alert("History is already empty.");
 return;
 
 }
@@ -6190,60 +4193,38 @@ confirm(
 "All saved QR history on this device will be deleted."
 );
 
-if(!confirmed){
+if(!confirmed)return;
 
-return;
-
-}
-
-localStorage.removeItem(
-"qrifyHistory"
-);
+localStorage.removeItem("qrifyHistory");
 
 displayHistory();
 
-alert(
-"🧹 QR history cleared successfully."
-);
+alert("🧹 QR history cleared successfully.");
 
 };
 
-
-/* =====================================================
-   DARK MODE
-===================================================== */
+/* DARK MODE */
 
 function toggleDarkMode(){
 
-document.body.classList.toggle(
-"dark"
-);
+document.body.classList.toggle("dark");
 
 localStorage.setItem(
 "qrifyDarkMode",
-document.body.classList.contains(
-"dark"
-)
+document.body.classList.contains("dark")
 );
 
 }
 
 if(
-localStorage.getItem(
-"qrifyDarkMode"
-)==="true"
+localStorage.getItem("qrifyDarkMode")==="true"
 ){
 
-document.body.classList.add(
-"dark"
-);
+document.body.classList.add("dark");
 
 }
 
-
-/* =====================================================
-   QR FIELDS
-===================================================== */
+/* QR FIELDS */
 
 function showFields(){
 
@@ -6257,40 +4238,26 @@ const fields=[
 "locationFields"
 ];
 
-fields.forEach(
-id=>{
-
-document.getElementById(
-id
-).classList.add(
-"hidden"
-);
-
+fields.forEach(id=>{
+document.getElementById(id)
+.classList.add("hidden");
 });
 
 const type=
-document.getElementById(
-"qrType"
-).value;
+document.getElementById("qrType").value;
 
 document.getElementById(
 type+"Fields"
-).classList.remove(
-"hidden"
-);
+)
+.classList.remove("hidden");
 
 }
 
-
-/* =====================================================
-   CAMERA SCAN
-===================================================== */
+/* CAMERA */
 
 function startCameraScan(){
 
-document.getElementById(
-"reader"
-).innerHTML="";
+document.getElementById("reader").innerHTML="";
 
 if(html5QrCode){
 
@@ -6298,18 +4265,14 @@ try{
 
 html5QrCode
 .stop()
-.catch(
-()=>{}
-);
+.catch(()=>{});
 
 }catch(error){}
 
 }
 
 html5QrCode=
-new Html5Qrcode(
-"reader"
-);
+new Html5Qrcode("reader");
 
 html5QrCode.start(
 {
@@ -6321,25 +4284,20 @@ qrbox:250
 },
 qrCodeMessage=>{
 
-showScanResult(
-qrCodeMessage
-);
+showScanResult(qrCodeMessage);
 
 if(html5QrCode){
 
 html5QrCode
 .stop()
-.catch(
-()=>{}
-);
+.catch(()=>{});
 
 }
 
 },
 errorMessage=>{}
 )
-.catch(
-error=>{
+.catch(error=>{
 
 console.error(error);
 
@@ -6351,10 +4309,7 @@ alert(
 
 }
 
-
-/* =====================================================
-   IMAGE SCAN
-===================================================== */
+/* IMAGE SCAN */
 
 function scanImage(event){
 
@@ -6364,27 +4319,18 @@ event.target.files[0];
 if(!file)return;
 
 const scanner=
-new Html5Qrcode(
-"reader"
-);
+new Html5Qrcode("reader");
 
 scanner.scanFile(
 file,
 true
 )
+.then(decodedText=>{
 
-.then(
-decodedText=>{
+showScanResult(decodedText);
 
-showScanResult(
-decodedText
-);
-
-}
-)
-
-.catch(
-error=>{
+})
+.catch(error=>{
 
 console.error(error);
 
@@ -6396,36 +4342,22 @@ alert(
 
 }
 
+/* SCAN RESULT */
 
-/* =====================================================
-   SCAN RESULT
-===================================================== */
-
-function showScanResult(
-text
-){
+function showScanResult(text){
 
 const result=
-document.getElementById(
-"scanResult"
-);
+document.getElementById("scanResult");
 
 const scanText=
-document.getElementById(
-"scanText"
-);
+document.getElementById("scanText");
 
 const openButton=
-document.getElementById(
-"openLinkBtn"
-);
+document.getElementById("openLinkBtn");
 
-scanText.textContent=
-text;
+scanText.textContent=text;
 
-result.classList.remove(
-"hidden"
-);
+result.classList.remove("hidden");
 
 if(
 text.startsWith("http://")||
@@ -6433,36 +4365,22 @@ text.startsWith("https://")||
 text.startsWith("www.")
 ){
 
-scannedLink=
-text;
+scannedLink=text;
 
-if(
-text.startsWith("www.")
-){
+if(text.startsWith("www."))
+scannedLink="https://"+text;
 
-scannedLink=
-"https://"+text;
-
-}
-
-openButton.classList.remove(
-"hidden"
-);
+openButton.classList.remove("hidden");
 
 }else{
 
-openButton.classList.add(
-"hidden"
-);
+openButton.classList.add("hidden");
 
 }
 
 }
 
-
-/* =====================================================
-   OPEN LINK
-===================================================== */
+/* OPEN LINK */
 
 function openScannedLink(){
 
@@ -6477,46 +4395,31 @@ scannedLink,
 
 }
 
-
-/* =====================================================
-   INITIALIZE
-===================================================== */
+/* INITIALIZE */
 
 initializePageHistory();
-
 displayHistory();
-
 showFields();
 
+/* PWA */
 
-/* =====================================================
-   EXISTING QRIFY PWA SERVICE WORKER
-===================================================== */
-
-if(
-"serviceWorker" in navigator
-){
+if("serviceWorker" in navigator){
 
 window.addEventListener(
 "load",
 function(){
 
 navigator.serviceWorker
-.register(
-"./sw.js"
-)
-.then(
-registration=>{
+.register("./sw.js")
+.then(registration=>{
 
 console.log(
 "QRify Service Worker registered:",
 registration.scope
 );
 
-}
-)
-.catch(
-function(error){
+})
+.catch(error=>{
 
 console.log(
 "Service Worker error:",
