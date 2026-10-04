@@ -1,4 +1,4 @@
-const CACHE_NAME = "qrify-v1";
+const CACHE_NAME = "qrify-v2";
 
 const FILES = [
   "./",
