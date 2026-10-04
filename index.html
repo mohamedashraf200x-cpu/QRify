@@ -25,173 +25,484 @@ content="5HCcQf2Dkuhb6cXjoyaUMdktFcyYmGymxjnBAaxDoyA">
 <style>
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
+
 body{
- margin:0;font-family:Arial,sans-serif;
- background:#f3f4f6;color:#111827;transition:.3s
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#f3f4f6;
+ color:#111827;
+ transition:.3s
 }
-body.dark{background:#111827;color:#f9fafb}
+
+body.dark{
+ background:#111827;
+ color:#f9fafb
+}
 
 header{
- background:#111827;color:white;padding:12px 16px;
- display:flex;align-items:center;justify-content:space-between;
- position:sticky;top:0;z-index:1000
-}
-header img{width:130px;max-width:55%}
-.menu-btn{
- background:#2563eb;color:white;border:none;width:48px;height:44px;
- border-radius:12px;font-size:24px;cursor:pointer;margin:0
-}
-.menu-overlay{
- position:fixed;inset:0;background:rgba(0,0,0,.45);
- z-index:1500;display:none
-}
-.menu-overlay.show{display:block}
-.side-menu{
- position:fixed;top:0;right:-300px;width:285px;height:100%;
- background:white;z-index:1600;padding:20px;
- box-shadow:-5px 0 20px rgba(0,0,0,.2);
- transition:.3s;overflow-y:auto
-}
-body.dark .side-menu{background:#1f2937;color:white}
-.side-menu.open{right:0}
-.menu-header{
- display:flex;justify-content:space-between;align-items:center;
- padding-bottom:15px;border-bottom:1px solid #d1d5db;margin-bottom:15px
-}
-.menu-header h2{margin:0}
-.close-menu{background:transparent;color:inherit;font-size:26px;margin:0;padding:5px}
-.menu-item{
- width:100%;text-align:left;background:transparent;color:inherit;
- padding:14px;margin:3px 0;border-radius:10px;font-size:16px
-}
-.menu-item:hover{background:#e5e7eb}
-body.dark .menu-item:hover{background:#374151}
-.menu-badge{
- float:right;background:#dc2626;color:white;border-radius:20px;
- padding:2px 8px;font-size:12px
+ background:#111827;
+ color:white;
+ padding:12px 16px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ position:sticky;
+ top:0;
+ z-index:1000
 }
 
-.container{max-width:700px;margin:20px auto;padding:15px}
-.page{display:none}
-.page.active{display:block}
+header img{
+ width:130px;
+ max-width:55%
+}
+
+.menu-btn{
+ background:#2563eb;
+ color:white;
+ border:none;
+ width:48px;
+ height:44px;
+ border-radius:12px;
+ font-size:24px;
+ cursor:pointer;
+ margin:0
+}
+
+.menu-overlay{
+ position:fixed;
+ inset:0;
+ background:rgba(0,0,0,.45);
+ z-index:1500;
+ display:none
+}
+
+.menu-overlay.show{
+ display:block
+}
+
+.side-menu{
+ position:fixed;
+ top:0;
+ right:-300px;
+ width:285px;
+ height:100%;
+ background:white;
+ z-index:1600;
+ padding:20px;
+ box-shadow:-5px 0 20px rgba(0,0,0,.2);
+ transition:.3s;
+ overflow-y:auto
+}
+
+body.dark .side-menu{
+ background:#1f2937;
+ color:white
+}
+
+.side-menu.open{
+ right:0
+}
+
+.menu-header{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ padding-bottom:15px;
+ border-bottom:1px solid #d1d5db;
+ margin-bottom:15px
+}
+
+.menu-header h2{
+ margin:0
+}
+
+.close-menu{
+ background:transparent;
+ color:inherit;
+ font-size:26px;
+ margin:0;
+ padding:5px
+}
+
+.menu-item{
+ width:100%;
+ text-align:left;
+ background:transparent;
+ color:inherit;
+ padding:14px;
+ margin:3px 0;
+ border-radius:10px;
+ font-size:16px
+}
+
+.menu-item:hover{
+ background:#e5e7eb
+}
+
+body.dark .menu-item:hover{
+ background:#374151
+}
+
+.menu-badge{
+ float:right;
+ background:#dc2626;
+ color:white;
+ border-radius:20px;
+ padding:2px 8px;
+ font-size:12px
+}
+
+.container{
+ max-width:700px;
+ margin:20px auto;
+ padding:15px
+}
+
+.page{
+ display:none
+}
+
+.page.active{
+ display:block
+}
 
 .card{
- background:white;padding:20px;border-radius:16px;
- box-shadow:0 5px 20px rgba(0,0,0,.08);margin-bottom:20px
+ background:white;
+ padding:20px;
+ border-radius:16px;
+ box-shadow:0 5px 20px rgba(0,0,0,.08);
+ margin-bottom:20px
 }
-body.dark .card{background:#1f2937}
 
-label{display:block;margin-top:12px;margin-bottom:6px;font-weight:bold}
+body.dark .card{
+ background:#1f2937
+}
+
+label{
+ display:block;
+ margin-top:12px;
+ margin-bottom:6px;
+ font-weight:bold
+}
+
 input,textarea,select{
- width:100%;padding:12px;border:1px solid #d1d5db;
- border-radius:10px;font-size:15px;background:white;color:#111827
+ width:100%;
+ padding:12px;
+ border:1px solid #d1d5db;
+ border-radius:10px;
+ font-size:15px;
+ background:white;
+ color:#111827
 }
-body.dark input,body.dark textarea,body.dark select{
- background:#374151;color:white;border-color:#4b5563
+
+body.dark input,
+body.dark textarea,
+body.dark select{
+ background:#374151;
+ color:white;
+ border-color:#4b5563
 }
-textarea{min-height:100px;resize:vertical}
+
+textarea{
+ min-height:100px;
+ resize:vertical
+}
 
 button{
- border:none;padding:12px 18px;border-radius:10px;
- cursor:pointer;font-size:15px;margin:6px 4px 0 0
+ border:none;
+ padding:12px 18px;
+ border-radius:10px;
+ cursor:pointer;
+ font-size:15px;
+ margin:6px 4px 0 0
 }
-button:disabled{opacity:.65;cursor:not-allowed}
-.primary{background:#2563eb;color:white}
-.secondary{background:#e5e7eb;color:#111827}
-body.dark .secondary{background:#374151;color:white}
-.danger{background:#dc2626;color:white}
-.success{background:#059669;color:white}
-.warning{background:#d97706;color:white}
-.hidden{display:none!important}
 
-.home-title{text-align:center;padding:15px 0}
-.home-title h1{margin-bottom:8px}
-.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button:disabled{
+ opacity:.65;
+ cursor:not-allowed
+}
+
+.primary{
+ background:#2563eb;
+ color:white
+}
+
+.secondary{
+ background:#e5e7eb;
+ color:#111827
+}
+
+body.dark .secondary{
+ background:#374151;
+ color:white
+}
+
+.danger{
+ background:#dc2626;
+ color:white
+}
+
+.success{
+ background:#059669;
+ color:white
+}
+
+.warning{
+ background:#d97706;
+ color:white
+}
+
+.hidden{
+ display:none!important
+}
+
+.home-title{
+ text-align:center;
+ padding:15px 0
+}
+
+.home-title h1{
+ margin-bottom:8px
+}
+
+.feature-grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px
+}
+
 .feature{
- background:#f3f4f6;padding:18px;border-radius:14px;
- text-align:center;cursor:pointer;transition:.2s
+ background:#f3f4f6;
+ padding:18px;
+ border-radius:14px;
+ text-align:center;
+ cursor:pointer;
+ transition:.2s
 }
-.feature:hover{transform:translateY(-2px)}
-body.dark .feature{background:#374151}
-.feature-icon{font-size:30px;display:block;margin-bottom:8px}
 
-.result{text-align:center}
+.feature:hover{
+ transform:translateY(-2px)
+}
+
+body.dark .feature{
+ background:#374151
+}
+
+.feature-icon{
+ font-size:30px;
+ display:block;
+ margin-bottom:8px
+}
+
+.result{
+ text-align:center
+}
+
 #qrcode{
- display:inline-block;background:white;padding:15px;
- border-radius:8px;margin-top:10px
+ display:inline-block;
+ background:white;
+ padding:15px;
+ border-radius:8px;
+ margin-top:10px
 }
-#reader{width:100%;margin-top:15px}
 
-.history-item,.received-item,.user-result,.friend-item,.request-item{
- background:#f3f4f6;padding:14px;border-radius:12px;
- margin-top:10px;word-break:break-word
+#reader{
+ width:100%;
+ margin-top:15px
 }
+
+.history-item,
+.received-item,
+.user-result,
+.friend-item,
+.request-item{
+ background:#f3f4f6;
+ padding:14px;
+ border-radius:12px;
+ margin-top:10px;
+ word-break:break-word
+}
+
 body.dark .history-item,
 body.dark .received-item,
 body.dark .user-result,
 body.dark .friend-item,
-body.dark .request-item{background:#374151}
+body.dark .request-item{
+ background:#374151
+}
 
 .received-qr{
- background:white;display:inline-block;padding:10px;
- margin-top:10px;border-radius:8px
+ background:white;
+ display:inline-block;
+ padding:10px;
+ margin-top:10px;
+ border-radius:8px
 }
-.small-text{font-size:13px;color:#6b7280}
-body.dark .small-text{color:#d1d5db}
-.account-name{font-weight:bold;font-size:18px}
-.username{color:#2563eb;font-weight:bold}
+
+.small-text{
+ font-size:13px;
+ color:#6b7280
+}
+
+body.dark .small-text{
+ color:#d1d5db
+}
+
+.account-name{
+ font-weight:bold;
+ font-size:18px
+}
+
+.username{
+ color:#2563eb;
+ font-weight:bold
+}
+
 .status{
- padding:10px;border-radius:10px;margin-top:10px;
- background:#ecfdf5;color:#065f46
+ padding:10px;
+ border-radius:10px;
+ margin-top:10px;
+ background:#ecfdf5;
+ color:#065f46
 }
-.row{display:flex;gap:10px}
-.row>*{flex:1}
+
+.row{
+ display:flex;
+ gap:10px
+}
+
+.row>*{
+ flex:1
+}
 
 .chat-user-result{
- background:#f3f4f6;padding:14px;border-radius:12px;margin-top:10px
+ background:#f3f4f6;
+ padding:14px;
+ border-radius:12px;
+ margin-top:10px
 }
-body.dark .chat-user-result{background:#374151}
-.chat-user-result button{margin-top:10px}
+
+body.dark .chat-user-result{
+ background:#374151
+}
+
+.chat-user-result button{
+ margin-top:10px
+}
 
 .chat-message{
- max-width:80%;padding:10px 13px;border-radius:14px;
- margin:7px 0;word-break:break-word
+ max-width:80%;
+ padding:10px 13px;
+ border-radius:14px;
+ margin:7px 0;
+ word-break:break-word
 }
+
 .chat-message.sent{
- margin-left:auto;background:#2563eb;color:white;
+ margin-left:auto;
+ background:#2563eb;
+ color:white;
  border-bottom-right-radius:4px
 }
+
 .chat-message.received{
- margin-right:auto;background:#e5e7eb;color:#111827;
+ margin-right:auto;
+ background:#e5e7eb;
+ color:#111827;
  border-bottom-left-radius:4px
 }
-body.dark .chat-message.received{background:#374151;color:white}
-.chat-time{
- display:block;font-size:10px;opacity:.7;margin-top:4px
+
+body.dark .chat-message.received{
+ background:#374151;
+ color:white
 }
-.chat-messages{height:350px;overflow-y:auto;padding:10px 0}
+
+.chat-time{
+ display:block;
+ font-size:10px;
+ opacity:.7;
+ margin-top:4px
+}
+
+.chat-messages{
+ height:350px;
+ overflow-y:auto;
+ padding:10px 0
+}
 
 .friend-title{
- display:flex;justify-content:space-between;align-items:center
+ display:flex;
+ justify-content:space-between;
+ align-items:center
 }
+
 .friend-count{
- background:#2563eb;color:white;border-radius:20px;
- padding:4px 10px;font-size:13px
+ background:#2563eb;
+ color:white;
+ border-radius:20px;
+ padding:4px 10px;
+ font-size:13px
 }
-.request-actions{display:flex;gap:8px;margin-top:10px}
-.request-actions button{flex:1}
-.friend-buttons{display:flex;gap:8px;margin-top:10px}
-.friend-buttons button{flex:1}
-.empty-message{text-align:center;padding:15px}
-footer{text-align:center;padding:25px;color:#6b7280}
+
+.request-actions{
+ display:flex;
+ gap:8px;
+ margin-top:10px
+}
+
+.request-actions button{
+ flex:1
+}
+
+.friend-buttons{
+ display:flex;
+ gap:8px;
+ margin-top:10px
+}
+
+.friend-buttons button{
+ flex:1
+}
+
+.empty-message{
+ text-align:center;
+ padding:15px
+}
+
+footer{
+ text-align:center;
+ padding:25px;
+ color:#6b7280
+}
 
 @media(max-width:600px){
- .container{padding:12px}
- .row{flex-direction:column}
- button{width:100%;margin-right:0}
- .feature-grid{grid-template-columns:1fr 1fr}
- .chat-message{max-width:88%}
- .request-actions,.friend-buttons{flex-direction:column}
+
+ .container{
+  padding:12px
+ }
+
+ .row{
+  flex-direction:column
+ }
+
+ button{
+  width:100%;
+  margin-right:0
+ }
+
+ .feature-grid{
+  grid-template-columns:1fr 1fr
+ }
+
+ .chat-message{
+  max-width:88%
+ }
+
+ .request-actions,
+ .friend-buttons{
+  flex-direction:column
+ }
+
 }
 </style>
 </head>
@@ -233,6 +544,7 @@ footer{text-align:center;padding:25px;color:#6b7280}
 <div class="container">
 
 <!-- HOME -->
+
 <section id="home" class="page active">
 
 <div class="card home-title">
@@ -241,6 +553,7 @@ footer{text-align:center;padding:25px;color:#6b7280}
 </div>
 
 <div class="card">
+
 <h2>What do you want to do?</h2>
 
 <div class="feature-grid">
@@ -285,14 +598,19 @@ footer{text-align:center;padding:25px;color:#6b7280}
 </div>
 </section>
 
+
 <!-- GENERATE -->
+
 <section id="generate" class="page">
 
 <div class="card">
+
 <h2>⚡ Generate QR Code</h2>
 
 <label>QR Type</label>
+
 <select id="qrType" onchange="showFields()">
+
 <option value="text">📝 Text</option>
 <option value="website">🌐 Website</option>
 <option value="phone">📞 Phone</option>
@@ -300,79 +618,113 @@ footer{text-align:center;padding:25px;color:#6b7280}
 <option value="wifi">📶 Wi-Fi</option>
 <option value="contact">👤 Contact</option>
 <option value="location">📍 Location</option>
+
 </select>
 
 <div id="textFields">
+
 <label>Message</label>
 <textarea id="text"></textarea>
+
 </div>
 
 <div id="websiteFields" class="hidden">
+
 <label>Website URL</label>
 <input id="website" placeholder="https://example.com">
+
 </div>
 
 <div id="phoneFields" class="hidden">
+
 <label>Phone Number</label>
 <input id="phone" type="tel">
+
 </div>
 
 <div id="emailFields" class="hidden">
+
 <label>Email</label>
 <input id="email" type="email">
+
 <label>Subject</label>
 <input id="emailSubject">
+
 <label>Message</label>
 <textarea id="emailMessage"></textarea>
+
 </div>
 
 <div id="wifiFields" class="hidden">
+
 <label>Wi-Fi Name (SSID)</label>
 <input id="wifiSSID">
+
 <label>Password</label>
 <input id="wifiPassword" type="password">
+
 <label>Security</label>
+
 <select id="wifiSecurity">
 <option value="WPA">WPA/WPA2</option>
 <option value="WEP">WEP</option>
 <option value="nopass">No Password</option>
 </select>
+
 </div>
 
 <div id="contactFields" class="hidden">
+
 <label>Name</label>
 <input id="contactName">
+
 <label>Phone</label>
 <input id="contactPhone">
+
 <label>Email</label>
 <input id="contactEmail">
+
 <label>Organization</label>
 <input id="contactOrg">
+
 </div>
 
 <div id="locationFields" class="hidden">
+
 <label>Latitude</label>
 <input id="latitude" type="number" step="any">
+
 <label>Longitude</label>
 <input id="longitude" type="number" step="any">
+
 </div>
 
 <label>QR Size</label>
+
 <select id="qrSize">
+
 <option value="150">Small</option>
 <option value="220" selected>Medium</option>
 <option value="300">Large</option>
+
 </select>
 
 <div class="row">
+
 <div>
+
 <label>QR Color</label>
 <input type="color" id="qrColor" value="#000000">
+
 </div>
+
 <div>
+
 <label>Background</label>
 <input type="color" id="bgColor" value="#ffffff">
+
 </div>
+
 </div>
 
 <br>
@@ -383,214 +735,405 @@ footer{text-align:center;padding:25px;color:#6b7280}
 </div>
 
 <div class="card result">
+
 <h2>Your QR Code</h2>
+
 <div id="qrcode"></div>
+
 <br>
 
-<button id="downloadBtn" class="primary hidden" onclick="downloadQR()">
+<button id="downloadBtn"
+class="primary hidden"
+onclick="downloadQR()">
 Download QR
 </button>
 
-<button id="sendQRBtn" class="success hidden" onclick="showPage('send')">
+<button id="sendQRBtn"
+class="success hidden"
+onclick="showPage('send')">
 📤 Send to Person
 </button>
 
 </div>
+
 </section>
 
+
 <!-- SCAN -->
+
 <section id="scan" class="page">
+
 <div class="card">
+
 <h2>📷 Scan QR Code</h2>
-<p class="small-text">Scan a QR using your camera or an image.</p>
 
-<button class="primary" onclick="startCameraScan()">📷 Camera Scan</button>
-<button class="secondary" onclick="document.getElementById('qrFile').click()">🖼️ Scan Image</button>
+<p class="small-text">
+Scan a QR using your camera or an image.
+</p>
 
-<input type="file" id="qrFile" accept="image/*" class="hidden" onchange="scanImage(event)">
+<button class="primary"
+onclick="startCameraScan()">
+📷 Camera Scan
+</button>
+
+<button class="secondary"
+onclick="document.getElementById('qrFile').click()">
+🖼️ Scan Image
+</button>
+
+<input
+type="file"
+id="qrFile"
+accept="image/*"
+class="hidden"
+onchange="scanImage(event)">
 
 <div id="reader"></div>
 
 <div id="scanResult" class="hidden">
+
 <h3>Scan Result</h3>
+
 <p id="scanText"></p>
-<button id="openLinkBtn" class="primary hidden" onclick="openScannedLink()">
+
+<button
+id="openLinkBtn"
+class="primary hidden"
+onclick="openScannedLink()">
 Open Link
 </button>
+
 </div>
+
 </div>
+
 </section>
 
+
 <!-- SEND -->
+
 <section id="send" class="page">
 
 <div id="accountRequired" class="card">
+
 <h2>📤 Send QR</h2>
-<p>Sign in and create a QRify username to send QR codes.</p>
-<button class="primary" onclick="showPage('profile')">👤 Open Profile</button>
+
+<p>
+Sign in and create a QRify username to send QR codes.
+</p>
+
+<button class="primary"
+onclick="showPage('profile')">
+👤 Open Profile
+</button>
+
 </div>
 
 <div id="sendCard" class="card hidden">
-<h2>📤 Send QR to Person</h2>
-<p class="small-text">Search another QRify user using their username.</p>
 
-<div id="sendQRStatus" class="status">Generate a QR code first.</div>
+<h2>📤 Send QR to Person</h2>
+
+<p class="small-text">
+Search another QRify user using their username.
+</p>
+
+<div id="sendQRStatus" class="status">
+Generate a QR code first.
+</div>
 
 <label>Search Username</label>
-<input id="searchUsername" placeholder="Enter username">
 
-<button class="primary" onclick="searchUser()">🔎 Search User</button>
+<input
+id="searchUsername"
+placeholder="Enter username">
+
+<button class="primary"
+onclick="searchUser()">
+🔎 Search User
+</button>
 
 <div id="searchResults"></div>
+
 </div>
+
 </section>
 
+
 <!-- FRIENDS -->
+
 <section id="friends" class="page">
 
 <div id="friendsLoginCard" class="card">
+
 <h2>👥 QRify Friends</h2>
-<p>Sign in to add friends and manage friend requests.</p>
-<button class="primary" onclick="showPage('profile')">👤 Open Profile</button>
+
+<p>
+Sign in to add friends and manage friend requests.
+</p>
+
+<button class="primary"
+onclick="showPage('profile')">
+👤 Open Profile
+</button>
+
 </div>
 
 <div id="friendsApp" class="hidden">
 
 <div class="card">
+
 <h2>👥 Find Friends</h2>
-<p class="small-text">Search for another QRify username.</p>
+
+<p class="small-text">
+Search for another QRify username.
+</p>
 
 <label>Username</label>
-<input id="friendSearchUsername" placeholder="Enter username or @username">
 
-<button class="primary" onclick="searchFriendUser()">
+<input
+id="friendSearchUsername"
+placeholder="Enter username or @username">
+
+<button
+class="primary"
+onclick="searchFriendUser()">
 🔎 Search User
 </button>
 
 <div id="friendSearchResults"></div>
+
 </div>
 
 <div class="card">
+
 <div class="friend-title">
+
 <h2>📩 Friend Requests</h2>
-<span id="friendRequestCount" class="friend-count">0</span>
+
+<span id="friendRequestCount"
+class="friend-count">
+0
+</span>
+
 </div>
 
 <div id="friendRequestsList">
-<p class="small-text empty-message">No pending friend requests.</p>
+
+<p class="small-text empty-message">
+No pending friend requests.
+</p>
+
 </div>
+
 </div>
 
 <div class="card">
+
 <div class="friend-title">
+
 <h2>👥 My Friends</h2>
-<span id="friendsCount" class="friend-count">0</span>
+
+<span id="friendsCount"
+class="friend-count">
+0
+</span>
+
 </div>
 
 <div id="friendsList">
-<p class="small-text empty-message">You have no friends yet.</p>
-</div>
+
+<p class="small-text empty-message">
+You have no friends yet.
+</p>
+
 </div>
 
 </div>
+
+</div>
+
 </section>
 
+
 <!-- CHAT -->
+
 <section id="chat" class="page">
 
 <div id="chatLoginCard" class="card">
+
 <h2>💬 QRify Chat</h2>
-<p>Sign in to chat privately with your QRify friends.</p>
-<button class="primary" onclick="showPage('profile')">👤 Open Profile</button>
+
+<p>
+Sign in to chat privately with your QRify friends.
+</p>
+
+<button class="primary"
+onclick="showPage('profile')">
+👤 Open Profile
+</button>
+
 </div>
 
 <div id="chatApp" class="hidden">
 
 <div class="card">
+
 <h2>💬 Start a Chat</h2>
-<p class="small-text">Search for a QRify username.</p>
+
+<p class="small-text">
+Search for a QRify username.
+</p>
 
 <label>Username</label>
-<input id="chatSearchUsername" placeholder="Enter username or @username">
 
-<button class="primary" onclick="searchChatUser()">🔎 Find User</button>
+<input
+id="chatSearchUsername"
+placeholder="Enter username or @username">
+
+<button
+class="primary"
+onclick="searchChatUser()">
+🔎 Find User
+</button>
 
 <div id="chatSearchResults"></div>
+
 </div>
 
 <div id="chatWindow" class="card hidden">
 
 <div style="padding-bottom:12px;border-bottom:1px solid #d1d5db">
-<h3 id="chatUserName" style="margin:0">💬 Select a user</h3>
-<p id="chatUsername" class="small-text" style="margin:4px 0 0"></p>
+
+<h3 id="chatUserName" style="margin:0">
+💬 Select a user
+</h3>
+
+<p
+id="chatUsername"
+class="small-text"
+style="margin:4px 0 0">
+</p>
+
 </div>
 
-<div id="chatMessages" class="chat-messages">
-<p class="small-text">Select a user to start chatting.</p>
+<div id="chatMessages"
+class="chat-messages">
+
+<p class="small-text">
+Select a user to start chatting.
+</p>
+
 </div>
 
 <div class="row" style="align-items:end">
+
 <textarea
 id="chatInput"
 placeholder="Type a message..."
 style="min-height:55px;max-height:120px"
-onkeydown="handleChatKey(event)"></textarea>
+onkeydown="handleChatKey(event)">
+</textarea>
 
-<button class="primary" style="max-width:100px" onclick="sendChatMessage()">
+<button
+class="primary"
+style="max-width:100px"
+onclick="sendChatMessage()">
 ➤ Send
 </button>
+
 </div>
 
 </div>
+
 </div>
+
 </section>
 
+
 <!-- RECEIVED -->
+
 <section id="received" class="page">
 
 <div id="inboxCard" class="card hidden">
+
 <h2>📥 Received QR Codes</h2>
+
 <div id="receivedQRs">
-<p class="small-text">No QR codes received yet.</p>
+
+<p class="small-text">
+No QR codes received yet.
+</p>
+
 </div>
+
 </div>
 
 <div id="receivedLoginMessage" class="card">
+
 <h2>📥 Received QR</h2>
-<p>Sign in to view QR codes sent to you.</p>
-<button class="primary" onclick="showPage('profile')">👤 Open Profile</button>
+
+<p>
+Sign in to view QR codes sent to you.
+</p>
+
+<button
+class="primary"
+onclick="showPage('profile')">
+👤 Open Profile
+</button>
+
 </div>
 
 </section>
+
 
 <!-- HISTORY -->
+
 <section id="history" class="page">
+
 <div class="card">
+
 <h2>🕘 Recent QR History</h2>
+
 <div id="historyList"></div>
+
 </div>
+
 </section>
 
+
 <!-- PROFILE -->
+
 <section id="profile" class="page">
 
 <div class="card">
+
 <h2>👤 QRify Account</h2>
 
-<p id="firebaseStatus">Connecting to QRify server...</p>
+<p id="firebaseStatus">
+Connecting to QRify server...
+</p>
 
-<button id="googleLoginBtn" class="primary" onclick="loginWithGoogle()">
+<button
+id="googleLoginBtn"
+class="primary"
+onclick="loginWithGoogle()">
 🔐 Sign in with Google
 </button>
 
-<button id="logoutBtn" class="secondary hidden" onclick="logoutUser()">
+<button
+id="logoutBtn"
+class="secondary hidden"
+onclick="logoutUser()">
 Logout
 </button>
 
 <div id="userInfo"></div>
+
 </div>
 
 <div id="profileCard" class="card hidden">
+
 <h2>👤 QRify Profile</h2>
 
 <p class="small-text">
@@ -598,28 +1141,76 @@ Your username is used by other QRify users to find you.
 </p>
 
 <label>QRify Username</label>
-<input id="usernameInput" placeholder="Example: ashraf123" maxlength="20">
 
-<button class="primary" onclick="saveUsername()">Save Username</button>
+<input
+id="usernameInput"
+placeholder="Example: ashraf123"
+maxlength="20">
 
-<p id="usernameStatus" class="small-text"></p>
+<button
+class="primary"
+onclick="saveUsername()">
+Save Username
+</button>
+
+<p id="usernameStatus"
+class="small-text">
+</p>
+
 </div>
 
 </section>
 
+
 <!-- SETTINGS -->
+
 <section id="settings" class="page">
 
 <div class="card">
+
 <h2>⚙️ Settings</h2>
-<button class="secondary" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+
+<button
+class="secondary"
+onclick="toggleDarkMode()">
+🌙 Dark Mode
+</button>
+
+<hr style="margin:20px 0;border:none;border-top:1px solid #d1d5db">
+
+<h3>🔔 Message Notifications</h3>
+
+<p
+id="notificationStatus"
+class="small-text">
+🔕 Message notifications are OFF.
+</p>
+
+<button
+id="notificationButton"
+class="primary"
+onclick="togglePushNotifications()">
+🔔 Enable Message Notifications
+</button>
+
 </div>
 
 <div class="card">
+
 <h2>ℹ️ About QRify</h2>
-<p>QRify helps you generate, scan, share, chat and connect easily.</p>
-<p class="small-text">Generate • Scan • Share • Chat • Connect</p>
-<p class="small-text">By Ashraf</p>
+
+<p>
+QRify helps you generate, scan, share, chat and connect easily.
+</p>
+
+<p class="small-text">
+Generate • Scan • Share • Chat • Connect
+</p>
+
+<p class="small-text">
+By Ashraf
+</p>
+
 </div>
 
 </section>
@@ -627,20 +1218,23 @@ Your username is used by other QRify users to find you.
 </div>
 
 <footer>
+
 QRify — Generate • Scan • Share • Chat • Connect
 <br>
 By Ashraf
+
 </footer>
 
 
 <!-- =====================================================
-     FIREBASE + ACCOUNT + FRIENDS + CHAT
+     FIREBASE + ACCOUNT + FRIENDS + CHAT + NOTIFICATIONS
 ===================================================== -->
 
 <script type="module">
 
 import {initializeApp}
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+
 
 import {
 getAuth,
@@ -650,6 +1244,7 @@ onAuthStateChanged,
 signOut
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
 
 import {
 getFirestore,
@@ -668,6 +1263,19 @@ serverTimestamp
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
 
+/* =====================================================
+   FIREBASE MESSAGING
+===================================================== */
+
+import {
+getMessaging,
+getToken,
+deleteToken,
+onMessage
+}
+from "https://www.gstatic.com/firebasejs/12.3.0/firebase-messaging.js";
+
+
 /* ================= FIREBASE ================= */
 
 const firebaseConfig={
@@ -679,22 +1287,553 @@ messagingSenderId:"745508886217",
 appId:"1:745508886217:web:ec2e9d549260ad28e11f18"
 };
 
+
 const app=initializeApp(firebaseConfig);
+
 const auth=getAuth(app);
+
 const db=getFirestore(app);
+
 const provider=new GoogleAuthProvider();
+
+
+/* =====================================================
+   FIREBASE CLOUD MESSAGING
+===================================================== */
+
+const messaging=getMessaging(app);
+
+
+/*
+ IMPORTANT:
+
+ Replace this with your Firebase Console
+ Web Push certificate PUBLIC key.
+
+ Example:
+
+ const VAPID_KEY="Bxxxxxxxxxxxxxxxxxxxxxxxx";
+
+ DO NOT put your VAPID PRIVATE KEY here.
+*/
+
+const VAPID_KEY="YOUR_VAPID_PUBLIC_KEY";
 
 
 /* ================= GLOBAL STATE ================= */
 
 let currentUser=null;
+
 let currentUsername="";
+
 window.latestQRData="";
+
 let unsubscribeInbox=null;
+
 let activeChatUser=null;
+
 let unsubscribeChat=null;
+
 let unsubscribeFriendRequests=null;
+
 let unsubscribeFriends=null;
+
+
+/* =====================================================
+   NOTIFICATION UI
+===================================================== */
+
+function updateNotificationUI(enabled){
+
+const button=
+document.getElementById(
+"notificationButton"
+);
+
+const status=
+document.getElementById(
+"notificationStatus"
+);
+
+if(!button||!status)return;
+
+
+if(enabled){
+
+button.textContent=
+"🔕 Disable Message Notifications";
+
+button.className="danger";
+
+status.textContent=
+"🔔 Message notifications are ON.";
+
+}else{
+
+button.textContent=
+"🔔 Enable Message Notifications";
+
+button.className="primary";
+
+status.textContent=
+"🔕 Message notifications are OFF.";
+
+}
+
+}
+
+
+/* =====================================================
+   ENABLE PUSH NOTIFICATIONS
+===================================================== */
+
+async function enablePushNotifications(){
+
+if(!currentUser){
+
+alert("Please sign in first.");
+
+return;
+
+}
+
+
+if(!("Notification" in window)){
+
+alert(
+"This browser does not support notifications."
+);
+
+return;
+
+}
+
+
+if(!("serviceWorker" in navigator)){
+
+alert(
+"Service Worker is not supported."
+);
+
+return;
+
+}
+
+
+if(
+!VAPID_KEY ||
+VAPID_KEY==="YOUR_VAPID_PUBLIC_KEY"
+){
+
+alert(
+"Please add your Firebase Web Push public VAPID key in index.html first."
+);
+
+return;
+
+}
+
+
+try{
+
+
+/*
+ Request browser notification permission.
+*/
+
+const permission=
+await Notification.requestPermission();
+
+
+if(permission!=="granted"){
+
+alert(
+"Notification permission was not granted."
+);
+
+updateNotificationUI(false);
+
+return;
+
+}
+
+
+/*
+ Register the Firebase Messaging
+ service worker.
+*/
+
+const registration=
+await navigator.serviceWorker.register(
+"./firebase-messaging-sw.js"
+);
+
+
+/*
+ Get FCM token.
+*/
+
+const token=
+await getToken(
+messaging,
+{
+vapidKey:VAPID_KEY,
+serviceWorkerRegistration:registration
+}
+);
+
+
+if(!token){
+
+alert(
+"Could not create notification token."
+);
+
+return;
+
+}
+
+
+/*
+ Save token in Firestore.
+
+ users
+   └── UID
+       └── fcmTokens
+           └── token
+*/
+
+await setDoc(
+doc(
+db,
+"users",
+currentUser.uid,
+"fcmTokens",
+token
+),
+{
+token:token,
+uid:currentUser.uid,
+disabled:false,
+createdAt:serverTimestamp(),
+updatedAt:serverTimestamp()
+},
+{
+merge:true
+}
+);
+
+
+/*
+ Save local setting.
+*/
+
+localStorage.setItem(
+"qrifyNotifications",
+"enabled"
+);
+
+
+updateNotificationUI(true);
+
+
+alert(
+"🔔 Message notifications enabled!"
+);
+
+
+}catch(error){
+
+console.error(
+"Notification setup error:",
+error
+);
+
+alert(
+"Could not enable notifications: "+
+error.message
+);
+
+}
+
+}
+
+
+/* =====================================================
+   DISABLE PUSH NOTIFICATIONS
+===================================================== */
+
+async function disablePushNotifications(){
+
+if(!currentUser){
+
+alert("Please sign in first.");
+
+return;
+
+}
+
+
+try{
+
+
+const registration=
+await navigator.serviceWorker.getRegistration(
+"./firebase-messaging-sw.js"
+);
+
+
+if(registration){
+
+try{
+
+
+const token=
+await getToken(
+messaging,
+{
+vapidKey:VAPID_KEY,
+serviceWorkerRegistration:registration
+}
+);
+
+
+if(token){
+
+/*
+ Mark this token disabled
+ before deleting local FCM token.
+*/
+
+await setDoc(
+doc(
+db,
+"users",
+currentUser.uid,
+"fcmTokens",
+token
+),
+{
+disabled:true,
+updatedAt:serverTimestamp()
+},
+{
+merge:true
+}
+);
+
+
+try{
+
+await deleteToken(messaging);
+
+}catch(tokenError){
+
+console.log(
+"FCM token deletion skipped:",
+tokenError.message
+);
+
+}
+
+}
+
+
+}catch(tokenError){
+
+console.log(
+"Token cleanup skipped:",
+tokenError.message
+);
+
+}
+
+}
+
+
+localStorage.setItem(
+"qrifyNotifications",
+"disabled"
+);
+
+
+updateNotificationUI(false);
+
+
+alert(
+"🔕 Message notifications disabled."
+);
+
+
+}catch(error){
+
+console.error(
+"Disable notification error:",
+error
+);
+
+alert(
+"Could not disable notifications."
+);
+
+}
+
+}
+
+
+/* =====================================================
+   TOGGLE PUSH NOTIFICATIONS
+===================================================== */
+
+window.togglePushNotifications=
+async function(){
+
+if(!currentUser){
+
+alert(
+"Please sign in first."
+);
+
+showPage("profile");
+
+return;
+
+}
+
+
+const enabled=
+localStorage.getItem(
+"qrifyNotifications"
+)==="enabled";
+
+
+if(enabled){
+
+await disablePushNotifications();
+
+}else{
+
+await enablePushNotifications();
+
+}
+
+};
+
+
+/* =====================================================
+   RESTORE NOTIFICATION UI
+===================================================== */
+
+async function setupNotificationState(){
+
+const saved=
+localStorage.getItem(
+"qrifyNotifications"
+);
+
+
+/*
+ If browser permission has been denied,
+ show notifications as OFF.
+*/
+
+if(
+typeof Notification!=="undefined" &&
+Notification.permission==="denied"
+){
+
+updateNotificationUI(false);
+
+return;
+
+}
+
+
+if(saved==="enabled"){
+
+updateNotificationUI(true);
+
+}else{
+
+updateNotificationUI(false);
+
+}
+
+}
+
+
+/* =====================================================
+   FOREGROUND NOTIFICATION
+===================================================== */
+
+
+/*
+ This works while QRify is open/active.
+
+ Background messages are handled by:
+
+ firebase-messaging-sw.js
+*/
+
+onMessage(
+messaging,
+payload=>{
+
+console.log(
+"Foreground FCM message:",
+payload
+);
+
+
+const notification=
+payload.notification||{};
+
+
+const title=
+notification.title||
+"QRify";
+
+
+const body=
+notification.body||
+"You received a new message.";
+
+
+/*
+ Browser notification.
+
+ If permission is granted.
+*/
+
+if(
+"Notification" in window &&
+Notification.permission==="granted"
+){
+
+try{
+
+new Notification(
+title,
+{
+body:body,
+icon:"./logo.png",
+badge:"./logo.png"
+}
+);
+
+}catch(error){
+
+console.log(
+"Foreground notification error:",
+error
+);
+
+}
+
+}
+
+}
+);
 
 
 /* =====================================================
@@ -713,92 +1852,104 @@ return String(value||"")
 
 /* =====================================================
    FIND USERS
-   IMPORTANT FIX
 ===================================================== */
 
 async function findUsersByUsername(username){
 
-const cleanUsername=normalizeUsername(username);
+const cleanUsername=
+normalizeUsername(username);
 
 if(!cleanUsername)return [];
 
-const usersRef=collection(db,"users");
+const usersRef=
+collection(db,"users");
 
-
-/*
-  STEP 1
-  Search usernameLower.
-*/
 
 try{
 
-const lowerQuery=query(
+const lowerQuery=
+query(
 usersRef,
-where("usernameLower","==",cleanUsername)
+where(
+"usernameLower",
+"==",
+cleanUsername
+)
 );
 
-const lowerSnapshot=await getDocs(lowerQuery);
+const lowerSnapshot=
+await getDocs(lowerQuery);
 
 if(!lowerSnapshot.empty){
+
 return lowerSnapshot.docs;
+
 }
 
 }catch(error){
 
-console.log("usernameLower search skipped:",error.message);
-
-}
-
-
-/*
-  STEP 2
-  Search old username field.
-*/
-
-try{
-
-const oldQuery=query(
-usersRef,
-where("username","==",cleanUsername)
+console.log(
+"usernameLower search skipped:",
+error.message
 );
 
-const oldSnapshot=await getDocs(oldQuery);
+}
+
+
+try{
+
+const oldQuery=
+query(
+usersRef,
+where(
+"username",
+"==",
+cleanUsername
+)
+);
+
+const oldSnapshot=
+await getDocs(oldQuery);
 
 if(!oldSnapshot.empty){
+
 return oldSnapshot.docs;
+
 }
 
 }catch(error){
 
-console.log("old username search skipped:",error.message);
+console.log(
+"old username search skipped:",
+error.message
+);
 
 }
 
 
-/*
-  STEP 3
-  FINAL FALLBACK
-
-  This helps old users whose username was stored
-  with uppercase letters or without usernameLower.
-*/
-
 try{
 
-const allUsersSnapshot=await getDocs(usersRef);
+const allUsersSnapshot=
+await getDocs(usersRef);
 
 const matchingDocs=[];
 
-allUsersSnapshot.forEach(userDoc=>{
+allUsersSnapshot.forEach(
+userDoc=>{
 
 const data=userDoc.data();
 
-const savedUsername=normalizeUsername(
+const savedUsername=
+normalizeUsername(
 data.username||""
 );
 
-if(savedUsername===cleanUsername){
+if(
+savedUsername===cleanUsername
+){
+
 matchingDocs.push(userDoc);
+
 }
 
 });
@@ -807,7 +1958,10 @@ return matchingDocs;
 
 }catch(error){
 
-console.error("Fallback username search error:",error);
+console.error(
+"Fallback username search error:",
+error
+);
 
 return [];
 
@@ -820,17 +1974,24 @@ return [];
    LOGIN
 ===================================================== */
 
-window.loginWithGoogle=async function(){
+window.loginWithGoogle=
+async function(){
 
 try{
 
-await signInWithPopup(auth,provider);
+await signInWithPopup(
+auth,
+provider
+);
 
 }catch(error){
 
 console.error(error);
 
-alert("Google sign-in failed: "+error.message);
+alert(
+"Google sign-in failed: "+
+error.message
+);
 
 }
 
@@ -841,28 +2002,37 @@ alert("Google sign-in failed: "+error.message);
    LOGOUT
 ===================================================== */
 
-window.logoutUser=async function(){
+window.logoutUser=
+async function(){
 
 try{
 
 if(unsubscribeChat){
+
 unsubscribeChat();
 unsubscribeChat=null;
+
 }
 
 if(unsubscribeInbox){
+
 unsubscribeInbox();
 unsubscribeInbox=null;
+
 }
 
 if(unsubscribeFriendRequests){
+
 unsubscribeFriendRequests();
 unsubscribeFriendRequests=null;
+
 }
 
 if(unsubscribeFriends){
+
 unsubscribeFriends();
 unsubscribeFriends=null;
+
 }
 
 await signOut(auth);
@@ -870,7 +2040,10 @@ await signOut(auth);
 }catch(error){
 
 console.error(error);
-alert("Logout failed.");
+
+alert(
+"Logout failed."
+);
 
 }
 
@@ -881,104 +2054,288 @@ alert("Logout failed.");
    AUTH STATE
 ===================================================== */
 
-onAuthStateChanged(auth,async user=>{
+onAuthStateChanged(
+auth,
+async user=>{
 
-const status=document.getElementById("firebaseStatus");
-const loginButton=document.getElementById("googleLoginBtn");
-const logoutButton=document.getElementById("logoutBtn");
-const userInfo=document.getElementById("userInfo");
-const profileCard=document.getElementById("profileCard");
-const sendCard=document.getElementById("sendCard");
-const inboxCard=document.getElementById("inboxCard");
-const accountRequired=document.getElementById("accountRequired");
-const receivedLoginMessage=document.getElementById("receivedLoginMessage");
-const chatLoginCard=document.getElementById("chatLoginCard");
-const chatApp=document.getElementById("chatApp");
-const friendsLoginCard=document.getElementById("friendsLoginCard");
-const friendsApp=document.getElementById("friendsApp");
+const status=
+document.getElementById(
+"firebaseStatus"
+);
+
+const loginButton=
+document.getElementById(
+"googleLoginBtn"
+);
+
+const logoutButton=
+document.getElementById(
+"logoutBtn"
+);
+
+const userInfo=
+document.getElementById(
+"userInfo"
+);
+
+const profileCard=
+document.getElementById(
+"profileCard"
+);
+
+const sendCard=
+document.getElementById(
+"sendCard"
+);
+
+const inboxCard=
+document.getElementById(
+"inboxCard"
+);
+
+const accountRequired=
+document.getElementById(
+"accountRequired"
+);
+
+const receivedLoginMessage=
+document.getElementById(
+"receivedLoginMessage"
+);
+
+const chatLoginCard=
+document.getElementById(
+"chatLoginCard"
+);
+
+const chatApp=
+document.getElementById(
+"chatApp"
+);
+
+const friendsLoginCard=
+document.getElementById(
+"friendsLoginCard"
+);
+
+const friendsApp=
+document.getElementById(
+"friendsApp"
+);
+
 
 if(user){
 
 currentUser=user;
 
-status.textContent="✅ Connected to QRify";
 
-loginButton.classList.add("hidden");
-logoutButton.classList.remove("hidden");
+status.textContent=
+"✅ Connected to QRify";
+
+
+loginButton.classList.add(
+"hidden"
+);
+
+logoutButton.classList.remove(
+"hidden"
+);
+
 
 userInfo.innerHTML=`
-<p class="account-name">${escapeHTML(user.displayName||"QRify User")}</p>
-<p>${escapeHTML(user.email||"")}</p>
+
+<p class="account-name">
+${escapeHTML(
+user.displayName||
+"QRify User"
+)}
+</p>
+
+<p>
+${escapeHTML(
+user.email||""
+)}
+</p>
+
 `;
 
-profileCard.classList.remove("hidden");
-sendCard.classList.remove("hidden");
-inboxCard.classList.remove("hidden");
 
-accountRequired.classList.add("hidden");
-receivedLoginMessage.classList.add("hidden");
+profileCard.classList.remove(
+"hidden"
+);
 
-chatLoginCard.classList.add("hidden");
-chatApp.classList.remove("hidden");
+sendCard.classList.remove(
+"hidden"
+);
 
-friendsLoginCard.classList.add("hidden");
-friendsApp.classList.remove("hidden");
+inboxCard.classList.remove(
+"hidden"
+);
+
+
+accountRequired.classList.add(
+"hidden"
+);
+
+receivedLoginMessage.classList.add(
+"hidden"
+);
+
+
+chatLoginCard.classList.add(
+"hidden"
+);
+
+chatApp.classList.remove(
+"hidden"
+);
+
+
+friendsLoginCard.classList.add(
+"hidden"
+);
+
+friendsApp.classList.remove(
+"hidden"
+);
+
+
+/*
+ Load profile first.
+*/
 
 await loadUserProfile();
 
+
+/*
+ Restore notification setting.
+*/
+
+await setupNotificationState();
+
+
+/*
+ Start listeners.
+*/
+
 startInboxListener();
+
 startFriendRequestListener();
+
 startFriendsListener();
+
 
 }else{
 
+
 currentUser=null;
+
 currentUsername="";
+
 activeChatUser=null;
 
-status.textContent="Firebase connected. Please sign in.";
 
-loginButton.classList.remove("hidden");
-logoutButton.classList.add("hidden");
+status.textContent=
+"Firebase connected. Please sign in.";
+
+
+loginButton.classList.remove(
+"hidden"
+);
+
+logoutButton.classList.add(
+"hidden"
+);
 
 userInfo.innerHTML="";
 
-profileCard.classList.add("hidden");
-sendCard.classList.add("hidden");
-inboxCard.classList.add("hidden");
 
-accountRequired.classList.remove("hidden");
-receivedLoginMessage.classList.remove("hidden");
+profileCard.classList.add(
+"hidden"
+);
 
-chatLoginCard.classList.remove("hidden");
-chatApp.classList.add("hidden");
+sendCard.classList.add(
+"hidden"
+);
 
-friendsLoginCard.classList.remove("hidden");
-friendsApp.classList.add("hidden");
+inboxCard.classList.add(
+"hidden"
+);
 
-document.getElementById("sendQRBtn").classList.add("hidden");
+
+accountRequired.classList.remove(
+"hidden"
+);
+
+receivedLoginMessage.classList.remove(
+"hidden"
+);
+
+
+chatLoginCard.classList.remove(
+"hidden"
+);
+
+chatApp.classList.add(
+"hidden"
+);
+
+
+friendsLoginCard.classList.remove(
+"hidden"
+);
+
+friendsApp.classList.add(
+"hidden"
+);
+
+
+document.getElementById(
+"sendQRBtn"
+).classList.add(
+"hidden"
+);
+
 
 if(unsubscribeInbox){
+
 unsubscribeInbox();
+
 unsubscribeInbox=null;
+
 }
+
 
 if(unsubscribeChat){
+
 unsubscribeChat();
+
 unsubscribeChat=null;
+
 }
+
 
 if(unsubscribeFriendRequests){
+
 unsubscribeFriendRequests();
+
 unsubscribeFriendRequests=null;
+
 }
+
 
 if(unsubscribeFriends){
+
 unsubscribeFriends();
+
 unsubscribeFriends=null;
+
 }
 
+
 updateFriendRequestBadge(0);
+
+updateNotificationUI(false);
 
 }
 
@@ -993,32 +2350,52 @@ async function loadUserProfile(){
 
 if(!currentUser)return;
 
-const userRef=doc(db,"users",currentUser.uid);
-const snapshot=await getDoc(userRef);
 
-const usernameInput=document.getElementById("usernameInput");
+const userRef=
+doc(
+db,
+"users",
+currentUser.uid
+);
+
+
+const snapshot=
+await getDoc(userRef);
+
+
+const usernameInput=
+document.getElementById(
+"usernameInput"
+);
+
 
 if(snapshot.exists()){
 
 const data=snapshot.data();
 
-currentUsername=normalizeUsername(data.username||"");
 
-usernameInput.value=currentUsername;
+currentUsername=
+normalizeUsername(
+data.username||""
+);
 
-document.getElementById("usernameStatus").textContent=
+
+usernameInput.value=
+currentUsername;
+
+
+document.getElementById(
+"usernameStatus"
+).textContent=
 currentUsername
 ?"✅ Your QRify username is ready."
 :"Create your username.";
 
 
-/*
-  IMPORTANT:
-  If old account has username but no usernameLower,
-  automatically create usernameLower.
-*/
-
-if(currentUsername && !data.usernameLower){
+if(
+currentUsername &&
+!data.usernameLower
+){
 
 try{
 
@@ -1032,11 +2409,16 @@ updatedAt:serverTimestamp()
 {merge:true}
 );
 
-console.log("Old username upgraded to usernameLower.");
+console.log(
+"Old username upgraded to usernameLower."
+);
 
 }catch(error){
 
-console.error("Username upgrade error:",error);
+console.error(
+"Username upgrade error:",
+error
+);
 
 }
 
@@ -1046,7 +2428,9 @@ console.error("Username upgrade error:",error);
 
 usernameInput.value="";
 
-document.getElementById("usernameStatus").textContent=
+document.getElementById(
+"usernameStatus"
+).textContent=
 "Choose a username so other QRify users can find you.";
 
 }
@@ -1058,20 +2442,37 @@ document.getElementById("usernameStatus").textContent=
    SAVE USERNAME
 ===================================================== */
 
-window.saveUsername=async function(){
+window.saveUsername=
+async function(){
 
 if(!currentUser){
 
-alert("Please sign in first.");
+alert(
+"Please sign in first."
+);
+
 return;
 
 }
 
-const input=document.getElementById("usernameInput");
 
-const username=normalizeUsername(input.value);
+const input=
+document.getElementById(
+"usernameInput"
+);
 
-if(!/^[a-z0-9_]{3,20}$/.test(username)){
+
+const username=
+normalizeUsername(
+input.value
+);
+
+
+if(
+!/^[a-z0-9_]{3,20}$/.test(
+username
+)
+){
 
 alert(
 "Username must be 3-20 characters and use only letters, numbers or _."
@@ -1081,79 +2482,130 @@ return;
 
 }
 
+
 try{
 
-/*
-  Check both username and usernameLower.
-*/
-
-const oldQuery=query(
+const oldQuery=
+query(
 collection(db,"users"),
-where("username","==",username)
+where(
+"username",
+"==",
+username
+)
 );
 
-const lowerQuery=query(
+
+const lowerQuery=
+query(
 collection(db,"users"),
-where("usernameLower","==",username)
+where(
+"usernameLower",
+"==",
+username
+)
 );
 
-const [oldSnapshot,lowerSnapshot]=await Promise.all([
+
+const [
+oldSnapshot,
+lowerSnapshot
+]=
+await Promise.all([
 getDocs(oldQuery),
 getDocs(lowerQuery)
 ]);
 
+
 let takenByOtherUser=false;
 
-oldSnapshot.forEach(userDoc=>{
-if(userDoc.id!==currentUser.uid){
+
+oldSnapshot.forEach(
+userDoc=>{
+
+if(
+userDoc.id!==currentUser.uid
+){
+
 takenByOtherUser=true;
+
 }
+
 });
 
-lowerSnapshot.forEach(userDoc=>{
-if(userDoc.id!==currentUser.uid){
+
+lowerSnapshot.forEach(
+userDoc=>{
+
+if(
+userDoc.id!==currentUser.uid
+){
+
 takenByOtherUser=true;
+
 }
+
 });
+
 
 if(takenByOtherUser){
 
-alert("That username is already taken. Try another one.");
+alert(
+"That username is already taken. Try another one."
+);
+
 return;
 
 }
 
 
-/*
-  Save both fields.
-*/
-
 await setDoc(
-doc(db,"users",currentUser.uid),
+doc(
+db,
+"users",
+currentUser.uid
+),
 {
 uid:currentUser.uid,
 username:username,
 usernameLower:username,
-displayName:currentUser.displayName||"",
-email:currentUser.email||"",
+displayName:
+currentUser.displayName||"",
+email:
+currentUser.email||"",
 updatedAt:serverTimestamp()
 },
 {merge:true}
 );
 
+
 currentUsername=username;
+
 input.value=username;
 
-document.getElementById("usernameStatus").textContent=
+
+document.getElementById(
+"usernameStatus"
+).textContent=
 "✅ Username saved: @"+username;
 
-alert("Username saved successfully!");
+
+alert(
+"Username saved successfully!"
+);
+
 
 }catch(error){
 
-console.error("Save username error:",error);
+console.error(
+"Save username error:",
+error
+);
 
-alert("Could not save username: "+error.message);
+alert(
+"Could not save username: "+
+error.message
+);
 
 }
 
@@ -1164,67 +2616,114 @@ alert("Could not save username: "+error.message);
    FRIEND SYSTEM
 ===================================================== */
 
-function createFriendId(uid1,uid2){
+function createFriendId(
+uid1,
+uid2
+){
 
-return [uid1,uid2].sort().join("_");
+return [
+uid1,
+uid2
+].sort().join("_");
 
 }
 
-function createFriendRequestId(senderId,receiverId){
+
+function createFriendRequestId(
+senderId,
+receiverId
+){
 
 return senderId+"_"+receiverId;
 
 }
 
 
-async function getFriendStatus(otherUserId){
+async function getFriendStatus(
+otherUserId
+){
 
-if(!currentUser)return "none";
+if(!currentUser)
+return "none";
 
-const friendId=createFriendId(
+
+const friendId=
+createFriendId(
 currentUser.uid,
 otherUserId
 );
 
-const friendSnapshot=await getDoc(
-doc(db,"friends",friendId)
+
+const friendSnapshot=
+await getDoc(
+doc(
+db,
+"friends",
+friendId
+)
 );
+
 
 if(friendSnapshot.exists()){
+
 return "friends";
+
 }
 
-const outgoingId=createFriendRequestId(
+
+const outgoingId=
+createFriendRequestId(
 currentUser.uid,
 otherUserId
 );
 
-const incomingId=createFriendRequestId(
+
+const incomingId=
+createFriendRequestId(
 otherUserId,
 currentUser.uid
 );
 
-const outgoingSnapshot=await getDoc(
-doc(db,"friend_requests",outgoingId)
+
+const outgoingSnapshot=
+await getDoc(
+doc(
+db,
+"friend_requests",
+outgoingId
+)
 );
+
 
 if(
 outgoingSnapshot.exists() &&
 outgoingSnapshot.data().status==="pending"
 ){
+
 return "outgoing";
+
 }
 
-const incomingSnapshot=await getDoc(
-doc(db,"friend_requests",incomingId)
+
+const incomingSnapshot=
+await getDoc(
+doc(
+db,
+"friend_requests",
+incomingId
+)
 );
+
 
 if(
 incomingSnapshot.exists() &&
 incomingSnapshot.data().status==="pending"
 ){
+
 return "incoming";
+
 }
+
 
 return "none";
 
@@ -1235,144 +2734,238 @@ return "none";
    FRIEND SEARCH
 ===================================================== */
 
-window.searchFriendUser=async function(){
+window.searchFriendUser=
+async function(){
 
 if(!currentUser){
 
-alert("Please sign in first.");
+alert(
+"Please sign in first."
+);
+
 return;
 
 }
+
 
 if(!currentUsername){
 
-alert("First create your QRify username.");
+alert(
+"First create your QRify username."
+);
+
 return;
 
 }
 
-const input=document.getElementById(
+
+const input=
+document.getElementById(
 "friendSearchUsername"
 );
 
-const username=normalizeUsername(input.value);
+
+const username=
+normalizeUsername(
+input.value
+);
+
 
 if(!username){
 
-alert("Enter a username.");
+alert(
+"Enter a username."
+);
+
 return;
 
 }
 
-const results=document.getElementById(
+
+const results=
+document.getElementById(
 "friendSearchResults"
 );
 
-results.innerHTML="<p>🔎 Searching...</p>";
+
+results.innerHTML=
+"<p>🔎 Searching...</p>";
+
 
 try{
 
-const userDocs=await findUsersByUsername(username);
+const userDocs=
+await findUsersByUsername(
+username
+);
+
 
 results.innerHTML="";
+
 
 if(userDocs.length===0){
 
 results.innerHTML=`
+
 <div class="user-result">
+
 ❌ User not found
+
 <br><br>
+
 <span class="small-text">
 Check the username and try again.
 </span>
+
 </div>
+
 `;
 
 return;
 
 }
 
-for(const userDoc of userDocs){
+
+for(
+const userDoc of userDocs
+){
 
 const data=userDoc.data();
 
-if(userDoc.id===currentUser.uid){
+
+if(
+userDoc.id===currentUser.uid
+){
 
 results.innerHTML=`
+
 <div class="user-result">
+
 👤 This is your own username.
+
 </div>
+
 `;
 
 continue;
 
 }
 
-const status=await getFriendStatus(userDoc.id);
+
+const status=
+await getFriendStatus(
+userDoc.id
+);
+
 
 let actionHTML="";
+
 
 if(status==="friends"){
 
 actionHTML=`
-<button class="secondary"
+
+<button
+class="secondary"
 onclick="openChatFromFriend(
 '${escapeJS(userDoc.id)}',
 '${escapeJS(data.username||"")}',
 '${escapeJS(data.displayName||"QRify User")}'
 )">
+
 💬 Chat
+
 </button>
+
 `;
 
-}else if(status==="outgoing"){
+}else if(
+status==="outgoing"
+){
 
 actionHTML=`
-<button class="secondary" disabled>
+
+<button
+class="secondary"
+disabled>
+
 ⏳ Request Sent
+
 </button>
+
 `;
 
-}else if(status==="incoming"){
+}else if(
+status==="incoming"
+){
 
 actionHTML=`
-<button class="success"
+
+<button
+class="success"
 onclick="acceptFriendRequestByUser(
 '${escapeJS(userDoc.id)}'
 )">
+
 ✅ Accept Request
+
 </button>
+
 `;
 
 }else{
 
 actionHTML=`
-<button class="success"
+
+<button
+class="success"
 onclick="sendFriendRequest(
 '${escapeJS(userDoc.id)}',
 '${escapeJS(data.username||"")}',
 '${escapeJS(data.displayName||"QRify User")}'
 )">
+
 ➕ Add Friend
+
 </button>
+
 `;
 
 }
 
-const div=document.createElement("div");
-div.className="user-result";
+
+const div=
+document.createElement(
+"div"
+);
+
+div.className=
+"user-result";
+
 
 div.innerHTML=`
-<strong>${escapeHTML(
-data.displayName||"QRify User"
-)}</strong>
+
+<strong>
+${escapeHTML(
+data.displayName||
+"QRify User"
+)}
+</strong>
+
 <br>
+
 <span class="username">
-@${escapeHTML(data.username||"")}
+@${escapeHTML(
+data.username||""
+)}
 </span>
+
 <br>
+
 ${actionHTML}
+
 `;
+
 
 results.appendChild(div);
 
@@ -1380,16 +2973,30 @@ results.appendChild(div);
 
 }catch(error){
 
-console.error("Friend search error:",error);
+console.error(
+"Friend search error:",
+error
+);
+
 
 results.innerHTML=`
+
 <div class="user-result">
+
 ❌ Search failed.
+
 <br><br>
+
 <span class="small-text">
-${escapeHTML(error.message)}
+
+${escapeHTML(
+error.message
+)}
+
 </span>
+
 </div>
+
 `;
 
 }
@@ -1401,74 +3008,146 @@ ${escapeHTML(error.message)}
    SEND FRIEND REQUEST
 ===================================================== */
 
-window.sendFriendRequest=async function(
+window.sendFriendRequest=
+async function(
 receiverId,
 receiverUsername,
 receiverName
 ){
 
 if(!currentUser){
-alert("Please sign in first.");
+
+alert(
+"Please sign in first."
+);
+
 return;
+
 }
+
 
 if(!currentUsername){
-alert("Create your QRify username first.");
+
+alert(
+"Create your QRify username first."
+);
+
 return;
+
 }
 
-if(receiverId===currentUser.uid){
-alert("You cannot send a friend request to yourself.");
+
+if(
+receiverId===currentUser.uid
+){
+
+alert(
+"You cannot send a friend request to yourself."
+);
+
 return;
+
 }
+
 
 try{
 
-const status=await getFriendStatus(receiverId);
+const status=
+await getFriendStatus(
+receiverId
+);
+
 
 if(status==="friends"){
-alert("You are already friends.");
+
+alert(
+"You are already friends."
+);
+
 return;
+
 }
+
 
 if(status==="outgoing"){
-alert("Friend request already sent.");
+
+alert(
+"Friend request already sent."
+);
+
 return;
+
 }
 
+
 if(status==="incoming"){
+
 alert(
 "This person already sent you a request. Check Friend Requests."
 );
+
 return;
+
 }
 
-const requestId=createFriendRequestId(
+
+const requestId=
+createFriendRequestId(
 currentUser.uid,
 receiverId
 );
 
+
 await setDoc(
-doc(db,"friend_requests",requestId),
+doc(
+db,
+"friend_requests",
+requestId
+),
 {
-senderId:currentUser.uid,
-senderUsername:currentUsername,
-senderName:currentUser.displayName||"QRify User",
-receiverId:receiverId,
-receiverUsername:receiverUsername,
-receiverName:receiverName,
+senderId:
+currentUser.uid,
+
+senderUsername:
+currentUsername,
+
+senderName:
+currentUser.displayName||
+"QRify User",
+
+receiverId:
+receiverId,
+
+receiverUsername:
+receiverUsername,
+
+receiverName:
+receiverName,
+
 status:"pending",
-createdAt:serverTimestamp()
+
+createdAt:
+serverTimestamp()
+
 }
 );
 
-alert("✅ Friend request sent to @"+receiverUsername);
+
+alert(
+"✅ Friend request sent to @"+
+receiverUsername
+);
+
 
 await searchFriendUser();
 
+
 }catch(error){
 
-console.error("Friend request error:",error);
+console.error(
+"Friend request error:",
+error
+);
 
 alert(
 "Could not send friend request: "+
@@ -1488,33 +3167,57 @@ function startFriendRequestListener(){
 
 if(!currentUser)return;
 
+
 if(unsubscribeFriendRequests){
+
 unsubscribeFriendRequests();
+
 }
 
-const requestsQuery=query(
-collection(db,"friend_requests"),
-where("receiverId","==",currentUser.uid)
+
+const requestsQuery=
+query(
+collection(
+db,
+"friend_requests"
+),
+where(
+"receiverId",
+"==",
+currentUser.uid
+)
 );
 
-unsubscribeFriendRequests=onSnapshot(
+
+unsubscribeFriendRequests=
+onSnapshot(
 requestsQuery,
 snapshot=>{
 
-const pendingRequests=snapshot.docs.filter(
+const pendingRequests=
+snapshot.docs.filter(
 requestDoc=>
-requestDoc.data().status==="pending"
+requestDoc.data().status===
+"pending"
 );
 
-displayFriendRequests(pendingRequests);
-updateFriendRequestBadge(pendingRequests.length);
+
+displayFriendRequests(
+pendingRequests
+);
+
+updateFriendRequestBadge(
+pendingRequests.length
+);
 
 },
 error=>{
+
 console.error(
 "Friend request listener error:",
 error
 );
+
 }
 );
 
@@ -1525,63 +3228,99 @@ error
    DISPLAY REQUESTS
 ===================================================== */
 
-function displayFriendRequests(requests){
+function displayFriendRequests(
+requests
+){
 
-const container=document.getElementById(
+const container=
+document.getElementById(
 "friendRequestsList"
 );
 
+
 container.innerHTML="";
+
 
 if(requests.length===0){
 
 container.innerHTML=`
+
 <p class="small-text empty-message">
 No pending friend requests.
 </p>
+
 `;
 
 return;
 
 }
 
-requests.forEach(requestDoc=>{
 
-const data=requestDoc.data();
+requests.forEach(
+requestDoc=>{
 
-const item=document.createElement("div");
-item.className="request-item";
+const data=
+requestDoc.data();
+
+
+const item=
+document.createElement(
+"div"
+);
+
+
+item.className=
+"request-item";
+
 
 item.innerHTML=`
-<strong>${escapeHTML(
-data.senderName||"QRify User"
-)}</strong>
+
+<strong>
+${escapeHTML(
+data.senderName||
+"QRify User"
+)}
+</strong>
+
 <br>
+
 <span class="username">
-@${escapeHTML(data.senderUsername||"")}
+@${escapeHTML(
+data.senderUsername||
+""
+)}
 </span>
+
 <p class="small-text">
 Wants to be your friend.
 </p>
 
 <div class="request-actions">
 
-<button class="success"
+<button
+class="success"
 onclick="acceptFriendRequest(
 '${escapeJS(requestDoc.id)}'
 )">
+
 ✅ Accept
+
 </button>
 
-<button class="danger"
+<button
+class="danger"
 onclick="rejectFriendRequest(
 '${escapeJS(requestDoc.id)}'
 )">
+
 ❌ Reject
+
 </button>
 
 </div>
+
 `;
+
 
 container.appendChild(item);
 
@@ -1594,30 +3333,45 @@ container.appendChild(item);
    BADGE
 ===================================================== */
 
-function updateFriendRequestBadge(count){
+function updateFriendRequestBadge(
+count
+){
 
-const badge=document.getElementById(
+const badge=
+document.getElementById(
 "friendRequestBadge"
 );
 
-const countElement=document.getElementById(
+const countElement=
+document.getElementById(
 "friendRequestCount"
 );
 
+
 if(countElement){
-countElement.textContent=count;
+
+countElement.textContent=
+count;
+
 }
 
+
 if(!badge)return;
+
 
 if(count>0){
 
 badge.textContent=count;
-badge.classList.remove("hidden");
+
+badge.classList.remove(
+"hidden"
+);
 
 }else{
 
-badge.classList.add("hidden");
+badge.classList.add(
+"hidden"
+);
 
 }
 
@@ -1628,82 +3382,136 @@ badge.classList.add("hidden");
    ACCEPT FRIEND REQUEST
 ===================================================== */
 
-window.acceptFriendRequest=async function(requestId){
+window.acceptFriendRequest=
+async function(
+requestId
+){
 
 if(!currentUser)return;
 
+
 try{
 
-const requestRef=doc(
+const requestRef=
+doc(
 db,
 "friend_requests",
 requestId
 );
 
-const requestSnapshot=await getDoc(requestRef);
 
-if(!requestSnapshot.exists()){
+const requestSnapshot=
+await getDoc(
+requestRef
+);
 
-alert("Friend request no longer exists.");
+
+if(
+!requestSnapshot.exists()
+){
+
+alert(
+"Friend request no longer exists."
+);
+
 return;
 
 }
 
-const data=requestSnapshot.data();
 
-if(data.receiverId!==currentUser.uid){
+const data=
+requestSnapshot.data();
 
-alert("You cannot accept this request.");
+
+if(
+data.receiverId!==currentUser.uid
+){
+
+alert(
+"You cannot accept this request."
+);
+
 return;
 
 }
 
-if(data.status!=="pending"){
 
-alert("This request is no longer pending.");
+if(
+data.status!=="pending"
+){
+
+alert(
+"This request is no longer pending."
+);
+
 return;
 
 }
 
-const friendId=createFriendId(
+
+const friendId=
+createFriendId(
 data.senderId,
 data.receiverId
 );
 
+
 await setDoc(
-doc(db,"friends",friendId),
+doc(
+db,
+"friends",
+friendId
+),
 {
 members:[
 data.senderId,
 data.receiverId
 ],
+
 memberUsernames:[
 data.senderUsername,
 data.receiverUsername
 ],
+
 memberNames:[
 data.senderName,
 data.receiverName
 ],
-createdAt:serverTimestamp()
+
+createdAt:
+serverTimestamp()
+
 },
-{merge:true}
+{
+merge:true
+}
 );
+
 
 await setDoc(
 requestRef,
 {
 status:"accepted",
-respondedAt:serverTimestamp()
+respondedAt:
+serverTimestamp()
 },
-{merge:true}
+{
+merge:true
+}
 );
 
-alert("✅ Friend request accepted!");
+
+alert(
+"✅ Friend request accepted!"
+);
+
 
 }catch(error){
 
-console.error("Accept request error:",error);
+console.error(
+"Accept request error:",
+error
+);
 
 alert(
 "Could not accept request: "+
@@ -1719,20 +3527,30 @@ error.message
    ACCEPT FROM SEARCH
 ===================================================== */
 
-window.acceptFriendRequestByUser=async function(senderId){
+window.acceptFriendRequestByUser=
+async function(
+senderId
+){
 
 if(!currentUser)return;
 
+
 try{
 
-const requestId=createFriendRequestId(
+const requestId=
+createFriendRequestId(
 senderId,
 currentUser.uid
 );
 
-await acceptFriendRequest(requestId);
+
+await acceptFriendRequest(
+requestId
+);
+
 
 await searchFriendUser();
+
 
 }catch(error){
 
@@ -1747,43 +3565,71 @@ console.error(error);
    REJECT REQUEST
 ===================================================== */
 
-window.rejectFriendRequest=async function(requestId){
+window.rejectFriendRequest=
+async function(
+requestId
+){
 
 if(!currentUser)return;
 
+
 try{
 
-const requestRef=doc(
+const requestRef=
+doc(
 db,
 "friend_requests",
 requestId
 );
 
-const requestSnapshot=await getDoc(requestRef);
 
-if(!requestSnapshot.exists())return;
+const requestSnapshot=
+await getDoc(
+requestRef
+);
 
-const data=requestSnapshot.data();
 
-if(data.receiverId!==currentUser.uid){
+if(
+!requestSnapshot.exists()
+)return;
 
-alert("You cannot reject this request.");
+
+const data=
+requestSnapshot.data();
+
+
+if(
+data.receiverId!==currentUser.uid
+){
+
+alert(
+"You cannot reject this request."
+);
+
 return;
 
 }
+
 
 await setDoc(
 requestRef,
 {
 status:"rejected",
-respondedAt:serverTimestamp()
+respondedAt:
+serverTimestamp()
 },
-{merge:true}
+{
+merge:true
+}
 );
+
 
 }catch(error){
 
-console.error("Reject request error:",error);
+console.error(
+"Reject request error:",
+error
+);
 
 alert(
 "Could not reject request: "+
@@ -1803,11 +3649,16 @@ function startFriendsListener(){
 
 if(!currentUser)return;
 
+
 if(unsubscribeFriends){
+
 unsubscribeFriends();
+
 }
 
-const friendsQuery=query(
+
+const friendsQuery=
+query(
 collection(db,"friends"),
 where(
 "members",
@@ -1816,16 +3667,24 @@ currentUser.uid
 )
 );
 
-unsubscribeFriends=onSnapshot(
+
+unsubscribeFriends=
+onSnapshot(
 friendsQuery,
 snapshot=>{
-displayFriends(snapshot);
+
+displayFriends(
+snapshot
+);
+
 },
 error=>{
+
 console.error(
 "Friends listener error:",
 error
 );
+
 }
 );
 
@@ -1836,71 +3695,123 @@ error
    DISPLAY FRIENDS
 ===================================================== */
 
-function displayFriends(snapshot){
+function displayFriends(
+snapshot
+){
 
-const container=document.getElementById("friendsList");
-const count=document.getElementById("friendsCount");
+const container=
+document.getElementById(
+"friendsList"
+);
+
+const count=
+document.getElementById(
+"friendsCount"
+);
+
 
 container.innerHTML="";
-count.textContent=snapshot.size;
+
+count.textContent=
+snapshot.size;
+
 
 if(snapshot.empty){
 
 container.innerHTML=`
+
 <p class="small-text empty-message">
 You have no friends yet.
 </p>
+
 `;
 
 return;
 
 }
 
-snapshot.forEach(friendDoc=>{
 
-const data=friendDoc.data();
+snapshot.forEach(
+friendDoc=>{
 
-const members=data.members||[];
-const usernames=data.memberUsernames||[];
-const names=data.memberNames||[];
+const data=
+friendDoc.data();
 
-const friendIndex=members.findIndex(
-uid=>uid!==currentUser.uid
+
+const members=
+data.members||[];
+
+const usernames=
+data.memberUsernames||[];
+
+const names=
+data.memberNames||[];
+
+
+const friendIndex=
+members.findIndex(
+uid=>
+uid!==currentUser.uid
 );
 
-if(friendIndex===-1)return;
 
-const friendId=members[friendIndex];
+if(friendIndex===-1)
+return;
+
+
+const friendId=
+members[friendIndex];
+
 
 const friendUsername=
 usernames[friendIndex]||"";
 
-const friendName=
-names[friendIndex]||"QRify User";
 
-const item=document.createElement("div");
-item.className="friend-item";
+const friendName=
+names[friendIndex]||
+"QRify User";
+
+
+const item=
+document.createElement(
+"div"
+);
+
+
+item.className=
+"friend-item";
+
 
 item.innerHTML=`
-<strong>${escapeHTML(friendName)}</strong>
+
+<strong>
+${escapeHTML(friendName)}
+</strong>
+
 <br>
+
 <span class="username">
 @${escapeHTML(friendUsername)}
 </span>
 
 <div class="friend-buttons">
 
-<button class="primary"
+<button
+class="primary"
 onclick="openChatFromFriend(
 '${escapeJS(friendId)}',
 '${escapeJS(friendUsername)}',
 '${escapeJS(friendName)}'
 )">
+
 💬 Chat
+
 </button>
 
 </div>
+
 `;
+
 
 container.appendChild(item);
 
@@ -1913,7 +3824,8 @@ container.appendChild(item);
    OPEN CHAT FROM FRIEND
 ===================================================== */
 
-window.openChatFromFriend=function(
+window.openChatFromFriend=
+function(
 userId,
 username,
 displayName
@@ -1921,13 +3833,19 @@ displayName
 
 showPage("chat");
 
-setTimeout(()=>{
+
+setTimeout(
+()=>{
+
 openChatWithUser(
 userId,
 username,
 displayName
 );
-},100);
+
+},
+100
+);
 
 };
 
@@ -1936,101 +3854,165 @@ displayName
    SEND QR USER SEARCH
 ===================================================== */
 
-window.searchUser=async function(){
+window.searchUser=
+async function(){
 
 if(!currentUser){
 
-alert("Please sign in first.");
+alert(
+"Please sign in first."
+);
+
 return;
 
 }
+
 
 if(!currentUsername){
 
-alert("First create your QRify username.");
+alert(
+"First create your QRify username."
+);
+
 return;
 
 }
 
-const searchInput=document.getElementById(
+
+const searchInput=
+document.getElementById(
 "searchUsername"
 );
 
-const username=normalizeUsername(
+
+const username=
+normalizeUsername(
 searchInput.value
 );
 
+
 if(!username){
 
-alert("Enter a username.");
+alert(
+"Enter a username."
+);
+
 return;
 
 }
 
-const results=document.getElementById(
+
+const results=
+document.getElementById(
 "searchResults"
 );
 
-results.innerHTML="<p>🔎 Searching...</p>";
+
+results.innerHTML=
+"<p>🔎 Searching...</p>";
+
 
 try{
 
-const userDocs=await findUsersByUsername(username);
+const userDocs=
+await findUsersByUsername(
+username
+);
+
 
 results.innerHTML="";
+
 
 if(userDocs.length===0){
 
 results.innerHTML=`
+
 <div class="user-result">
+
 ❌ User not found
+
 <br><br>
+
 <span class="small-text">
 Check the username and try again.
 </span>
+
 </div>
+
 `;
 
 return;
 
 }
 
-userDocs.forEach(userDoc=>{
 
-const data=userDoc.data();
+userDocs.forEach(
+userDoc=>{
 
-if(userDoc.id===currentUser.uid){
+const data=
+userDoc.data();
+
+
+if(
+userDoc.id===currentUser.uid
+){
 
 results.innerHTML=`
+
 <div class="user-result">
+
 👤 This is your own username.
+
 </div>
+
 `;
 
 return;
 
 }
 
-const div=document.createElement("div");
-div.className="user-result";
+
+const div=
+document.createElement(
+"div"
+);
+
+
+div.className=
+"user-result";
+
 
 div.innerHTML=`
-<strong>${escapeHTML(
-data.displayName||"QRify User"
-)}</strong>
-<br>
-<span class="username">
-@${escapeHTML(data.username||"")}
-</span>
+
+<strong>
+${escapeHTML(
+data.displayName||
+"QRify User"
+)}
+</strong>
+
 <br>
 
-<button class="success"
+<span class="username">
+@${escapeHTML(
+data.username||""
+)}
+</span>
+
+<br>
+
+<button
+class="success"
 onclick="sendQRToUser(
 '${escapeJS(userDoc.id)}'
 )">
+
 📤 Send Current QR
+
 </button>
+
 `;
+
 
 results.appendChild(div);
 
@@ -2038,16 +4020,26 @@ results.appendChild(div);
 
 }catch(error){
 
-console.error("Send QR search error:",error);
+console.error(
+"Send QR search error:",
+error
+);
+
 
 results.innerHTML=`
+
 <div class="user-result">
+
 ❌ Search failed.
+
 <br><br>
+
 <span class="small-text">
 ${escapeHTML(error.message)}
 </span>
+
 </div>
+
 `;
 
 }
@@ -2059,50 +4051,88 @@ ${escapeHTML(error.message)}
    SEND QR
 ===================================================== */
 
-window.sendQRToUser=async function(receiverId){
+window.sendQRToUser=
+async function(
+receiverId
+){
 
 if(!currentUser){
 
-alert("Please sign in first.");
+alert(
+"Please sign in first."
+);
+
 return;
 
 }
+
 
 if(!currentUsername){
 
-alert("Create your QRify username first.");
+alert(
+"Create your QRify username first."
+);
+
 return;
 
 }
+
 
 if(!window.latestQRData){
 
-alert("Generate a QR code first.");
+alert(
+"Generate a QR code first."
+);
+
 return;
 
 }
+
 
 try{
 
 await addDoc(
-collection(db,"shared_qr"),
+collection(
+db,
+"shared_qr"
+),
 {
-senderId:currentUser.uid,
-senderName:currentUser.displayName||"QRify User",
-senderUsername:currentUsername,
-receiverId:receiverId,
-qrData:window.latestQRData,
-createdAt:serverTimestamp()
+senderId:
+currentUser.uid,
+
+senderName:
+currentUser.displayName||
+"QRify User",
+
+senderUsername:
+currentUsername,
+
+receiverId:
+receiverId,
+
+qrData:
+window.latestQRData,
+
+createdAt:
+serverTimestamp()
+
 }
 );
 
-alert("✅ QR sent successfully!");
+
+alert(
+"✅ QR sent successfully!"
+);
+
 
 }catch(error){
 
 console.error(error);
 
-alert("Could not send QR: "+error.message);
+alert(
+"Could not send QR: "+
+error.message
+);
 
 }
 
@@ -2117,11 +4147,16 @@ function startInboxListener(){
 
 if(!currentUser)return;
 
+
 if(unsubscribeInbox){
+
 unsubscribeInbox();
+
 }
 
-const inboxQuery=query(
+
+const inboxQuery=
+query(
 collection(db,"shared_qr"),
 where(
 "receiverId",
@@ -2130,13 +4165,24 @@ currentUser.uid
 )
 );
 
-unsubscribeInbox=onSnapshot(
+
+unsubscribeInbox=
+onSnapshot(
 inboxQuery,
 snapshot=>{
-displayReceivedQRs(snapshot);
+
+displayReceivedQRs(
+snapshot
+);
+
 },
 error=>{
-console.error("Inbox error:",error);
+
+console.error(
+"Inbox error:",
+error
+);
+
 }
 );
 
@@ -2147,66 +4193,109 @@ console.error("Inbox error:",error);
    DISPLAY RECEIVED
 ===================================================== */
 
-function displayReceivedQRs(snapshot){
+function displayReceivedQRs(
+snapshot
+){
 
-const container=document.getElementById(
+const container=
+document.getElementById(
 "receivedQRs"
 );
 
+
 container.innerHTML="";
+
 
 if(snapshot.empty){
 
 container.innerHTML=`
+
 <p class="small-text">
 No QR codes received yet.
 </p>
+
 `;
 
 return;
 
 }
 
-snapshot.forEach(qrDoc=>{
 
-const data=qrDoc.data();
+snapshot.forEach(
+qrDoc=>{
 
-const item=document.createElement("div");
-item.className="received-item";
+const data=
+qrDoc.data();
 
-const qrId="received-"+qrDoc.id;
+
+const item=
+document.createElement(
+"div"
+);
+
+item.className=
+"received-item";
+
+
+const qrId=
+"received-"+qrDoc.id;
+
 
 item.innerHTML=`
+
 <strong>
 📩 From:
-${escapeHTML(data.senderName||"QRify User")}
+${escapeHTML(
+data.senderName||
+"QRify User"
+)}
 </strong>
 
 <br>
 
 <span class="username">
-@${escapeHTML(data.senderUsername||"")}
+@${escapeHTML(
+data.senderUsername||
+""
+)}
 </span>
 
-<div id="${qrId}" class="received-qr"></div>
+<div
+id="${qrId}"
+class="received-qr">
+</div>
 
 <br>
 
-<button class="primary"
+<button
+class="primary"
 onclick="copyReceivedQR(
 '${escapeJS(qrDoc.id)}'
 )">
+
 📋 Copy Data
+
 </button>
+
 `;
+
 
 container.prepend(item);
 
-setTimeout(()=>{
 
-const qrContainer=document.getElementById(qrId);
+setTimeout(
+()=>{
 
-if(qrContainer&&data.qrData){
+const qrContainer=
+document.getElementById(
+qrId
+);
+
+
+if(
+qrContainer &&
+data.qrData
+){
 
 new QRCode(
 qrContainer,
@@ -2214,13 +4303,16 @@ qrContainer,
 text:data.qrData,
 width:180,
 height:180,
-correctLevel:QRCode.CorrectLevel.H
+correctLevel:
+QRCode.CorrectLevel.H
 }
 );
 
 }
 
-},50);
+},
+50
+);
 
 });
 
@@ -2231,35 +4323,57 @@ correctLevel:QRCode.CorrectLevel.H
    COPY RECEIVED QR
 ===================================================== */
 
-window.copyReceivedQR=async function(qrId){
+window.copyReceivedQR=
+async function(
+qrId
+){
 
 try{
 
-const qrRef=doc(
+const qrRef=
+doc(
 db,
 "shared_qr",
 qrId
 );
 
-const snapshot=await getDoc(qrRef);
+
+const snapshot=
+await getDoc(qrRef);
+
 
 if(!snapshot.exists()){
 
-alert("QR no longer exists.");
+alert(
+"QR no longer exists."
+);
+
 return;
 
 }
 
-const data=snapshot.data();
 
-await navigator.clipboard.writeText(data.qrData);
+const data=
+snapshot.data();
 
-alert("✅ QR data copied!");
+
+await navigator.clipboard.writeText(
+data.qrData
+);
+
+
+alert(
+"✅ QR data copied!"
+);
+
 
 }catch(error){
 
 console.error(error);
-alert("Could not copy QR data.");
+
+alert(
+"Could not copy QR data."
+);
 
 }
 
@@ -2270,103 +4384,167 @@ alert("Could not copy QR data.");
    CHAT SEARCH
 ===================================================== */
 
-window.searchChatUser=async function(){
+window.searchChatUser=
+async function(){
 
 if(!currentUser){
 
-alert("Please sign in first.");
+alert(
+"Please sign in first."
+);
+
 return;
 
 }
+
 
 if(!currentUsername){
 
-alert("First create your QRify username.");
+alert(
+"First create your QRify username."
+);
+
 return;
 
 }
 
-const input=document.getElementById(
+
+const input=
+document.getElementById(
 "chatSearchUsername"
 );
 
-const username=normalizeUsername(
+
+const username=
+normalizeUsername(
 input.value
 );
 
+
 if(!username){
 
-alert("Enter a username.");
+alert(
+"Enter a username."
+);
+
 return;
 
 }
 
-const results=document.getElementById(
+
+const results=
+document.getElementById(
 "chatSearchResults"
 );
 
-results.innerHTML="<p>🔎 Searching...</p>";
+
+results.innerHTML=
+"<p>🔎 Searching...</p>";
+
 
 try{
 
-const userDocs=await findUsersByUsername(username);
+const userDocs=
+await findUsersByUsername(
+username
+);
+
 
 results.innerHTML="";
+
 
 if(userDocs.length===0){
 
 results.innerHTML=`
+
 <div class="chat-user-result">
+
 ❌ User not found
+
 <br><br>
+
 <span class="small-text">
 Check the username and try again.
 </span>
+
 </div>
+
 `;
 
 return;
 
 }
 
-userDocs.forEach(userDoc=>{
 
-const data=userDoc.data();
+userDocs.forEach(
+userDoc=>{
 
-if(userDoc.id===currentUser.uid){
+const data=
+userDoc.data();
+
+
+if(
+userDoc.id===currentUser.uid
+){
 
 results.innerHTML=`
+
 <div class="chat-user-result">
+
 👤 This is your own username.
+
 </div>
+
 `;
 
 return;
 
 }
 
-const div=document.createElement("div");
-div.className="chat-user-result";
+
+const div=
+document.createElement(
+"div"
+);
+
+
+div.className=
+"chat-user-result";
+
 
 div.innerHTML=`
-<strong>${escapeHTML(
-data.displayName||"QRify User"
-)}</strong>
-<br>
-<span class="username">
-@${escapeHTML(data.username||"")}
-</span>
+
+<strong>
+${escapeHTML(
+data.displayName||
+"QRify User"
+)}
+</strong>
+
 <br>
 
-<button class="success"
+<span class="username">
+@${escapeHTML(
+data.username||""
+)}
+</span>
+
+<br>
+
+<button
+class="success"
 onclick="openChatWithUser(
 '${escapeJS(userDoc.id)}',
 '${escapeJS(data.username||"")}',
 '${escapeJS(data.displayName||"QRify User")}'
 )">
+
 💬 Start Chat
+
 </button>
+
 `;
+
 
 results.appendChild(div);
 
@@ -2374,16 +4552,26 @@ results.appendChild(div);
 
 }catch(error){
 
-console.error("Chat search error:",error);
+console.error(
+"Chat search error:",
+error
+);
+
 
 results.innerHTML=`
+
 <div class="chat-user-result">
+
 ❌ Could not search users.
+
 <br><br>
+
 <span class="small-text">
 ${escapeHTML(error.message)}
 </span>
+
 </div>
+
 `;
 
 }
@@ -2395,9 +4583,15 @@ ${escapeHTML(error.message)}
    CHAT ID
 ===================================================== */
 
-function createChatId(uid1,uid2){
+function createChatId(
+uid1,
+uid2
+){
 
-return [uid1,uid2].sort().join("_");
+return [
+uid1,
+uid2
+].sort().join("_");
 
 }
 
@@ -2408,20 +4602,30 @@ return [uid1,uid2].sort().join("_");
 
 async function ensureChatRoom(){
 
-if(!currentUser||!activeChatUser){
+if(
+!currentUser ||
+!activeChatUser
+){
+
 return null;
+
 }
 
-const chatId=createChatId(
+
+const chatId=
+createChatId(
 currentUser.uid,
 activeChatUser.uid
 );
 
-const chatRef=doc(
+
+const chatRef=
+doc(
 db,
 "chats",
 chatId
 );
+
 
 await setDoc(
 chatRef,
@@ -2437,14 +4641,22 @@ activeChatUser.username
 ],
 
 memberNames:[
-currentUser.displayName||"QRify User",
-activeChatUser.displayName||"QRify User"
+currentUser.displayName||
+"QRify User",
+
+activeChatUser.displayName||
+"QRify User"
 ],
 
-updatedAt:serverTimestamp()
+updatedAt:
+serverTimestamp()
+
 },
-{merge:true}
+{
+merge:true
+}
 );
+
 
 return chatId;
 
@@ -2455,7 +4667,8 @@ return chatId;
    OPEN CHAT
 ===================================================== */
 
-window.openChatWithUser=async function(
+window.openChatWithUser=
+async function(
 userId,
 username,
 displayName
@@ -2463,68 +4676,107 @@ displayName
 
 if(!currentUser){
 
-alert("Please sign in first.");
-return;
-
-}
-
-activeChatUser={
-uid:userId,
-username:normalizeUsername(username),
-displayName:displayName
-};
-
-document.getElementById(
-"chatWindow"
-).classList.remove("hidden");
-
-document.getElementById(
-"chatUserName"
-).textContent="💬 "+displayName;
-
-document.getElementById(
-"chatUsername"
-).textContent="@"+activeChatUser.username;
-
-document.getElementById(
-"chatMessages"
-).innerHTML=`
-<p class="small-text">
-Connecting to chat...
-</p>
-`;
-
-try{
-
-await ensureChatRoom();
-startChatListener();
-
-}catch(error){
-
-console.error("Could not create chat:",error);
-
-document.getElementById(
-"chatMessages"
-).innerHTML=`
-<p class="small-text">
-❌ Could not open chat.
-</p>
-`;
-
 alert(
-"Could not open chat: "+
-error.message
+"Please sign in first."
 );
 
 return;
 
 }
 
-setTimeout(()=>{
+
+activeChatUser={
+
+uid:userId,
+
+username:
+normalizeUsername(
+username
+),
+
+displayName:
+displayName
+
+};
+
+
+document.getElementById(
+"chatWindow"
+).classList.remove(
+"hidden"
+);
+
+
+document.getElementById(
+"chatUserName"
+).textContent=
+"💬 "+displayName;
+
+
+document.getElementById(
+"chatUsername"
+).textContent=
+"@"+activeChatUser.username;
+
+
+document.getElementById(
+"chatMessages"
+).innerHTML=`
+
+<p class="small-text">
+Connecting to chat...
+</p>
+
+`;
+
+
+try{
+
+await ensureChatRoom();
+
+startChatListener();
+
+
+}catch(error){
+
+console.error(
+"Could not create chat:",
+error
+);
+
+
+document.getElementById(
+"chatMessages"
+).innerHTML=`
+
+<p class="small-text">
+❌ Could not open chat.
+</p>
+
+`;
+
+
+alert(
+"Could not open chat: "+
+error.message
+);
+
+
+return;
+
+}
+
+
+setTimeout(
+()=>{
+
 document.getElementById(
 "chatInput"
 ).focus();
-},100);
+
+},
+100
+);
 
 };
 
@@ -2535,34 +4787,60 @@ document.getElementById(
 
 function startChatListener(){
 
-if(!currentUser||!activeChatUser)return;
+if(
+!currentUser ||
+!activeChatUser
+){
 
-if(unsubscribeChat){
-unsubscribeChat();
-unsubscribeChat=null;
+return;
+
 }
 
-const chatId=createChatId(
+
+if(unsubscribeChat){
+
+unsubscribeChat();
+
+unsubscribeChat=null;
+
+}
+
+
+const chatId=
+createChatId(
 currentUser.uid,
 activeChatUser.uid
 );
 
-const messagesRef=collection(
+
+const messagesRef=
+collection(
 db,
 "chats",
 chatId,
 "messages"
 );
 
-const messagesQuery=query(
+
+const messagesQuery=
+query(
 messagesRef,
-orderBy("createdAt","asc")
+orderBy(
+"createdAt",
+"asc"
+)
 );
 
-unsubscribeChat=onSnapshot(
+
+unsubscribeChat=
+onSnapshot(
 messagesQuery,
 snapshot=>{
-displayChatMessages(snapshot);
+
+displayChatMessages(
+snapshot
+);
+
 },
 error=>{
 
@@ -2571,12 +4849,15 @@ console.error(
 error
 );
 
+
 document.getElementById(
 "chatMessages"
 ).innerHTML=`
+
 <p class="small-text">
 ❌ Could not load messages.
 </p>
+
 `;
 
 }
@@ -2589,48 +4870,75 @@ document.getElementById(
    DISPLAY CHAT
 ===================================================== */
 
-function displayChatMessages(snapshot){
+function displayChatMessages(
+snapshot
+){
 
-const container=document.getElementById(
+const container=
+document.getElementById(
 "chatMessages"
 );
 
+
 container.innerHTML="";
+
 
 if(snapshot.empty){
 
 container.innerHTML=`
-<p class="small-text"
+
+<p
+class="small-text"
 style="text-align:center">
+
 👋 No messages yet.
 Say hello!
+
 </p>
+
 `;
 
 return;
 
 }
 
-snapshot.forEach(messageDoc=>{
 
-const data=messageDoc.data();
+snapshot.forEach(
+messageDoc=>{
 
-const div=document.createElement("div");
+const data=
+messageDoc.data();
+
+
+const div=
+document.createElement(
+"div"
+);
+
 
 const isMine=
-data.senderId===currentUser.uid;
+data.senderId===
+currentUser.uid;
+
 
 div.className=
 "chat-message "+
-(isMine?"sent":"received");
+(
+isMine
+?"sent"
+:"received"
+);
+
 
 let timeText="";
+
 
 if(data.createdAt){
 
 try{
 
-timeText=data.createdAt
+timeText=
+data.createdAt
 .toDate()
 .toLocaleTimeString(
 [],
@@ -2648,18 +4956,27 @@ timeText="";
 
 }
 
+
 div.innerHTML=`
-${escapeHTML(data.text||"")}
+
+${escapeHTML(
+data.text||""
+)}
+
 <span class="chat-time">
 ${timeText}
 </span>
+
 `;
+
 
 container.appendChild(div);
 
 });
 
-container.scrollTop=container.scrollHeight;
+
+container.scrollTop=
+container.scrollHeight;
 
 }
 
@@ -2668,46 +4985,68 @@ container.scrollTop=container.scrollHeight;
    SEND CHAT MESSAGE
 ===================================================== */
 
-window.sendChatMessage=async function(){
+window.sendChatMessage=
+async function(){
 
 if(!currentUser){
 
-alert("Please sign in first.");
+alert(
+"Please sign in first."
+);
+
 return;
 
 }
+
 
 if(!activeChatUser){
 
-alert("Select a person to chat with.");
+alert(
+"Select a person to chat with."
+);
+
 return;
 
 }
 
-const input=document.getElementById(
+
+const input=
+document.getElementById(
 "chatInput"
 );
 
-const text=input.value.trim();
+
+const text=
+input.value.trim();
+
 
 if(!text)return;
 
+
 try{
 
-const chatId=await ensureChatRoom();
+const chatId=
+await ensureChatRoom();
+
 
 if(!chatId){
 
-alert("Could not create chat.");
+alert(
+"Could not create chat."
+);
+
 return;
 
 }
 
-const chatRef=doc(
+
+const chatRef=
+doc(
 db,
 "chats",
 chatId
 );
+
 
 await addDoc(
 collection(
@@ -2715,26 +5054,49 @@ chatRef,
 "messages"
 ),
 {
-senderId:currentUser.uid,
-receiverId:activeChatUser.uid,
-senderUsername:currentUsername,
-receiverUsername:activeChatUser.username,
+
+senderId:
+currentUser.uid,
+
+receiverId:
+activeChatUser.uid,
+
+senderUsername:
+currentUsername,
+
+receiverUsername:
+activeChatUser.username,
+
 text:text,
-createdAt:serverTimestamp()
+
+createdAt:
+serverTimestamp()
+
 }
 );
+
 
 await setDoc(
 chatRef,
 {
-updatedAt:serverTimestamp(),
-lastMessage:text
+
+updatedAt:
+serverTimestamp(),
+
+lastMessage:
+text
+
 },
-{merge:true}
+{
+merge:true
+}
 );
 
+
 input.value="";
+
 input.focus();
+
 
 }catch(error){
 
@@ -2742,6 +5104,7 @@ console.error(
 "Chat send error:",
 error
 );
+
 
 alert(
 "Could not send message: "+
@@ -2757,7 +5120,8 @@ error.message
    ENTER TO SEND
 ===================================================== */
 
-window.handleChatKey=function(event){
+window.handleChatKey=
+function(event){
 
 if(
 event.key==="Enter" &&
@@ -2765,6 +5129,7 @@ event.key==="Enter" &&
 ){
 
 event.preventDefault();
+
 sendChatMessage();
 
 }
@@ -2773,25 +5138,51 @@ sendChatMessage();
 
 
 /* =====================================================
-   ESCAPE
+   ESCAPE HTML
 ===================================================== */
 
 function escapeHTML(value){
 
-const div=document.createElement("div");
-div.textContent=value||"";
+const div=
+document.createElement(
+"div"
+);
+
+div.textContent=
+value||"";
+
 return div.innerHTML;
 
 }
 
+
+/* =====================================================
+   ESCAPE JAVASCRIPT
+===================================================== */
+
 function escapeJS(value){
 
 return String(value||"")
-.replace(/\\/g,"\\\\")
-.replace(/'/g,"\\'")
-.replace(/"/g,'\\"')
-.replace(/\n/g,"\\n")
-.replace(/\r/g,"\\r");
+.replace(
+/\\/g,
+"\\\\"
+)
+.replace(
+/'/g,
+"\\'"
+)
+.replace(
+/"/g,
+'\\"'
+)
+.replace(
+/\n/g,
+"\\n"
+)
+.replace(
+/\r/g,
+"\\r"
+);
 
 }
 
@@ -2805,7 +5196,9 @@ return String(value||"")
 <script>
 
 let scannedLink="";
+
 let qrCodeInstance=null;
+
 let html5QrCode=null;
 
 
@@ -2813,7 +5206,8 @@ let html5QrCode=null;
 
 function getHashPage(){
 
-const id=location.hash.replace("#","");
+const id=
+location.hash.replace("#","");
 
 return document.getElementById(id)
 ?id
@@ -2822,18 +5216,34 @@ return document.getElementById(id)
 }
 
 
-function setActivePage(pageId){
+function setActivePage(
+pageId
+){
 
-document.querySelectorAll(".page")
-.forEach(page=>{
-page.classList.remove("active");
-});
+document.querySelectorAll(
+".page"
+)
+.forEach(
+page=>{
+page.classList.remove(
+"active"
+);
+}
+);
 
-const page=document.getElementById(pageId);
+
+const page=
+document.getElementById(
+pageId
+);
+
 
 if(page){
 
-page.classList.add("active");
+page.classList.add(
+"active"
+);
+
 
 window.scrollTo({
 top:0,
@@ -2845,21 +5255,36 @@ behavior:"smooth"
 }
 
 
-function showPage(pageId,addHistory=true){
+function showPage(
+pageId,
+addHistory=true
+){
 
-const page=document.getElementById(pageId);
+const page=
+document.getElementById(
+pageId
+);
+
 
 if(!page)return;
 
-const currentPageId=
-document.querySelector(".page.active")?.id||"";
 
-if(currentPageId===pageId){
+const currentPageId=
+document.querySelector(
+".page.active"
+)?.id||"";
+
+
+if(
+currentPageId===pageId
+){
 
 closeMenu();
+
 return;
 
 }
+
 
 if(addHistory){
 
@@ -2874,7 +5299,11 @@ page:pageId
 
 }
 
-setActivePage(pageId);
+
+setActivePage(
+pageId
+);
+
 closeMenu();
 
 }
@@ -2882,9 +5311,14 @@ closeMenu();
 
 function initializePageHistory(){
 
-const initialPage=getHashPage();
+const initialPage=
+getHashPage();
 
-setActivePage(initialPage);
+
+setActivePage(
+initialPage
+);
+
 
 history.replaceState(
 {
@@ -2903,11 +5337,16 @@ window.addEventListener(
 function(event){
 
 const pageId=
-event.state?.qrify&&event.state.page
+event.state?.qrify &&
+event.state.page
 ?event.state.page
 :getHashPage();
 
-setActivePage(pageId);
+
+setActivePage(
+pageId
+);
+
 closeMenu();
 
 }
@@ -2918,7 +5357,9 @@ window.addEventListener(
 "hashchange",
 function(){
 
-const pageId=getHashPage();
+const pageId=
+getHashPage();
+
 
 if(
 !history.state||
@@ -2937,7 +5378,11 @@ page:pageId
 
 }
 
-setActivePage(pageId);
+
+setActivePage(
+pageId
+);
+
 closeMenu();
 
 }
@@ -2950,11 +5395,16 @@ function openMenu(){
 
 document.getElementById(
 "sideMenu"
-).classList.add("open");
+).classList.add(
+"open"
+);
+
 
 document.getElementById(
 "menuOverlay"
-).classList.add("show");
+).classList.add(
+"show"
+);
 
 }
 
@@ -2963,11 +5413,16 @@ function closeMenu(){
 
 document.getElementById(
 "sideMenu"
-).classList.remove("open");
+).classList.remove(
+"open"
+);
+
 
 document.getElementById(
 "menuOverlay"
-).classList.remove("show");
+).classList.remove(
+"show"
+);
 
 }
 
@@ -2978,9 +5433,11 @@ document.getElementById(
 
 function getQRData(){
 
-const type=document.getElementById(
+const type=
+document.getElementById(
 "qrType"
 ).value;
+
 
 if(type==="text"){
 
@@ -2990,11 +5447,14 @@ return document.getElementById(
 
 }
 
+
 if(type==="website"){
 
-let url=document.getElementById(
+let url=
+document.getElementById(
 "website"
 ).value.trim();
+
 
 if(
 url &&
@@ -3006,74 +5466,101 @@ url="https://"+url;
 
 }
 
+
 return url;
 
 }
 
+
 if(type==="phone"){
 
 return "tel:"+
-document.getElementById("phone").value;
+document.getElementById(
+"phone"
+).value;
 
 }
 
+
 if(type==="email"){
 
-const email=document.getElementById(
+const email=
+document.getElementById(
 "email"
 ).value;
 
-const subject=encodeURIComponent(
+
+const subject=
+encodeURIComponent(
 document.getElementById(
 "emailSubject"
 ).value
 );
 
-const message=encodeURIComponent(
+
+const message=
+encodeURIComponent(
 document.getElementById(
 "emailMessage"
 ).value
 );
 
+
 return `mailto:${email}?subject=${subject}&body=${message}`;
 
 }
 
+
 if(type==="wifi"){
 
-const ssid=document.getElementById(
+const ssid=
+document.getElementById(
 "wifiSSID"
 ).value;
 
-const password=document.getElementById(
+
+const password=
+document.getElementById(
 "wifiPassword"
 ).value;
 
-const security=document.getElementById(
+
+const security=
+document.getElementById(
 "wifiSecurity"
 ).value;
+
 
 return `WIFI:T:${security};S:${ssid};P:${password};;`;
 
 }
 
+
 if(type==="contact"){
 
-const name=document.getElementById(
+const name=
+document.getElementById(
 "contactName"
 ).value;
 
-const phone=document.getElementById(
+
+const phone=
+document.getElementById(
 "contactPhone"
 ).value;
 
-const email=document.getElementById(
+
+const email=
+document.getElementById(
 "contactEmail"
 ).value;
 
-const org=document.getElementById(
+
+const org=
+document.getElementById(
 "contactOrg"
 ).value;
+
 
 return `BEGIN:VCARD
 VERSION:3.0
@@ -3085,15 +5572,20 @@ END:VCARD`;
 
 }
 
+
 if(type==="location"){
 
-const lat=document.getElementById(
+const lat=
+document.getElementById(
 "latitude"
 ).value;
 
-const lon=document.getElementById(
+
+const lon=
+document.getElementById(
 "longitude"
 ).value;
+
 
 return `geo:${lat},${lon}`;
 
@@ -3108,36 +5600,59 @@ return `geo:${lat},${lon}`;
 
 function generateQR(){
 
-const data=getQRData();
+const data=
+getQRData();
 
-if(!data||!data.trim()){
 
-alert("Please enter some information.");
+if(
+!data ||
+!data.trim()
+){
+
+alert(
+"Please enter some information."
+);
+
 return;
 
 }
 
-window.latestQRData=data;
 
-const size=parseInt(
-document.getElementById("qrSize").value
+window.latestQRData=
+data;
+
+
+const size=
+parseInt(
+document.getElementById(
+"qrSize"
+).value
 );
 
-const color=document.getElementById(
+
+const color=
+document.getElementById(
 "qrColor"
 ).value;
 
-const background=document.getElementById(
+
+const background=
+document.getElementById(
 "bgColor"
 ).value;
 
-const qrContainer=document.getElementById(
+
+const qrContainer=
+document.getElementById(
 "qrcode"
 );
 
+
 qrContainer.innerHTML="";
 
-qrCodeInstance=new QRCode(
+
+qrCodeInstance=
+new QRCode(
 qrContainer,
 {
 text:data,
@@ -3145,21 +5660,31 @@ width:size,
 height:size,
 colorDark:color,
 colorLight:background,
-correctLevel:QRCode.CorrectLevel.H
+correctLevel:
+QRCode.CorrectLevel.H
 }
 );
 
+
 document.getElementById(
 "downloadBtn"
-).classList.remove("hidden");
+).classList.remove(
+"hidden"
+);
+
 
 document.getElementById(
 "sendQRBtn"
-).classList.remove("hidden");
+).classList.remove(
+"hidden"
+);
 
-const sendStatus=document.getElementById(
+
+const sendStatus=
+document.getElementById(
 "sendQRStatus"
 );
+
 
 if(sendStatus){
 
@@ -3167,6 +5692,7 @@ sendStatus.textContent=
 "✅ QR code is ready to send.";
 
 }
+
 
 saveHistory(data);
 
@@ -3179,29 +5705,50 @@ saveHistory(data);
 
 function downloadQR(){
 
-const canvas=document.querySelector(
+const canvas=
+document.querySelector(
 "#qrcode canvas"
 );
 
+
 if(!canvas){
 
-alert("Generate a QR code first.");
+alert(
+"Generate a QR code first."
+);
+
 return;
 
 }
 
+
 const border=20;
 
-const newCanvas=document.createElement(
+
+const newCanvas=
+document.createElement(
 "canvas"
 );
 
-newCanvas.width=canvas.width+border*2;
-newCanvas.height=canvas.height+border*2;
 
-const ctx=newCanvas.getContext("2d");
+newCanvas.width=
+canvas.width+
+border*2;
+
+
+newCanvas.height=
+canvas.height+
+border*2;
+
+
+const ctx=
+newCanvas.getContext(
+"2d"
+);
+
 
 ctx.fillStyle="#ffffff";
+
 
 ctx.fillRect(
 0,
@@ -3210,17 +5757,29 @@ newCanvas.width,
 newCanvas.height
 );
 
+
 ctx.drawImage(
 canvas,
 border,
 border
 );
 
-const link=document.createElement("a");
 
-link.download="QRify-QR.png";
+const link=
+document.createElement(
+"a"
+);
 
-link.href=newCanvas.toDataURL("image/png");
+
+link.download=
+"QRify-QR.png";
+
+
+link.href=
+newCanvas.toDataURL(
+"image/png"
+);
+
 
 link.click();
 
@@ -3236,31 +5795,45 @@ function clearAll(){
 document.querySelectorAll(
 "#generate input,#generate textarea"
 )
-.forEach(element=>{
+.forEach(
+element=>{
 
-if(element.type==="color")return;
+if(
+element.type==="color"
+)return;
 
 element.value="";
 
 });
 
+
 document.getElementById(
 "qrcode"
 ).innerHTML="";
 
+
 document.getElementById(
 "downloadBtn"
-).classList.add("hidden");
+).classList.add(
+"hidden"
+);
+
 
 document.getElementById(
 "sendQRBtn"
-).classList.add("hidden");
+).classList.add(
+"hidden"
+);
+
 
 window.latestQRData="";
 
-const sendStatus=document.getElementById(
+
+const sendStatus=
+document.getElementById(
 "sendQRStatus"
 );
+
 
 if(sendStatus){
 
@@ -3278,20 +5851,29 @@ sendStatus.textContent=
 
 function saveHistory(data){
 
-let history=JSON.parse(
+let history=
+JSON.parse(
 localStorage.getItem(
 "qrifyHistory"
 )||"[]"
 );
 
+
 history.unshift(data);
 
-history=history.slice(0,5);
+
+history=
+history.slice(
+0,
+5
+);
+
 
 localStorage.setItem(
 "qrifyHistory",
 JSON.stringify(history)
 );
+
 
 displayHistory();
 
@@ -3300,17 +5882,22 @@ displayHistory();
 
 function displayHistory(){
 
-const history=JSON.parse(
+const history=
+JSON.parse(
 localStorage.getItem(
 "qrifyHistory"
 )||"[]"
 );
 
-const container=document.getElementById(
+
+const container=
+document.getElementById(
 "historyList"
 );
 
+
 container.innerHTML="";
+
 
 if(history.length===0){
 
@@ -3321,13 +5908,23 @@ return;
 
 }
 
-history.forEach(item=>{
 
-const div=document.createElement("div");
+history.forEach(
+item=>{
 
-div.className="history-item";
+const div=
+document.createElement(
+"div"
+);
 
-div.textContent=item;
+
+div.className=
+"history-item";
+
+
+div.textContent=
+item;
+
 
 container.appendChild(div);
 
@@ -3342,14 +5939,20 @@ container.appendChild(div);
 
 function toggleDarkMode(){
 
-document.body.classList.toggle("dark");
+document.body.classList.toggle(
+"dark"
+);
+
 
 localStorage.setItem(
 "qrifyDarkMode",
-document.body.classList.contains("dark")
+document.body.classList.contains(
+"dark"
+)
 );
 
 }
+
 
 if(
 localStorage.getItem(
@@ -3357,7 +5960,9 @@ localStorage.getItem(
 )==="true"
 ){
 
-document.body.classList.add("dark");
+document.body.classList.add(
+"dark"
+);
 
 }
 
@@ -3378,19 +5983,30 @@ const fields=[
 "locationFields"
 ];
 
-fields.forEach(id=>{
+
+fields.forEach(
+id=>{
+
 document.getElementById(
 id
-).classList.add("hidden");
+).classList.add(
+"hidden"
+);
+
 });
 
-const type=document.getElementById(
+
+const type=
+document.getElementById(
 "qrType"
 ).value;
 
+
 document.getElementById(
 type+"Fields"
-).classList.remove("hidden");
+).classList.remove(
+"hidden"
+);
 
 }
 
@@ -3405,19 +6021,27 @@ document.getElementById(
 "reader"
 ).innerHTML="";
 
+
 if(html5QrCode){
 
 try{
 
 html5QrCode
 .stop()
-.catch(()=>{});
+.catch(
+()=>{}
+);
 
 }catch(error){}
 
 }
 
-html5QrCode=new Html5Qrcode("reader");
+
+html5QrCode=
+new Html5Qrcode(
+"reader"
+);
+
 
 html5QrCode.start(
 {
@@ -3429,22 +6053,29 @@ qrbox:250
 },
 qrCodeMessage=>{
 
-showScanResult(qrCodeMessage);
+showScanResult(
+qrCodeMessage
+);
+
 
 if(html5QrCode){
 
 html5QrCode
 .stop()
-.catch(()=>{});
+.catch(
+()=>{}
+);
 
 }
 
 },
 errorMessage=>{}
 )
-.catch(error=>{
+.catch(
+error=>{
 
 console.error(error);
+
 
 alert(
 "Camera permission is required to scan QR codes."
@@ -3461,23 +6092,39 @@ alert(
 
 function scanImage(event){
 
-const file=event.target.files[0];
+const file=
+event.target.files[0];
+
 
 if(!file)return;
 
-const scanner=new Html5Qrcode("reader");
 
-scanner.scanFile(file,true)
+const scanner=
+new Html5Qrcode(
+"reader"
+);
 
-.then(decodedText=>{
 
-showScanResult(decodedText);
+scanner.scanFile(
+file,
+true
+)
 
-})
+.then(
+decodedText=>{
 
-.catch(error=>{
+showScanResult(
+decodedText
+);
+
+}
+)
+
+.catch(
+error=>{
 
 console.error(error);
+
 
 alert(
 "Could not find a QR code in this image."
@@ -3492,23 +6139,36 @@ alert(
    SCAN RESULT
 ===================================================== */
 
-function showScanResult(text){
+function showScanResult(
+text
+){
 
-const result=document.getElementById(
+const result=
+document.getElementById(
 "scanResult"
 );
 
-const scanText=document.getElementById(
+
+const scanText=
+document.getElementById(
 "scanText"
 );
 
-const openButton=document.getElementById(
+
+const openButton=
+document.getElementById(
 "openLinkBtn"
 );
 
-scanText.textContent=text;
 
-result.classList.remove("hidden");
+scanText.textContent=
+text;
+
+
+result.classList.remove(
+"hidden"
+);
+
 
 if(
 text.startsWith("http://")||
@@ -3516,19 +6176,29 @@ text.startsWith("https://")||
 text.startsWith("www.")
 ){
 
-scannedLink=text;
+scannedLink=
+text;
 
-if(text.startsWith("www.")){
 
-scannedLink="https://"+text;
+if(
+text.startsWith("www.")
+){
+
+scannedLink=
+"https://"+text;
 
 }
 
-openButton.classList.remove("hidden");
+
+openButton.classList.remove(
+"hidden"
+);
 
 }else{
 
-openButton.classList.add("hidden");
+openButton.classList.add(
+"hidden"
+);
 
 }
 
@@ -3558,7 +6228,9 @@ scannedLink,
 ===================================================== */
 
 initializePageHistory();
+
 displayHistory();
+
 showFields();
 
 
@@ -3566,15 +6238,37 @@ showFields();
    SERVICE WORKER
 ===================================================== */
 
-if("serviceWorker" in navigator){
+
+/*
+ Main PWA service worker.
+
+ Keep your existing sw.js.
+*/
+
+if(
+"serviceWorker" in navigator
+){
 
 window.addEventListener(
 "load",
 function(){
 
 navigator.serviceWorker
-.register("./sw.js")
-.catch(function(error){
+.register(
+"./sw.js"
+)
+.then(
+registration=>{
+
+console.log(
+"QRify Service Worker registered:",
+registration.scope
+);
+
+}
+)
+.catch(
+function(error){
 
 console.log(
 "Service Worker error:",
@@ -3591,4 +6285,4 @@ error
 </script>
 
 </body>
-      </html>
+ </html>
