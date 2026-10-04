@@ -430,6 +430,54 @@ body.dark .chat-message.received{
  padding:10px 0
 }
 
+/* ================= CHAT CONTROLS ================= */
+
+.chat-header-actions{
+ display:flex;
+ justify-content:flex-end;
+ gap:6px;
+ margin-top:4px
+}
+
+.chat-header-actions button{
+ margin:0;
+ padding:8px 12px;
+ font-size:13px
+}
+
+.chat-message-text{
+ word-break:break-word
+}
+
+.chat-message-actions{
+ display:flex;
+ justify-content:flex-end;
+ gap:5px;
+ margin-top:7px
+}
+
+.chat-message-actions button{
+ width:auto;
+ padding:5px 8px;
+ margin:0;
+ border-radius:7px;
+ font-size:11px
+}
+
+.message-delete-btn{
+ background:#6b7280;
+ color:white
+}
+
+.message-unsend-btn{
+ background:#b91c1c;
+ color:white
+}
+
+body.dark .message-delete-btn{
+ background:#4b5563
+}
+
 .friend-title{
  display:flex;
  justify-content:space-between;
@@ -501,6 +549,22 @@ footer{
  .request-actions,
  .friend-buttons{
   flex-direction:column
+ }
+
+ .chat-message-actions{
+  flex-wrap:wrap
+ }
+
+ .chat-message-actions button{
+  width:auto
+ }
+
+ .chat-header-actions{
+  flex-wrap:wrap
+ }
+
+ .chat-header-actions button{
+  width:auto
  }
 
 }
@@ -994,8 +1058,24 @@ onclick="searchChatUser()">
 <p
 id="chatUsername"
 class="small-text"
-style="margin:4px 0 0">
+style="margin:4px 0 8px">
 </p>
+
+<div class="chat-header-actions">
+
+<button
+class="secondary"
+onclick="clearAllChatMessages()">
+🧹 Clear All
+</button>
+
+<button
+class="danger"
+onclick="deleteCurrentChat()">
+🗑️ Delete Chat
+</button>
+
+</div>
 
 </div>
 
@@ -1070,7 +1150,19 @@ onclick="showPage('profile')">
 
 <div class="card">
 
-<h2>🕘 Recent QR History</h2>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+
+<h2 style="margin:0">
+🕘 Recent QR History
+</h2>
+
+<button
+class="danger"
+onclick="clearHistory()">
+🧹 Clear All
+</button>
+
+</div>
 
 <div id="historyList"></div>
 
@@ -1223,7 +1315,10 @@ where,
 orderBy,
 addDoc,
 onSnapshot,
-serverTimestamp
+serverTimestamp,
+arrayUnion,
+deleteDoc,
+writeBatch
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
@@ -1260,22 +1355,8 @@ const messaging=getMessaging(app);
    FIREBASE CLOUD MESSAGING
 ===================================================== */
 
-/*
-   This is your PUBLIC Firebase Web Push VAPID key.
-
-   Never put your VAPID PRIVATE key here.
-*/
-
 const VAPID_KEY=
 "BBvpdCVJig7SDMUiCqLDtI_NIQxj8wONLt0GhJNEhDk_PQey9VSJDHNg1oegiVtIsZ7yDIYwT-koaggq9QXfBYg";
-
-
-/*
-   Separate service-worker scope.
-
-   Your existing sw.js remains the main PWA
-   service worker and is NOT replaced.
-*/
 
 const FCM_SW_SCOPE=
 "./firebase-messaging-scope/";
@@ -1402,17 +1483,6 @@ return;
 
 }
 
-
-/*
-   IMPORTANT:
-
-   Do NOT register FCM service worker at the
-   same scope as sw.js.
-
-   We use a separate scope so the existing
-   QRify PWA service worker remains active.
-*/
-
 const registration=
 await navigator.serviceWorker.register(
 "./firebase-messaging-sw.js",
@@ -1421,17 +1491,7 @@ scope:FCM_SW_SCOPE
 }
 );
 
-
-/*
-   Wait until the FCM service worker is ready.
-*/
-
 await navigator.serviceWorker.ready;
-
-
-/*
-   Get Firebase Cloud Messaging token.
-*/
 
 const token=
 await getToken(
@@ -1452,16 +1512,6 @@ return;
 
 }
 
-
-/*
-   Save token in Firestore.
-
-   users
-      └── UID
-          └── fcmTokens
-              └── token
-*/
-
 await setDoc(
 doc(
 db,
@@ -1481,11 +1531,6 @@ updatedAt:serverTimestamp()
 merge:true
 }
 );
-
-
-/*
-   Save local notification state.
-*/
 
 localStorage.setItem(
 "qrifyNotifications",
@@ -1530,11 +1575,6 @@ return;
 }
 
 try{
-
-/*
-   Get the FCM service worker using
-   the SAME custom scope.
-*/
 
 const registration=
 await navigator.serviceWorker.getRegistration(
@@ -3368,7 +3408,8 @@ requestRef
 
 if(
 !requestSnapshot.exists()
-)return;
+)
+return;
 
 const data=
 requestSnapshot.data();
@@ -4561,30 +4602,38 @@ document.getElementById(
 
 container.innerHTML="";
 
-if(snapshot.empty){
-
-container.innerHTML=`
-
-<p
-class="small-text"
-style="text-align:center">
-
-👋 No messages yet.
-Say hello!
-
-</p>
-
-`;
-
-return;
-
-}
+let visibleMessageCount=0;
 
 snapshot.forEach(
 messageDoc=>{
 
 const data=
 messageDoc.data();
+
+const deletedFor=
+Array.isArray(data.deletedFor)
+?data.deletedFor
+:[];
+
+if(
+deletedFor.includes(
+currentUser.uid
+)
+){
+
+return;
+
+}
+
+if(
+data.unsent===true
+){
+
+return;
+
+}
+
+visibleMessageCount++;
 
 const div=
 document.createElement(
@@ -4628,21 +4677,81 @@ timeText="";
 
 }
 
+const messageId=
+escapeJS(
+messageDoc.id
+);
+
 div.innerHTML=`
+
+<div class="chat-message-text">
 
 ${escapeHTML(
 data.text||""
 )}
 
+</div>
+
 <span class="chat-time">
 ${timeText}
 </span>
+
+<div class="chat-message-actions">
+
+<button
+class="message-delete-btn"
+onclick="deleteChatMessageForMe(
+'${messageId}'
+)">
+
+🗑️ Delete
+
+</button>
+
+${
+isMine
+?`
+
+<button
+class="message-unsend-btn"
+onclick="unsendChatMessage(
+'${messageId}'
+)">
+
+↩️ Unsend
+
+</button>
+
+`
+:""
+}
+
+</div>
 
 `;
 
 container.appendChild(div);
 
 });
+
+if(
+visibleMessageCount===0
+){
+
+container.innerHTML=`
+
+<p
+class="small-text"
+style="text-align:center">
+
+👋 No messages yet.<br>
+Say hello!
+
+</p>
+
+`;
+
+}
 
 container.scrollTop=
 container.scrollHeight;
@@ -4730,6 +4839,10 @@ activeChatUser.username,
 
 text:text,
 
+deletedFor:[],
+
+unsent:false,
+
 createdAt:
 serverTimestamp()
 
@@ -4765,6 +4878,488 @@ error
 
 alert(
 "Could not send message: "+
+error.message
+);
+
+}
+
+};
+
+
+/* =====================================================
+   DELETE MESSAGE FOR ME
+===================================================== */
+
+window.deleteChatMessageForMe=
+async function(
+messageId
+){
+
+if(
+!currentUser ||
+!activeChatUser
+){
+
+return;
+
+}
+
+const confirmed=
+confirm(
+"Delete this message for you?\n\n"+
+"The other person will still see it."
+);
+
+if(!confirmed){
+
+return;
+
+}
+
+try{
+
+const chatId=
+createChatId(
+currentUser.uid,
+activeChatUser.uid
+);
+
+const messageRef=
+doc(
+db,
+"chats",
+chatId,
+"messages",
+messageId
+);
+
+const messageSnapshot=
+await getDoc(
+messageRef
+);
+
+if(
+!messageSnapshot.exists()
+){
+
+alert(
+"Message no longer exists."
+);
+
+return;
+
+}
+
+await setDoc(
+messageRef,
+{
+deletedFor:
+arrayUnion(
+currentUser.uid
+)
+},
+{
+merge:true
+}
+);
+
+}catch(error){
+
+console.error(
+"Delete message error:",
+error
+);
+
+alert(
+"Could not delete message: "+
+error.message
+);
+
+}
+
+};
+
+
+/* =====================================================
+   UNSEND MESSAGE
+===================================================== */
+
+window.unsendChatMessage=
+async function(
+messageId
+){
+
+if(
+!currentUser ||
+!activeChatUser
+){
+
+return;
+
+}
+
+const confirmed=
+confirm(
+"Unsend this message?\n\n"+
+"It will be removed for both users."
+);
+
+if(!confirmed){
+
+return;
+
+}
+
+try{
+
+const chatId=
+createChatId(
+currentUser.uid,
+activeChatUser.uid
+);
+
+const messageRef=
+doc(
+db,
+"chats",
+chatId,
+"messages",
+messageId
+);
+
+const messageSnapshot=
+await getDoc(
+messageRef
+);
+
+if(
+!messageSnapshot.exists()
+){
+
+alert(
+"Message no longer exists."
+);
+
+return;
+
+}
+
+const data=
+messageSnapshot.data();
+
+if(
+data.senderId!==currentUser.uid
+){
+
+alert(
+"You can only unsend your own messages."
+);
+
+return;
+
+}
+
+await deleteDoc(
+messageRef
+);
+
+}catch(error){
+
+console.error(
+"Unsend message error:",
+error
+);
+
+alert(
+"Could not unsend message: "+
+error.message
+);
+
+}
+
+};
+
+
+/* =====================================================
+   CLEAR ALL CHAT MESSAGES
+===================================================== */
+
+window.clearAllChatMessages=
+async function(){
+
+if(
+!currentUser ||
+!activeChatUser
+){
+
+alert(
+"Select a chat first."
+);
+
+return;
+
+}
+
+const confirmed=
+confirm(
+"Clear all messages?\n\n"+
+"All messages in this conversation will be permanently deleted for both users."
+);
+
+if(!confirmed){
+
+return;
+
+}
+
+try{
+
+const chatId=
+createChatId(
+currentUser.uid,
+activeChatUser.uid
+);
+
+const messagesRef=
+collection(
+db,
+"chats",
+chatId,
+"messages"
+);
+
+const messagesSnapshot=
+await getDocs(
+messagesRef
+);
+
+const messageDocs=
+messagesSnapshot.docs;
+
+const BATCH_SIZE=400;
+
+for(
+let i=0;
+i<messageDocs.length;
+i+=BATCH_SIZE
+){
+
+const batch=
+writeBatch(db);
+
+const chunk=
+messageDocs.slice(
+i,
+i+BATCH_SIZE
+);
+
+chunk.forEach(
+messageDoc=>{
+
+batch.delete(
+messageDoc.ref
+);
+
+});
+
+await batch.commit();
+
+}
+
+await setDoc(
+doc(
+db,
+"chats",
+chatId
+),
+{
+lastMessage:"",
+updatedAt:
+serverTimestamp()
+},
+{
+merge:true
+}
+);
+
+alert(
+"🧹 All messages cleared successfully."
+);
+
+}catch(error){
+
+console.error(
+"Clear all chat error:",
+error
+);
+
+alert(
+"Could not clear messages: "+
+error.message
+);
+
+}
+
+};
+
+
+/* =====================================================
+   DELETE CURRENT CHAT
+===================================================== */
+
+window.deleteCurrentChat=
+async function(){
+
+if(!currentUser){
+
+alert(
+"Please sign in first."
+);
+
+return;
+
+}
+
+if(!activeChatUser){
+
+alert(
+"Select a chat first."
+);
+
+return;
+
+}
+
+const friendName=
+activeChatUser.displayName||
+"this user";
+
+const confirmed=
+confirm(
+`Delete your chat with ${friendName}?\n\n`+
+`All messages in this conversation will be permanently deleted for both users.`
+);
+
+if(!confirmed){
+
+return;
+
+}
+
+try{
+
+const chatId=
+createChatId(
+currentUser.uid,
+activeChatUser.uid
+);
+
+const messagesRef=
+collection(
+db,
+"chats",
+chatId,
+"messages"
+);
+
+const messagesSnapshot=
+await getDocs(
+messagesRef
+);
+
+const messageDocs=
+messagesSnapshot.docs;
+
+const BATCH_SIZE=400;
+
+for(
+let i=0;
+i<messageDocs.length;
+i+=BATCH_SIZE
+){
+
+const batch=
+writeBatch(db);
+
+const chunk=
+messageDocs.slice(
+i,
+i+BATCH_SIZE
+);
+
+chunk.forEach(
+messageDoc=>{
+
+batch.delete(
+messageDoc.ref
+);
+
+});
+
+await batch.commit();
+
+}
+
+await deleteDoc(
+doc(
+db,
+"chats",
+chatId
+)
+);
+
+if(unsubscribeChat){
+
+unsubscribeChat();
+
+unsubscribeChat=null;
+
+}
+
+activeChatUser=null;
+
+document.getElementById(
+"chatWindow"
+).classList.add(
+"hidden"
+);
+
+document.getElementById(
+"chatMessages"
+).innerHTML=`
+
+<p class="small-text">
+Select a user to start chatting.
+</p>
+
+`;
+
+document.getElementById(
+"chatUserName"
+).textContent=
+"💬 Select a user";
+
+document.getElementById(
+"chatUsername"
+).textContent="";
+
+document.getElementById(
+"chatInput"
+).value="";
+
+alert(
+"🗑️ Chat deleted successfully."
+);
+
+}catch(error){
+
+console.error(
+"Delete chat error:",
+error
+);
+
+alert(
+"Could not delete chat: "+
 error.message
 );
 
@@ -5454,6 +6049,7 @@ displayHistory();
 
 }
 
+
 function displayHistory(){
 
 const history=
@@ -5480,7 +6076,7 @@ return;
 }
 
 history.forEach(
-item=>{
+(item,index)=>{
 
 const div=
 document.createElement(
@@ -5490,14 +6086,127 @@ document.createElement(
 div.className=
 "history-item";
 
-div.textContent=
-item;
+div.innerHTML=`
+
+<div style="word-break:break-word;margin-bottom:8px">
+
+${escapeHTML(item)}
+
+</div>
+
+<button
+class="danger"
+onclick="deleteHistoryItem(${index})">
+
+🗑️ Delete
+
+</button>
+
+`;
 
 container.appendChild(div);
 
 });
 
 }
+
+
+/* =====================================================
+   DELETE HISTORY ITEM
+===================================================== */
+
+window.deleteHistoryItem=
+function(index){
+
+const confirmed=
+confirm(
+"Delete this QR from your history?"
+);
+
+if(!confirmed){
+
+return;
+
+}
+
+let history=
+JSON.parse(
+localStorage.getItem(
+"qrifyHistory"
+)||"[]"
+);
+
+if(
+index<0 ||
+index>=history.length
+){
+
+return;
+
+}
+
+history.splice(
+index,
+1
+);
+
+localStorage.setItem(
+"qrifyHistory",
+JSON.stringify(history)
+);
+
+displayHistory();
+
+};
+
+
+/* =====================================================
+   CLEAR ALL HISTORY
+===================================================== */
+
+window.clearHistory=
+function(){
+
+const history=
+JSON.parse(
+localStorage.getItem(
+"qrifyHistory"
+)||"[]"
+);
+
+if(history.length===0){
+
+alert(
+"History is already empty."
+);
+
+return;
+
+}
+
+const confirmed=
+confirm(
+"Clear all QR history?\n\n"+
+"All saved QR history on this device will be deleted."
+);
+
+if(!confirmed){
+
+return;
+
+}
+
+localStorage.removeItem(
+"qrifyHistory"
+);
+
+displayHistory();
+
+alert(
+"🧹 QR history cleared successfully."
+);
+
+};
 
 
 /* =====================================================
@@ -5783,14 +6492,6 @@ showFields();
 /* =====================================================
    EXISTING QRIFY PWA SERVICE WORKER
 ===================================================== */
-
-/*
-   IMPORTANT:
-
-   Keep your existing sw.js.
-
-   This is separate from Firebase Messaging.
-*/
 
 if(
 "serviceWorker" in navigator
