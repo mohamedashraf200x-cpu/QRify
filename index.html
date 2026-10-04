@@ -162,6 +162,15 @@ body.dark .menu-item:hover {
   background: #374151;
 }
 
+.menu-badge {
+  float: right;
+  background: #dc2626;
+  color: white;
+  border-radius: 20px;
+  padding: 2px 8px;
+  font-size: 12px;
+}
+
 .container {
   max-width: 700px;
   margin: 20px auto;
@@ -254,6 +263,11 @@ body.dark .secondary {
   color: white;
 }
 
+.warning {
+  background: #d97706;
+  color: white;
+}
+
 .hidden {
   display: none !important;
 }
@@ -315,17 +329,21 @@ body.dark .feature {
 
 .history-item,
 .received-item,
-.user-result {
+.user-result,
+.friend-item,
+.request-item {
   background: #f3f4f6;
-  padding: 12px;
-  border-radius: 10px;
-  margin-top: 8px;
+  padding: 14px;
+  border-radius: 12px;
+  margin-top: 10px;
   word-break: break-word;
 }
 
 body.dark .history-item,
 body.dark .received-item,
-body.dark .user-result {
+body.dark .user-result,
+body.dark .friend-item,
+body.dark .request-item {
   background: #374151;
 }
 
@@ -428,6 +446,45 @@ body.dark .chat-message.received {
   padding: 10px 0;
 }
 
+.friend-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.friend-count {
+  background: #2563eb;
+  color: white;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 13px;
+}
+
+.request-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.request-actions button {
+  flex: 1;
+}
+
+.friend-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.friend-buttons button {
+  flex: 1;
+}
+
+.empty-message {
+  text-align: center;
+  padding: 15px;
+}
+
 footer {
   text-align: center;
   padding: 25px;
@@ -455,6 +512,11 @@ footer {
 
   .chat-message {
     max-width: 88%;
+  }
+
+  .request-actions,
+  .friend-buttons {
+    flex-direction: column;
   }
 
 }
@@ -521,6 +583,15 @@ footer {
     📤 Send QR
   </button>
 
+  <button class="menu-item" onclick="showPage('friends')">
+    👥 Friends
+    <span
+      id="friendRequestBadge"
+      class="menu-badge hidden">
+      0
+    </span>
+  </button>
+
   <button class="menu-item" onclick="showPage('chat')">
     💬 Chat
   </button>
@@ -552,7 +623,7 @@ footer {
     <h1>Welcome to QRify 👋</h1>
 
     <p>
-      Generate • Scan • Share • Chat • Simplify
+      Generate • Scan • Share • Chat • Connect
     </p>
 
   </div>
@@ -599,6 +670,18 @@ footer {
 
       </div>
 
+      <div class="feature" onclick="showPage('friends')">
+
+        <span class="feature-icon">👥</span>
+
+        <strong>Friends</strong>
+
+        <p class="small-text">
+          Add and manage friends
+        </p>
+
+      </div>
+
       <div class="feature" onclick="showPage('chat')">
 
         <span class="feature-icon">💬</span>
@@ -619,18 +702,6 @@ footer {
 
         <p class="small-text">
           View received QR codes
-        </p>
-
-      </div>
-
-      <div class="feature" onclick="showPage('profile')">
-
-        <span class="feature-icon">👤</span>
-
-        <strong>Account</strong>
-
-        <p class="small-text">
-          Manage your profile
         </p>
 
       </div>
@@ -965,6 +1036,120 @@ footer {
 </section>
 
 
+<!-- ================= FRIENDS ================= -->
+
+<section id="friends" class="page">
+
+  <div id="friendsLoginCard" class="card">
+
+    <h2>👥 QRify Friends</h2>
+
+    <p>
+      Sign in to add friends and manage friend requests.
+    </p>
+
+    <button
+      class="primary"
+      onclick="showPage('profile')">
+
+      👤 Open Profile
+
+    </button>
+
+  </div>
+
+
+  <div id="friendsApp" class="hidden">
+
+    <div class="card">
+
+      <h2>👥 Find Friends</h2>
+
+      <p class="small-text">
+        Search for another QRify username.
+      </p>
+
+      <label>Username</label>
+
+      <input
+        id="friendSearchUsername"
+        placeholder="Enter username">
+
+      <button
+        class="primary"
+        onclick="searchFriendUser()">
+
+        🔎 Search User
+
+      </button>
+
+      <div id="friendSearchResults"></div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="friend-title">
+
+        <h2>📩 Friend Requests</h2>
+
+        <span
+          id="friendRequestCount"
+          class="friend-count">
+
+          0
+
+        </span>
+
+      </div>
+
+      <div id="friendRequestsList">
+
+        <p class="small-text empty-message">
+
+          No pending friend requests.
+
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="friend-title">
+
+        <h2>👥 My Friends</h2>
+
+        <span
+          id="friendsCount"
+          class="friend-count">
+
+          0
+
+        </span>
+
+      </div>
+
+      <div id="friendsList">
+
+        <p class="small-text empty-message">
+
+          You have no friends yet.
+
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
 <section id="chat" class="page">
 
   <div id="chatLoginCard" class="card">
@@ -972,7 +1157,7 @@ footer {
     <h2>💬 QRify Chat</h2>
 
     <p>
-      Sign in to chat privately with other QRify users.
+      Sign in to chat privately with your QRify friends.
     </p>
 
     <button
@@ -1216,11 +1401,11 @@ footer {
     <h2>ℹ️ About QRify</h2>
 
     <p>
-      QRify helps you generate, scan, share and chat easily.
+      QRify helps you generate, scan, share, chat and connect easily.
     </p>
 
     <p class="small-text">
-      Generate • Scan • Share • Chat • Simplify
+      Generate • Scan • Share • Chat • Connect
     </p>
 
     <p class="small-text">
@@ -1235,7 +1420,7 @@ footer {
 
 <footer>
 
-  QRify — Generate • Scan • Share • Chat • Simplify
+  QRify — Generate • Scan • Share • Chat • Connect
 
   <br>
 
@@ -1272,7 +1457,8 @@ import {
   orderBy,
   addDoc,
   onSnapshot,
-  serverTimestamp
+  serverTimestamp,
+  deleteDoc
 } from
 "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
@@ -1325,6 +1511,10 @@ let activeChatUser = null;
 
 let unsubscribeChat = null;
 
+let unsubscribeFriendRequests = null;
+
+let unsubscribeFriends = null;
+
 
 /* ================= LOGIN ================= */
 
@@ -1366,6 +1556,30 @@ async function() {
       unsubscribeChat();
 
       unsubscribeChat = null;
+
+    }
+
+    if(unsubscribeInbox) {
+
+      unsubscribeInbox();
+
+      unsubscribeInbox = null;
+
+    }
+
+    if(unsubscribeFriendRequests) {
+
+      unsubscribeFriendRequests();
+
+      unsubscribeFriendRequests = null;
+
+    }
+
+    if(unsubscribeFriends) {
+
+      unsubscribeFriends();
+
+      unsubscribeFriends = null;
 
     }
 
@@ -1423,6 +1637,12 @@ onAuthStateChanged(
     const chatApp =
       document.getElementById("chatApp");
 
+    const friendsLoginCard =
+      document.getElementById("friendsLoginCard");
+
+    const friendsApp =
+      document.getElementById("friendsApp");
+
 
     if(user) {
 
@@ -1470,9 +1690,18 @@ onAuthStateChanged(
 
       chatApp.classList.remove("hidden");
 
+      friendsLoginCard.classList.add("hidden");
+
+      friendsApp.classList.remove("hidden");
+
+
       await loadUserProfile();
 
       startInboxListener();
+
+      startFriendRequestListener();
+
+      startFriendsListener();
 
     }
 
@@ -1507,10 +1736,15 @@ onAuthStateChanged(
 
       chatApp.classList.add("hidden");
 
+      friendsLoginCard.classList.remove("hidden");
+
+      friendsApp.classList.add("hidden");
+
       document
         .getElementById("sendQRBtn")
         .classList
         .add("hidden");
+
 
       if(unsubscribeInbox) {
 
@@ -1527,6 +1761,24 @@ onAuthStateChanged(
         unsubscribeChat = null;
 
       }
+
+      if(unsubscribeFriendRequests) {
+
+        unsubscribeFriendRequests();
+
+        unsubscribeFriendRequests = null;
+
+      }
+
+      if(unsubscribeFriends) {
+
+        unsubscribeFriends();
+
+        unsubscribeFriends = null;
+
+      }
+
+      updateFriendRequestBadge(0);
 
     }
 
@@ -1716,6 +1968,1256 @@ async function() {
   }
 
 };
+
+
+/* =====================================================
+   FRIEND REQUEST SYSTEM
+   ===================================================== */
+
+
+/* ================= FRIENDSHIP ID ================= */
+
+function createFriendshipId(uid1, uid2) {
+
+  return [
+    uid1,
+    uid2
+  ]
+  .sort()
+  .join("_");
+
+}
+
+
+/* ================= REQUEST ID ================= */
+
+function createFriendRequestId(senderId, receiverId) {
+
+  return senderId + "_" + receiverId;
+
+}
+
+
+/* ================= SEARCH FRIEND USER ================= */
+
+window.searchFriendUser =
+async function() {
+
+  if(!currentUser) {
+
+    alert("Please sign in first.");
+
+    return;
+
+  }
+
+  if(!currentUsername) {
+
+    alert(
+      "First create your QRify username."
+    );
+
+    return;
+
+  }
+
+  const input =
+    document.getElementById(
+      "friendSearchUsername"
+    );
+
+  const username =
+    input.value
+      .trim()
+      .toLowerCase();
+
+  if(!username) {
+
+    alert("Enter a username.");
+
+    return;
+
+  }
+
+  const results =
+    document.getElementById(
+      "friendSearchResults"
+    );
+
+  results.innerHTML =
+    "<p>Searching...</p>";
+
+  try {
+
+    const searchQuery =
+      query(
+        collection(db, "users"),
+        where("username", "==", username)
+      );
+
+    const snapshot =
+      await getDocs(searchQuery);
+
+    results.innerHTML = "";
+
+    if(snapshot.empty) {
+
+      results.innerHTML = `
+
+        <div class="user-result">
+
+          ❌ User not found
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+    for(
+      const userDoc of snapshot.docs
+    ) {
+
+      const data =
+        userDoc.data();
+
+      if(
+        userDoc.id === currentUser.uid
+      ) {
+
+        results.innerHTML = `
+
+          <div class="user-result">
+
+            👤 This is your own username.
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      const div =
+        document.createElement("div");
+
+      div.className =
+        "user-result";
+
+      const status =
+        await getFriendStatus(
+          userDoc.id
+        );
+
+
+      let actionHTML = "";
+
+
+      if(status === "friends") {
+
+        actionHTML = `
+
+          <button
+            class="secondary"
+            onclick="openChatFromFriend(
+              '${escapeJS(userDoc.id)}',
+              '${escapeJS(data.username || "")}',
+              '${escapeJS(data.displayName || "QRify User")}'
+            )">
+
+            💬 Chat
+
+          </button>
+
+        `;
+
+      }
+
+      else if(status === "outgoing") {
+
+        actionHTML = `
+
+          <button
+            class="secondary"
+            disabled>
+
+            ⏳ Request Sent
+
+          </button>
+
+        `;
+
+      }
+
+      else if(status === "incoming") {
+
+        actionHTML = `
+
+          <button
+            class="success"
+            onclick="acceptFriendRequestByUser(
+              '${escapeJS(userDoc.id)}'
+            )">
+
+            ✅ Accept Request
+
+          </button>
+
+        `;
+
+      }
+
+      else {
+
+        actionHTML = `
+
+          <button
+            class="success"
+            onclick="sendFriendRequest(
+              '${escapeJS(userDoc.id)}',
+              '${escapeJS(data.username || "")}',
+              '${escapeJS(data.displayName || "QRify User")}'
+            )">
+
+            ➕ Add Friend
+
+          </button>
+
+        `;
+
+      }
+
+
+      div.innerHTML = `
+
+        <strong>
+
+          ${escapeHTML(
+            data.displayName ||
+            "QRify User"
+          )}
+
+        </strong>
+
+        <br>
+
+        <span class="username">
+
+          @${escapeHTML(
+            data.username || ""
+          )}
+
+        </span>
+
+        <br>
+
+        ${actionHTML}
+
+      `;
+
+      results.appendChild(div);
+
+    }
+
+  }
+
+  catch(error) {
+
+    console.error(error);
+
+    results.innerHTML = `
+
+      <div class="user-result">
+
+        ❌ Search failed.
+
+      </div>
+
+    `;
+
+  }
+
+};
+
+
+/* ================= GET FRIEND STATUS ================= */
+
+async function getFriendStatus(otherUserId) {
+
+  if(!currentUser) {
+
+    return "none";
+
+  }
+
+
+  const friendshipId =
+    createFriendshipId(
+      currentUser.uid,
+      otherUserId
+    );
+
+
+  const friendshipRef =
+    doc(
+      db,
+      "friendships",
+      friendshipId
+    );
+
+
+  const friendshipSnapshot =
+    await getDoc(friendshipRef);
+
+
+  if(friendshipSnapshot.exists()) {
+
+    return "friends";
+
+  }
+
+
+  const outgoingId =
+    createFriendRequestId(
+      currentUser.uid,
+      otherUserId
+    );
+
+
+  const incomingId =
+    createFriendRequestId(
+      otherUserId,
+      currentUser.uid
+    );
+
+
+  const outgoingRef =
+    doc(
+      db,
+      "friend_requests",
+      outgoingId
+    );
+
+
+  const incomingRef =
+    doc(
+      db,
+      "friend_requests",
+      incomingId
+    );
+
+
+  const outgoingSnapshot =
+    await getDoc(outgoingRef);
+
+
+  if(
+    outgoingSnapshot.exists() &&
+    outgoingSnapshot.data().status === "pending"
+  ) {
+
+    return "outgoing";
+
+  }
+
+
+  const incomingSnapshot =
+    await getDoc(incomingRef);
+
+
+  if(
+    incomingSnapshot.exists() &&
+    incomingSnapshot.data().status === "pending"
+  ) {
+
+    return "incoming";
+
+  }
+
+
+  return "none";
+
+}
+
+
+/* ================= SEND FRIEND REQUEST ================= */
+
+window.sendFriendRequest =
+async function(
+  receiverId,
+  receiverUsername,
+  receiverName
+) {
+
+  if(!currentUser) {
+
+    alert("Please sign in first.");
+
+    return;
+
+  }
+
+  if(!currentUsername) {
+
+    alert(
+      "Create your QRify username first."
+    );
+
+    return;
+
+  }
+
+
+  if(
+    receiverId === currentUser.uid
+  ) {
+
+    alert(
+      "You cannot send a friend request to yourself."
+    );
+
+    return;
+
+  }
+
+
+  try {
+
+    const status =
+      await getFriendStatus(
+        receiverId
+      );
+
+
+    if(status === "friends") {
+
+      alert(
+        "You are already friends."
+      );
+
+      return;
+
+    }
+
+
+    if(status === "outgoing") {
+
+      alert(
+        "Friend request already sent."
+      );
+
+      return;
+
+    }
+
+
+    if(status === "incoming") {
+
+      alert(
+        "This person already sent you a request. Check Friend Requests."
+      );
+
+      return;
+
+    }
+
+
+    const requestId =
+      createFriendRequestId(
+        currentUser.uid,
+        receiverId
+      );
+
+
+    await setDoc(
+
+      doc(
+        db,
+        "friend_requests",
+        requestId
+      ),
+
+      {
+
+        senderId:
+          currentUser.uid,
+
+        senderUsername:
+          currentUsername,
+
+        senderName:
+          currentUser.displayName ||
+          "QRify User",
+
+        receiverId:
+          receiverId,
+
+        receiverUsername:
+          receiverUsername,
+
+        receiverName:
+          receiverName,
+
+        status:
+          "pending",
+
+        createdAt:
+          serverTimestamp()
+
+      }
+
+    );
+
+
+    alert(
+      "✅ Friend request sent to @" +
+      receiverUsername
+    );
+
+
+    await searchFriendUser();
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "Friend request error:",
+      error
+    );
+
+    alert(
+      "Could not send friend request: " +
+      error.message
+    );
+
+  }
+
+};
+
+
+/* ================= FRIEND REQUEST LISTENER ================= */
+
+function startFriendRequestListener() {
+
+  if(!currentUser) return;
+
+
+  if(unsubscribeFriendRequests) {
+
+    unsubscribeFriendRequests();
+
+  }
+
+
+  const requestsQuery =
+    query(
+
+      collection(
+        db,
+        "friend_requests"
+      ),
+
+      where(
+        "receiverId",
+        "==",
+        currentUser.uid
+      ),
+
+      where(
+        "status",
+        "==",
+        "pending"
+      )
+
+    );
+
+
+  unsubscribeFriendRequests =
+    onSnapshot(
+
+      requestsQuery,
+
+      snapshot => {
+
+        displayFriendRequests(
+          snapshot
+        );
+
+        updateFriendRequestBadge(
+          snapshot.size
+        );
+
+      },
+
+      error => {
+
+        console.error(
+          "Friend request listener error:",
+          error
+        );
+
+      }
+
+    );
+
+}
+
+
+/* ================= DISPLAY REQUESTS ================= */
+
+function displayFriendRequests(snapshot) {
+
+  const container =
+    document.getElementById(
+      "friendRequestsList"
+    );
+
+
+  container.innerHTML = "";
+
+
+  if(snapshot.empty) {
+
+    container.innerHTML = `
+
+      <p class="small-text empty-message">
+
+        No pending friend requests.
+
+      </p>
+
+    `;
+
+    return;
+
+  }
+
+
+  snapshot.forEach(
+    requestDoc => {
+
+      const data =
+        requestDoc.data();
+
+
+      const item =
+        document.createElement("div");
+
+      item.className =
+        "request-item";
+
+
+      item.innerHTML = `
+
+        <strong>
+
+          ${escapeHTML(
+            data.senderName ||
+            "QRify User"
+          )}
+
+        </strong>
+
+        <br>
+
+        <span class="username">
+
+          @${escapeHTML(
+            data.senderUsername || ""
+          )}
+
+        </span>
+
+        <p class="small-text">
+
+          Wants to be your friend.
+
+        </p>
+
+        <div class="request-actions">
+
+          <button
+            class="success"
+            onclick="acceptFriendRequest(
+              '${escapeJS(requestDoc.id)}'
+            )">
+
+            ✅ Accept
+
+          </button>
+
+          <button
+            class="danger"
+            onclick="rejectFriendRequest(
+              '${escapeJS(requestDoc.id)}'
+            )">
+
+            ❌ Reject
+
+          </button>
+
+        </div>
+
+      `;
+
+
+      container.appendChild(item);
+
+    }
+  );
+
+}
+
+
+/* ================= UPDATE BADGE ================= */
+
+function updateFriendRequestBadge(count) {
+
+  const badge =
+    document.getElementById(
+      "friendRequestBadge"
+    );
+
+  const countElement =
+    document.getElementById(
+      "friendRequestCount"
+    );
+
+
+  if(countElement) {
+
+    countElement.textContent =
+      count;
+
+  }
+
+
+  if(count > 0) {
+
+    badge.textContent =
+      count;
+
+    badge.classList.remove(
+      "hidden"
+    );
+
+  }
+
+  else {
+
+    badge.classList.add(
+      "hidden"
+    );
+
+  }
+
+}
+
+
+/* ================= ACCEPT REQUEST ================= */
+
+window.acceptFriendRequest =
+async function(requestId) {
+
+  if(!currentUser) return;
+
+
+  try {
+
+    const requestRef =
+      doc(
+        db,
+        "friend_requests",
+        requestId
+      );
+
+
+    const requestSnapshot =
+      await getDoc(
+        requestRef
+      );
+
+
+    if(!requestSnapshot.exists()) {
+
+      alert(
+        "Friend request no longer exists."
+      );
+
+      return;
+
+    }
+
+
+    const data =
+      requestSnapshot.data();
+
+
+    if(
+      data.receiverId !==
+      currentUser.uid
+    ) {
+
+      alert(
+        "You cannot accept this request."
+      );
+
+      return;
+
+    }
+
+
+    if(
+      data.status !== "pending"
+    ) {
+
+      alert(
+        "This request is no longer pending."
+      );
+
+      return;
+
+    }
+
+
+    const friendshipId =
+      createFriendshipId(
+        data.senderId,
+        data.receiverId
+      );
+
+
+    await setDoc(
+
+      doc(
+        db,
+        "friendships",
+        friendshipId
+      ),
+
+      {
+
+        users: [
+          data.senderId,
+          data.receiverId
+        ],
+
+        userInfo: {
+
+          [data.senderId]: {
+
+            uid:
+              data.senderId,
+
+            username:
+              data.senderUsername,
+
+            displayName:
+              data.senderName
+
+          },
+
+          [data.receiverId]: {
+
+            uid:
+              data.receiverId,
+
+            username:
+              data.receiverUsername,
+
+            displayName:
+              data.receiverName
+
+          }
+
+        },
+
+        createdAt:
+          serverTimestamp()
+
+      }
+
+    );
+
+
+    await setDoc(
+
+      requestRef,
+
+      {
+
+        status:
+          "accepted",
+
+        respondedAt:
+          serverTimestamp()
+
+      },
+
+      {
+        merge: true
+      }
+
+    );
+
+
+    alert(
+      "✅ Friend request accepted!"
+    );
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "Accept request error:",
+      error
+    );
+
+    alert(
+      "Could not accept request: " +
+      error.message
+    );
+
+  }
+
+};
+
+
+/* ================= ACCEPT FROM SEARCH ================= */
+
+window.acceptFriendRequestByUser =
+async function(senderId) {
+
+  if(!currentUser) return;
+
+
+  try {
+
+    const requestId =
+      createFriendRequestId(
+        senderId,
+        currentUser.uid
+      );
+
+
+    await acceptFriendRequest(
+      requestId
+    );
+
+    await searchFriendUser();
+
+  }
+
+  catch(error) {
+
+    console.error(error);
+
+  }
+
+};
+
+
+/* ================= REJECT REQUEST ================= */
+
+window.rejectFriendRequest =
+async function(requestId) {
+
+  if(!currentUser) return;
+
+
+  try {
+
+    const requestRef =
+      doc(
+        db,
+        "friend_requests",
+        requestId
+      );
+
+
+    const requestSnapshot =
+      await getDoc(
+        requestRef
+      );
+
+
+    if(!requestSnapshot.exists()) {
+
+      return;
+
+    }
+
+
+    const data =
+      requestSnapshot.data();
+
+
+    if(
+      data.receiverId !==
+      currentUser.uid
+    ) {
+
+      alert(
+        "You cannot reject this request."
+      );
+
+      return;
+
+    }
+
+
+    await setDoc(
+
+      requestRef,
+
+      {
+
+        status:
+          "rejected",
+
+        respondedAt:
+          serverTimestamp()
+
+      },
+
+      {
+        merge: true
+      }
+
+    );
+
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "Reject request error:",
+      error
+    );
+
+    alert(
+      "Could not reject request: " +
+      error.message
+    );
+
+  }
+
+};
+
+
+/* ================= FRIENDS LISTENER ================= */
+
+function startFriendsListener() {
+
+  if(!currentUser) return;
+
+
+  if(unsubscribeFriends) {
+
+    unsubscribeFriends();
+
+  }
+
+
+  const friendsQuery =
+    query(
+
+      collection(
+        db,
+        "friendships"
+      ),
+
+      where(
+        "users",
+        "array-contains",
+        currentUser.uid
+      )
+
+    );
+
+
+  unsubscribeFriends =
+    onSnapshot(
+
+      friendsQuery,
+
+      snapshot => {
+
+        displayFriends(
+          snapshot
+        );
+
+      },
+
+      error => {
+
+        console.error(
+          "Friends listener error:",
+          error
+        );
+
+      }
+
+    );
+
+}
+
+
+/* ================= DISPLAY FRIENDS ================= */
+
+function displayFriends(snapshot) {
+
+  const container =
+    document.getElementById(
+      "friendsList"
+    );
+
+
+  const count =
+    document.getElementById(
+      "friendsCount"
+    );
+
+
+  container.innerHTML = "";
+
+
+  count.textContent =
+    snapshot.size;
+
+
+  if(snapshot.empty) {
+
+    container.innerHTML = `
+
+      <p class="small-text empty-message">
+
+        You have no friends yet.
+
+      </p>
+
+    `;
+
+    return;
+
+  }
+
+
+  snapshot.forEach(
+    friendshipDoc => {
+
+      const data =
+        friendshipDoc.data();
+
+
+      const userInfo =
+        data.userInfo || {};
+
+
+      const friendId =
+        data.users.find(
+          uid =>
+            uid !== currentUser.uid
+        );
+
+
+      const friend =
+        userInfo[friendId] || {};
+
+
+      const item =
+        document.createElement("div");
+
+      item.className =
+        "friend-item";
+
+
+      item.innerHTML = `
+
+        <strong>
+
+          ${escapeHTML(
+            friend.displayName ||
+            "QRify User"
+          )}
+
+        </strong>
+
+        <br>
+
+        <span class="username">
+
+          @${escapeHTML(
+            friend.username || ""
+          )}
+
+        </span>
+
+        <div class="friend-buttons">
+
+          <button
+            class="primary"
+            onclick="openChatFromFriend(
+              '${escapeJS(friend.uid || friendId)}',
+              '${escapeJS(friend.username || "")}',
+              '${escapeJS(friend.displayName || "QRify User")}'
+            )">
+
+            💬 Chat
+
+          </button>
+
+        </div>
+
+      `;
+
+
+      container.appendChild(item);
+
+    }
+  );
+
+}
+
+
+/* ================= OPEN CHAT FROM FRIEND ================= */
+
+window.openChatFromFriend =
+function(
+  userId,
+  username,
+  displayName
+) {
+
+  showPage("chat");
+
+
+  setTimeout(
+    () => {
+
+      openChatWithUser(
+        userId,
+        username,
+        displayName
+      );
+
+    },
+    100
+  );
+
+};
+
+
+/* =====================================================
+   EXISTING SEND QR SYSTEM
+   ===================================================== */
 
 
 /* ================= SEARCH USER ================= */
@@ -2191,6 +3693,11 @@ async function(qrId) {
 };
 
 
+/* =====================================================
+   CHAT
+   ===================================================== */
+
+
 /* ================= CHAT SEARCH ================= */
 
 window.searchChatUser =
@@ -2332,7 +3839,7 @@ async function() {
           <button
             class="success"
             onclick="openChatWithUser(
-              '${userDoc.id}',
+              '${escapeJS(userDoc.id)}',
               '${escapeJS(data.username || "")}',
               '${escapeJS(data.displayName || "QRify User")}'
             )">
@@ -2931,6 +4438,11 @@ function escapeJS(value) {
 
 <script>
 
+/* =====================================================
+   QRIFY PAGE NAVIGATION
+   ANDROID BACK BUTTON
+   ===================================================== */
+
 let scannedLink = "";
 
 let qrCodeInstance = null;
@@ -2938,42 +4450,23 @@ let qrCodeInstance = null;
 let html5QrCode = null;
 
 
-/* =====================================================
-   QRIFY PAGE NAVIGATION
-   ANDROID BACK BUTTON
-   ===================================================== */
+/* ================= GET HASH PAGE ================= */
+
+function getHashPage() {
+
+  const id =
+    location.hash.replace("#", "");
+
+  return document.getElementById(id)
+    ? id
+    : "home";
+
+}
 
 
-/*
-  IMPORTANT:
+/* ================= SET ACTIVE PAGE ================= */
 
-  Every QRify page gets its own URL hash.
-
-  Example:
-
-  #home
-  #generate
-  #scan
-  #chat
-  #profile
-
-  Android Back changes the browser history,
-  then hashchange shows the previous QRify page.
-*/
-
-
-function renderPage(pageId) {
-
-  const selectedPage =
-    document.getElementById(pageId);
-
-
-  if(!selectedPage) {
-
-    pageId = "home";
-
-  }
-
+function setActivePage(pageId) {
 
   document
     .querySelectorAll(".page")
@@ -2999,8 +4492,11 @@ function renderPage(pageId) {
       .add("active");
 
     window.scrollTo({
+
       top: 0,
+
       behavior: "smooth"
+
     });
 
   }
@@ -3010,7 +4506,10 @@ function renderPage(pageId) {
 
 /* ================= SHOW PAGE ================= */
 
-function showPage(pageId) {
+function showPage(
+  pageId,
+  addHistory = true
+) {
 
   const page =
     document.getElementById(pageId);
@@ -3023,22 +4522,11 @@ function showPage(pageId) {
   }
 
 
-  const currentPage =
-    document.querySelector(
-      ".page.active"
-    );
-
-
   const currentPageId =
-    currentPage
-      ? currentPage.id
-      : "home";
+    document
+      .querySelector(".page.active")
+      ?.id || "";
 
-
-  /*
-    Same page:
-    don't create duplicate history.
-  */
 
   if(
     currentPageId === pageId
@@ -3051,25 +4539,96 @@ function showPage(pageId) {
   }
 
 
-  /*
-    Change URL hash.
+  if(addHistory) {
 
-    Changing the hash creates a browser
-    history entry automatically.
-  */
+    history.pushState(
 
-  window.location.hash =
-    pageId;
+      {
+
+        qrify: true,
+
+        page:
+          pageId
+
+      },
+
+      "",
+
+      "#" + pageId
+
+    );
+
+  }
 
 
-  /*
-    hashchange event will render
-    the page.
-  */
+  setActivePage(
+    pageId
+  );
+
 
   closeMenu();
 
 }
+
+
+/* ================= INITIALIZE PAGE HISTORY ================= */
+
+function initializePageHistory() {
+
+  const initialPage =
+    getHashPage();
+
+
+  setActivePage(
+    initialPage
+  );
+
+
+  history.replaceState(
+
+    {
+
+      qrify: true,
+
+      page:
+        initialPage
+
+    },
+
+    "",
+
+    "#" + initialPage
+
+  );
+
+}
+
+
+/* ================= ANDROID / BROWSER BACK ================= */
+
+window.addEventListener(
+  "popstate",
+  function(event) {
+
+    const pageId =
+
+      event.state?.qrify &&
+      event.state.page
+
+        ? event.state.page
+
+        : getHashPage();
+
+
+    setActivePage(
+      pageId
+    );
+
+
+    closeMenu();
+
+  }
+);
 
 
 /* ================= HASH CHANGE ================= */
@@ -3078,86 +4637,49 @@ window.addEventListener(
   "hashchange",
   function() {
 
-    let pageId =
-      window.location.hash
-        .substring(1);
+    const pageId =
+      getHashPage();
 
 
-    if(!pageId) {
+    if(
 
-      pageId = "home";
+      !history.state ||
 
-    }
+      !history.state.qrify ||
 
+      history.state.page !== pageId
 
-    renderPage(pageId);
+    ) {
 
-  }
-);
+      history.replaceState(
 
+        {
 
-/* ================= POPSTATE ================= */
+          qrify: true,
 
-window.addEventListener(
-  "popstate",
-  function() {
+          page:
+            pageId
 
-    let pageId =
-      window.location.hash
-        .substring(1);
+        },
 
+        "",
 
-    if(!pageId) {
+        "#" + pageId
 
-      pageId = "home";
+      );
 
     }
 
 
-    renderPage(pageId);
-
-  }
-);
-
-
-/* ================= INITIAL PAGE ================= */
-
-(function() {
-
-  let pageId =
-    window.location.hash
-      .substring(1);
-
-
-  const pageExists =
-    pageId &&
-    document.getElementById(pageId);
-
-
-  if(!pageExists) {
-
-    pageId = "home";
-
-
-    /*
-      Create the first QRify history entry.
-    */
-
-    history.replaceState(
-      {
-        qrify: true,
-        page: "home"
-      },
-      "",
-      "#home"
+    setActivePage(
+      pageId
     );
 
+
+    closeMenu();
+
   }
-
-
-  renderPage(pageId);
-
-})();
+);
 
 
 /* ================= MENU ================= */
@@ -3278,12 +4800,8 @@ function getQRData() {
       );
 
 
-    return
-
-      `mailto:${email}` +
-
+    return `mailto:${email}` +
       `?subject=${subject}` +
-
       `&body=${message}`;
 
   }
@@ -3307,12 +4825,8 @@ function getQRData() {
         .value;
 
 
-    return
-
-      `WIFI:T:${security};` +
-
+    return `WIFI:T:${security};` +
       `S:${ssid};` +
-
       `P:${password};;`;
 
   }
@@ -4009,6 +5523,8 @@ function openScannedLink() {
 
 /* ================= INITIALIZE ================= */
 
+initializePageHistory();
+
 displayHistory();
 
 showFields();
@@ -4048,4 +5564,4 @@ if(
 
 </body>
 
-      </html>
+            </html>
