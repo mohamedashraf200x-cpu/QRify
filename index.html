@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,17 +10,21 @@
   <title>QRify - Free QR Code Generator & Scanner</title>
 
   <meta name="description"
-        content="QRify is a free QR code generator and scanner for text, websites, phone numbers, email, Wi-Fi, contacts and locations.">
+    content="QRify is a free QR code generator and scanner for text, websites, phone numbers, email, Wi-Fi, contacts and locations.">
 
   <meta name="google-site-verification"
-        content="5HCcQf2Dkuhb6cXjoyaUMdktFcyYmGymxjnBAaxDoyA">
+    content="5HCcQf2Dkuhb6cXjoyaUMdktFcyYmGymxjnBAaxDoyA">
 
   <meta name="theme-color" content="#111827">
+
   <meta name="mobile-web-app-capable" content="yes">
+
   <meta name="apple-mobile-web-app-capable" content="yes">
+
   <meta name="apple-mobile-web-app-title" content="QRify">
 
   <link rel="icon" type="image/png" href="logo.png">
+
   <link rel="manifest" href="manifest.json">
 
   <!-- QR Generator -->
@@ -26,6 +32,7 @@
 
   <!-- QR Scanner -->
   <script src="https://unpkg.com/html5-qrcode"></script>
+
 
   <style>
 
@@ -127,6 +134,11 @@
       color: white;
     }
 
+    .success {
+      background: #059669;
+      color: white;
+    }
+
     .result {
       text-align: center;
       margin-top: 20px;
@@ -149,15 +161,19 @@
       display: none;
     }
 
-    .history-item {
+    .history-item,
+    .received-item,
+    .user-result {
       background: #f3f4f6;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 12px;
+      border-radius: 10px;
       margin-top: 8px;
       word-break: break-word;
     }
 
-    body.dark .history-item {
+    body.dark .history-item,
+    body.dark .received-item,
+    body.dark .user-result {
       background: #374151;
     }
 
@@ -184,6 +200,37 @@
       color: #065f46;
     }
 
+    .account-name {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .username {
+      color: #2563eb;
+      font-weight: bold;
+    }
+
+    .received-qr {
+      background: white;
+      display: inline-block;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+    }
+
+    body.dark .received-qr {
+      background: white;
+    }
+
+    .small-text {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    body.dark .small-text {
+      color: #d1d5db;
+    }
+
     @media (max-width: 600px) {
 
       .container {
@@ -202,17 +249,25 @@
     }
 
   </style>
+
 </head>
+
 
 <body>
 
+
 <header>
+
   <img src="logo.png" alt="QRify Logo">
+
 </header>
+
 
 <div class="container">
 
-  <!-- FIREBASE STATUS -->
+
+  <!-- QRIFY ACCOUNT -->
+
   <div class="card">
 
     <h2>QRify Account</h2>
@@ -221,59 +276,202 @@
       Connecting to QRify server...
     </p>
 
+
     <button
       id="googleLoginBtn"
       class="primary"
       onclick="loginWithGoogle()">
+
       🔐 Sign in with Google
+
     </button>
+
 
     <button
       id="logoutBtn"
       class="secondary hidden"
       onclick="logoutUser()">
+
       Logout
+
     </button>
 
-    <p id="userInfo"></p>
+
+    <div id="userInfo"></div>
 
   </div>
 
 
+
+  <!-- USERNAME PROFILE -->
+
+  <div
+    id="profileCard"
+    class="card hidden">
+
+    <h2>👤 QRify Profile</h2>
+
+    <p class="small-text">
+      Your username is used by other QRify users to find you.
+    </p>
+
+
+    <label>
+      QRify Username
+    </label>
+
+    <input
+      id="usernameInput"
+      placeholder="Example: ashraf123"
+      maxlength="20">
+
+
+    <button
+      class="primary"
+      onclick="saveUsername()">
+
+      Save Username
+
+    </button>
+
+
+    <p
+      id="usernameStatus"
+      class="small-text">
+    </p>
+
+  </div>
+
+
+
+  <!-- SEND QR -->
+
+  <div
+    id="sendCard"
+    class="card hidden">
+
+    <h2>📤 Send QR to Person</h2>
+
+    <p class="small-text">
+      Search another QRify user using their username.
+    </p>
+
+
+    <label>
+      Search Username
+    </label>
+
+    <input
+      id="searchUsername"
+      placeholder="Enter username">
+
+
+    <button
+      class="primary"
+      onclick="searchUser()">
+
+      🔎 Search User
+
+    </button>
+
+
+    <div id="searchResults"></div>
+
+  </div>
+
+
+
+  <!-- RECEIVED QR -->
+
+  <div
+    id="inboxCard"
+    class="card hidden">
+
+    <h2>📥 Received QR Codes</h2>
+
+    <div id="receivedQRs">
+
+      <p class="small-text">
+        No QR codes received yet.
+      </p>
+
+    </div>
+
+  </div>
+
+
+
   <!-- QR GENERATOR -->
+
   <div class="card">
 
     <h2>Generate QR Code</h2>
 
-    <label for="qrType">QR Type</label>
 
-    <select id="qrType" onchange="showFields()">
+    <label for="qrType">
+      QR Type
+    </label>
 
-      <option value="text">📝 Text</option>
-      <option value="website">🌐 Website</option>
-      <option value="phone">📞 Phone</option>
-      <option value="email">📧 Email</option>
-      <option value="wifi">📶 Wi-Fi</option>
-      <option value="contact">👤 Contact</option>
-      <option value="location">📍 Location</option>
+
+    <select
+      id="qrType"
+      onchange="showFields()">
+
+      <option value="text">
+        📝 Text
+      </option>
+
+      <option value="website">
+        🌐 Website
+      </option>
+
+      <option value="phone">
+        📞 Phone
+      </option>
+
+      <option value="email">
+        📧 Email
+      </option>
+
+      <option value="wifi">
+        📶 Wi-Fi
+      </option>
+
+      <option value="contact">
+        👤 Contact
+      </option>
+
+      <option value="location">
+        📍 Location
+      </option>
 
     </select>
 
 
+
     <!-- TEXT -->
+
     <div id="textFields">
 
-      <label>Message</label>
+      <label>
+        Message
+      </label>
 
       <textarea id="text"></textarea>
 
     </div>
 
 
-    <!-- WEBSITE -->
-    <div id="websiteFields" class="hidden">
 
-      <label>Website URL</label>
+    <!-- WEBSITE -->
+
+    <div
+      id="websiteFields"
+      class="hidden">
+
+      <label>
+        Website URL
+      </label>
 
       <input
         id="website"
@@ -282,10 +480,16 @@
     </div>
 
 
-    <!-- PHONE -->
-    <div id="phoneFields" class="hidden">
 
-      <label>Phone Number</label>
+    <!-- PHONE -->
+
+    <div
+      id="phoneFields"
+      class="hidden">
+
+      <label>
+        Phone Number
+      </label>
 
       <input
         id="phone"
@@ -294,40 +498,68 @@
     </div>
 
 
-    <!-- EMAIL -->
-    <div id="emailFields" class="hidden">
 
-      <label>Email</label>
+    <!-- EMAIL -->
+
+    <div
+      id="emailFields"
+      class="hidden">
+
+      <label>
+        Email
+      </label>
 
       <input
         id="email"
         type="email">
 
-      <label>Subject</label>
 
-      <input id="emailSubject">
+      <label>
+        Subject
+      </label>
 
-      <label>Message</label>
+      <input
+        id="emailSubject">
 
-      <textarea id="emailMessage"></textarea>
+
+      <label>
+        Message
+      </label>
+
+      <textarea
+        id="emailMessage">
+      </textarea>
 
     </div>
 
 
+
     <!-- WIFI -->
-    <div id="wifiFields" class="hidden">
 
-      <label>Wi-Fi Name (SSID)</label>
+    <div
+      id="wifiFields"
+      class="hidden">
 
-      <input id="wifiSSID">
+      <label>
+        Wi-Fi Name (SSID)
+      </label>
 
-      <label>Password</label>
+      <input
+        id="wifiSSID">
+
+
+      <label>
+        Password
+      </label>
 
       <input
         id="wifiPassword"
         type="password">
 
-      <label>Security</label>
+
+      <label>
+        Security
+      </label>
 
       <select id="wifiSecurity">
 
@@ -348,39 +580,67 @@
     </div>
 
 
+
     <!-- CONTACT -->
-    <div id="contactFields" class="hidden">
 
-      <label>Name</label>
+    <div
+      id="contactFields"
+      class="hidden">
 
-      <input id="contactName">
+      <label>
+        Name
+      </label>
 
-      <label>Phone</label>
+      <input
+        id="contactName">
 
-      <input id="contactPhone">
 
-      <label>Email</label>
+      <label>
+        Phone
+      </label>
 
-      <input id="contactEmail">
+      <input
+        id="contactPhone">
 
-      <label>Organization</label>
 
-      <input id="contactOrg">
+      <label>
+        Email
+      </label>
+
+      <input
+        id="contactEmail">
+
+
+      <label>
+        Organization
+      </label>
+
+      <input
+        id="contactOrg">
 
     </div>
 
 
-    <!-- LOCATION -->
-    <div id="locationFields" class="hidden">
 
-      <label>Latitude</label>
+    <!-- LOCATION -->
+
+    <div
+      id="locationFields"
+      class="hidden">
+
+      <label>
+        Latitude
+      </label>
 
       <input
         id="latitude"
         type="number"
         step="any">
 
-      <label>Longitude</label>
+
+      <label>
+        Longitude
+      </label>
 
       <input
         id="longitude"
@@ -390,7 +650,10 @@
     </div>
 
 
-    <label>QR Size</label>
+
+    <label>
+      QR Size
+    </label>
 
     <select id="qrSize">
 
@@ -411,11 +674,14 @@
     </select>
 
 
+
     <div class="row">
 
       <div>
 
-        <label>QR Color</label>
+        <label>
+          QR Color
+        </label>
 
         <input
           type="color"
@@ -427,7 +693,9 @@
 
       <div>
 
-        <label>Background</label>
+        <label>
+          Background
+        </label>
 
         <input
           type="color"
@@ -462,7 +730,9 @@
   </div>
 
 
+
   <!-- QR RESULT -->
+
   <div class="card result">
 
     <h2>Your QR Code</h2>
@@ -470,6 +740,7 @@
     <div id="qrcode"></div>
 
     <br>
+
 
     <button
       id="downloadBtn"
@@ -480,10 +751,22 @@
 
     </button>
 
+
+    <button
+      id="sendQRBtn"
+      class="success hidden"
+      onclick="showSendSection()">
+
+      📤 Send to Person
+
+    </button>
+
   </div>
 
 
+
   <!-- SCANNER -->
+
   <div class="card">
 
     <h2>Scan QR Code</h2>
@@ -522,7 +805,9 @@
       id="scanResult"
       class="hidden">
 
-      <h3>Scan Result</h3>
+      <h3>
+        Scan Result
+      </h3>
 
       <p id="scanText"></p>
 
@@ -541,17 +826,23 @@
   </div>
 
 
+
   <!-- HISTORY -->
+
   <div class="card">
 
-    <h2>Recent QR History</h2>
+    <h2>
+      Recent QR History
+    </h2>
 
     <div id="history"></div>
 
   </div>
 
 
+
   <!-- DARK MODE -->
+
   <div class="card">
 
     <button
@@ -563,6 +854,7 @@
     </button>
 
   </div>
+
 
 </div>
 
@@ -578,7 +870,9 @@
 </footer>
 
 
+
 <!-- FIREBASE -->
+
 <script type="module">
 
   import {
@@ -596,7 +890,17 @@
 
 
   import {
-    getFirestore
+    getFirestore,
+    doc,
+    setDoc,
+    getDoc,
+    getDocs,
+    collection,
+    query,
+    where,
+    addDoc,
+    onSnapshot,
+    serverTimestamp
   } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
 
@@ -639,6 +943,18 @@
     new GoogleAuthProvider();
 
 
+  let currentUser = null;
+
+  let currentUsername = "";
+
+  let latestQRData = "";
+
+  let unsubscribeInbox = null;
+
+
+
+  // GOOGLE LOGIN
+
   window.loginWithGoogle =
     async function() {
 
@@ -656,13 +972,17 @@
         console.error(error);
 
         alert(
-          "Google sign-in failed. Please try again."
+          "Google sign-in failed: " +
+          error.message
         );
 
       }
 
     };
 
+
+
+  // LOGOUT
 
   window.logoutUser =
     async function() {
@@ -677,29 +997,39 @@
 
         console.error(error);
 
+        alert(
+          "Logout failed."
+        );
+
       }
 
     };
 
 
+
+  // AUTH STATE
+
   onAuthStateChanged(
     auth,
-    user => {
+    async user => {
 
       const status =
         document.getElementById(
           "firebaseStatus"
         );
 
+
       const loginButton =
         document.getElementById(
           "googleLoginBtn"
         );
 
+
       const logoutButton =
         document.getElementById(
           "logoutBtn"
         );
+
 
       const userInfo =
         document.getElementById(
@@ -707,42 +1037,130 @@
         );
 
 
+      const profileCard =
+        document.getElementById(
+          "profileCard"
+        );
+
+
+      const sendCard =
+        document.getElementById(
+          "sendCard"
+        );
+
+
+      const inboxCard =
+        document.getElementById(
+          "inboxCard"
+        );
+
+
       if (user) {
+
+        currentUser = user;
+
 
         status.textContent =
           "✅ Connected to QRify";
+
 
         loginButton.classList.add(
           "hidden"
         );
 
+
         logoutButton.classList.remove(
           "hidden"
         );
 
-        userInfo.textContent =
-          "Signed in as: " +
-          (
-            user.displayName ||
-            user.email
-          );
+
+        userInfo.innerHTML =
+          `
+          <p class="account-name">
+            ${escapeHTML(user.displayName || "QRify User")}
+          </p>
+
+          <p>
+            ${escapeHTML(user.email || "")}
+          </p>
+          `;
+
+
+        profileCard.classList.remove(
+          "hidden"
+        );
+
+
+        sendCard.classList.remove(
+          "hidden"
+        );
+
+
+        inboxCard.classList.remove(
+          "hidden"
+        );
+
+
+        await loadUserProfile();
+
+        startInboxListener();
 
       }
 
       else {
 
+        currentUser = null;
+
+        currentUsername = "";
+
+
         status.textContent =
           "Firebase connected. Please sign in.";
+
 
         loginButton.classList.remove(
           "hidden"
         );
 
+
         logoutButton.classList.add(
           "hidden"
         );
 
-        userInfo.textContent = "";
+
+        userInfo.innerHTML = "";
+
+
+        profileCard.classList.add(
+          "hidden"
+        );
+
+
+        sendCard.classList.add(
+          "hidden"
+        );
+
+
+        inboxCard.classList.add(
+          "hidden"
+        );
+
+
+        document
+          .getElementById(
+            "sendQRBtn"
+          )
+          .classList
+          .add("hidden");
+
+
+        if (unsubscribeInbox) {
+
+          unsubscribeInbox();
+
+          unsubscribeInbox = null;
+
+        }
 
       }
 
@@ -750,520 +1168,775 @@
 
   );
 
-</script>
 
 
-<script>
+  // LOAD USER PROFILE
 
-let scannedLink = "";
+  async function loadUserProfile() {
 
-let qrCodeInstance = null;
-
-
-// SHOW FIELDS
-
-function showFields() {
-
-  const fields = [
-
-    "textFields",
-    "websiteFields",
-    "phoneFields",
-    "emailFields",
-    "wifiFields",
-    "contactFields",
-    "locationFields"
-
-  ];
+    if (!currentUser) return;
 
 
-  fields.forEach(id => {
-
-    document
-      .getElementById(id)
-      .classList
-      .add("hidden");
-
-  });
+    const userRef =
+      doc(
+        db,
+        "users",
+        currentUser.uid
+      );
 
 
-  const type =
-    document
-      .getElementById("qrType")
-      .value;
+    const snapshot =
+      await getDoc(userRef);
 
 
-  document
-    .getElementById(
-      type + "Fields"
-    )
-    .classList
-    .remove("hidden");
-
-}
+    const usernameInput =
+      document.getElementById(
+        "usernameInput"
+      );
 
 
-// GENERATE QR DATA
+    if (snapshot.exists()) {
 
-function getQRData() {
-
-  const type =
-    document
-      .getElementById("qrType")
-      .value;
+      const data =
+        snapshot.data();
 
 
-  if (type === "text") {
+      currentUsername =
+        data.username || "";
 
-    return document
-      .getElementById("text")
-      .value;
+
+      usernameInput.value =
+        currentUsername;
+
+
+      document.getElementById(
+        "usernameStatus"
+      ).textContent =
+        currentUsername
+          ? "✅ Your QRify username is ready."
+          : "Create your username.";
+
+    }
+
+    else {
+
+      usernameInput.value = "";
+
+      document.getElementById(
+        "usernameStatus"
+      ).textContent =
+        "Choose a username so other QRify users can find you.";
+
+    }
 
   }
 
 
-  if (type === "website") {
 
-    let url =
+  // SAVE USERNAME
+
+  window.saveUsername =
+    async function() {
+
+      if (!currentUser) {
+
+        alert(
+          "Please sign in first."
+        );
+
+        return;
+
+      }
+
+
+      const input =
+        document.getElementById(
+          "usernameInput"
+        );
+
+
+      const username =
+        input.value
+          .trim()
+          .toLowerCase();
+
+
+      if (!/^[a-z0-9_]{3,20}$/.test(username)) {
+
+        alert(
+          "Username must be 3-20 characters and use only letters, numbers or _."
+        );
+
+        return;
+
+      }
+
+
+      const searchQuery =
+        query(
+          collection(db, "users"),
+          where(
+            "username",
+            "==",
+            username
+          )
+        );
+
+
+      const existingUsers =
+        await getDocs(
+          searchQuery
+        );
+
+
+      let takenByOtherUser = false;
+
+
+      existingUsers.forEach(
+        userDoc => {
+
+          if (
+            userDoc.id !==
+            currentUser.uid
+          ) {
+
+            takenByOtherUser = true;
+
+          }
+
+        }
+      );
+
+
+      if (takenByOtherUser) {
+
+        alert(
+          "That username is already taken. Try another one."
+        );
+
+        return;
+
+      }
+
+
+      await setDoc(
+
+        doc(
+          db,
+          "users",
+          currentUser.uid
+        ),
+
+        {
+
+          uid:
+            currentUser.uid,
+
+          username:
+            username,
+
+          displayName:
+            currentUser.displayName || "",
+
+          email:
+            currentUser.email || "",
+
+          updatedAt:
+            serverTimestamp()
+
+        },
+
+        {
+          merge: true
+        }
+
+      );
+
+
+      currentUsername =
+        username;
+
+
+      document.getElementById(
+        "usernameStatus"
+      ).textContent =
+        "✅ Username saved: @" +
+        username;
+
+
+      alert(
+        "Username saved successfully!"
+      );
+
+    };
+
+
+
+  // SEARCH USER
+
+  window.searchUser =
+    async function() {
+
+      if (!currentUser) {
+
+        alert(
+          "Please sign in first."
+        );
+
+        return;
+
+      }
+
+
+      if (!currentUsername) {
+
+        alert(
+          "First create your QRify username."
+        );
+
+        return;
+
+      }
+
+
+      const searchInput =
+        document.getElementById(
+          "searchUsername"
+        );
+
+
+      const username =
+        searchInput.value
+          .trim()
+          .toLowerCase();
+
+
+      if (!username) {
+
+        alert(
+          "Enter a username."
+        );
+
+        return;
+
+      }
+
+
+      const results =
+        document.getElementById(
+          "searchResults"
+        );
+
+
+      results.innerHTML =
+        "<p>Searching...</p>";
+
+
+      const searchQuery =
+        query(
+          collection(db, "users"),
+          where(
+            "username",
+            "==",
+            username
+          )
+        );
+
+
+      const snapshot =
+        await getDocs(
+          searchQuery
+        );
+
+
+      results.innerHTML = "";
+
+
+      if (snapshot.empty) {
+
+        results.innerHTML =
+          `
+          <div class="user-result">
+            ❌ User not found
+          </div>
+          `;
+
+        return;
+
+      }
+
+
+      snapshot.forEach(
+        userDoc => {
+
+          const data =
+            userDoc.data();
+
+
+          if (
+            userDoc.id ===
+            currentUser.uid
+          ) {
+
+            results.innerHTML =
+              `
+              <div class="user-result">
+                👤 This is your own username.
+              </div>
+              `;
+
+            return;
+
+          }
+
+
+          const div =
+            document.createElement(
+              "div"
+            );
+
+
+          div.className =
+            "user-result";
+
+
+          div.innerHTML =
+            `
+            <strong>
+              ${escapeHTML(
+                data.displayName ||
+                "QRify User"
+              )}
+            </strong>
+
+            <br>
+
+            <span class="username">
+              @${escapeHTML(
+                data.username
+              )}
+            </span>
+
+            <br>
+
+            <button
+              class="success"
+              onclick="sendQRToUser('${userDoc.id}')">
+
+              📤 Send Current QR
+
+            </button>
+            `;
+
+
+          results.appendChild(
+            div
+          );
+
+        }
+      );
+
+    };
+
+
+
+  // SHOW SEND SECTION
+
+  window.showSendSection =
+    function() {
+
+      if (!currentUser) {
+
+        alert(
+          "Please sign in first."
+        );
+
+        return;
+
+      }
+
+
+      if (!latestQRData) {
+
+        alert(
+          "Generate a QR code first."
+        );
+
+        return;
+
+      }
+
+
       document
-        .getElementById("website")
-        .value
-        .trim();
+        .getElementById(
+          "sendCard"
+        )
+        .scrollIntoView({
+          behavior: "smooth"
+        });
+
+    };
 
 
-    if (
-      url &&
-      !url.startsWith("http://") &&
-      !url.startsWith("https://")
-    ) {
 
-      url =
-        "https://" + url;
+  // SEND QR
+
+  window.sendQRToUser =
+    async function(receiverId) {
+
+      if (!currentUser) {
+
+        alert(
+          "Please sign in first."
+        );
+
+        return;
+
+      }
+
+
+      if (!currentUsername) {
+
+        alert(
+          "Create your QRify username first."
+        );
+
+        return;
+
+      }
+
+
+      if (!latestQRData) {
+
+        alert(
+          "Generate a QR code first."
+        );
+
+        return;
+
+      }
+
+
+      try {
+
+        await addDoc(
+
+          collection(
+            db,
+            "shared_qr"
+          ),
+
+          {
+
+            senderId:
+              currentUser.uid,
+
+            senderName:
+              currentUser.displayName ||
+              "QRify User",
+
+            senderUsername:
+              currentUsername,
+
+            receiverId:
+              receiverId,
+
+            qrData:
+              latestQRData,
+
+            createdAt:
+              serverTimestamp()
+
+          }
+
+        );
+
+
+        alert(
+          "✅ QR sent successfully!"
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+        alert(
+          "Could not send QR: " +
+          error.message
+        );
+
+      }
+
+    };
+
+
+
+  // REAL-TIME INBOX
+
+  function startInboxListener() {
+
+    if (!currentUser) return;
+
+
+    if (unsubscribeInbox) {
+
+      unsubscribeInbox();
 
     }
 
 
-    return url;
+    const inboxQuery =
+      query(
 
-  }
+        collection(
+          db,
+          "shared_qr"
+        ),
 
+        where(
+          "receiverId",
+          "==",
+          currentUser.uid
+        )
 
-  if (type === "phone") {
-
-    return "tel:" +
-      document
-        .getElementById("phone")
-        .value;
-
-  }
-
-
-  if (type === "email") {
-
-    const email =
-      document
-        .getElementById("email")
-        .value;
-
-
-    const subject =
-      encodeURIComponent(
-        document
-          .getElementById(
-            "emailSubject"
-          )
-          .value
       );
 
 
-    const message =
-      encodeURIComponent(
-        document
-          .getElementById(
-            "emailMessage"
-          )
-          .value
+    unsubscribeInbox =
+      onSnapshot(
+
+        inboxQuery,
+
+        snapshot => {
+
+          displayReceivedQRs(
+            snapshot
+          );
+
+        },
+
+        error => {
+
+          console.error(
+            "Inbox error:",
+            error
+          );
+
+        }
+
       );
 
-
-    return `mailto:${email}?subject=${subject}&body=${message}`;
-
   }
 
 
-  if (type === "wifi") {
 
-    const ssid =
-      document
-        .getElementById("wifiSSID")
-        .value;
+  // DISPLAY RECEIVED QRS
 
-
-    const password =
-      document
-        .getElementById(
-          "wifiPassword"
-        )
-        .value;
-
-
-    const security =
-      document
-        .getElementById(
-          "wifiSecurity"
-        )
-        .value;
-
-
-    return `WIFI:T:${security};S:${ssid};P:${password};;`;
-
-  }
-
-
-  if (type === "contact") {
-
-    const name =
-      document
-        .getElementById(
-          "contactName"
-        )
-        .value;
-
-
-    const phone =
-      document
-        .getElementById(
-          "contactPhone"
-        )
-        .value;
-
-
-    const email =
-      document
-        .getElementById(
-          "contactEmail"
-        )
-        .value;
-
-
-    const org =
-      document
-        .getElementById(
-          "contactOrg"
-        )
-        .value;
-
-
-    return `BEGIN:VCARD
-VERSION:3.0
-FN:${name}
-TEL:${phone}
-EMAIL:${email}
-ORG:${org}
-END:VCARD`;
-
-  }
-
-
-  if (type === "location") {
-
-    const lat =
-      document
-        .getElementById(
-          "latitude"
-        )
-        .value;
-
-
-    const lon =
-      document
-        .getElementById(
-          "longitude"
-        )
-        .value;
-
-
-    return `geo:${lat},${lon}`;
-
-  }
-
-}
-
-
-// GENERATE
-
-function generateQR() {
-
-  const data =
-    getQRData();
-
-
-  if (!data.trim()) {
-
-    alert(
-      "Please enter some information."
-    );
-
-    return;
-
-  }
-
-
-  const size =
-    parseInt(
-      document
-        .getElementById(
-          "qrSize"
-        )
-        .value
-    );
-
-
-  const color =
-    document
-      .getElementById(
-        "qrColor"
-      )
-      .value;
-
-
-  const background =
-    document
-      .getElementById(
-        "bgColor"
-      )
-      .value;
-
-
-  const qrContainer =
-    document
-      .getElementById(
-        "qrcode"
-      );
-
-
-  qrContainer.innerHTML = "";
-
-
-  qrCodeInstance =
-    new QRCode(
-      qrContainer,
-      {
-
-        text: data,
-
-        width: size,
-
-        height: size,
-
-        colorDark: color,
-
-        colorLight: background,
-
-        correctLevel:
-          QRCode.CorrectLevel.H
-
-      }
-    );
-
-
-  document
-    .getElementById(
-      "downloadBtn"
-    )
-    .classList
-    .remove("hidden");
-
-
-  saveHistory(data);
-
-}
-
-
-// DOWNLOAD QR
-
-function downloadQR() {
-
-  const canvas =
-    document.querySelector(
-      "#qrcode canvas"
-    );
-
-
-  if (!canvas) {
-
-    alert(
-      "Generate a QR code first."
-    );
-
-    return;
-
-  }
-
-
-  const border = 20;
-
-
-  const newCanvas =
-    document.createElement(
-      "canvas"
-    );
-
-
-  newCanvas.width =
-    canvas.width +
-    border * 2;
-
-
-  newCanvas.height =
-    canvas.height +
-    border * 2;
-
-
-  const ctx =
-    newCanvas.getContext(
-      "2d"
-    );
-
-
-  ctx.fillStyle =
-    "#ffffff";
-
-
-  ctx.fillRect(
-    0,
-    0,
-    newCanvas.width,
-    newCanvas.height
-  );
-
-
-  ctx.drawImage(
-    canvas,
-    border,
-    border
-  );
-
-
-  const link =
-    document.createElement(
-      "a"
-    );
-
-
-  link.download =
-    "QRify-QR.png";
-
-
-  link.href =
-    newCanvas.toDataURL(
-      "image/png"
-    );
-
-
-  link.click();
-
-}
-
-
-// CLEAR
-
-function clearAll() {
-
-  document
-    .querySelectorAll(
-      "input, textarea"
-    )
-    .forEach(element => {
-
-      if (
-        element.type === "color"
-      ) return;
-
-      element.value = "";
-
-    });
-
-
-  document
-    .getElementById(
-      "qrcode"
-    )
-    .innerHTML = "";
-
-
-  document
-    .getElementById(
-      "downloadBtn"
-    )
-    .classList
-    .add("hidden");
-
-}
-
-
-// HISTORY
-
-function saveHistory(data) {
-
-  let history =
-    JSON.parse(
-      localStorage.getItem(
-        "qrifyHistory"
-      ) || "[]"
-    );
-
-
-  history.unshift(data);
-
-
-  history =
-    history.slice(0, 5);
-
-
-  localStorage.setItem(
-    "qrifyHistory",
-    JSON.stringify(history)
-  );
-
-
-  displayHistory();
-
-}
-
-
-function displayHistory() {
-
-  const history =
-    JSON.parse(
-      localStorage.getItem(
-        "qrifyHistory"
-      ) || "[]"
-    );
-
-
-  const container =
-    document.getElementById(
-      "history"
-    );
-
-
-  container.innerHTML = "";
-
-
-  if (
-    history.length === 0
+  function displayReceivedQRs(
+    snapshot
   ) {
 
-    container.innerHTML =
-      "<p>No recent QR codes.</p>";
+    const container =
+      document.getElementById(
+        "receivedQRs"
+      );
 
-    return;
+
+    container.innerHTML = "";
+
+
+    if (snapshot.empty) {
+
+      container.innerHTML =
+        `
+        <p class="small-text">
+          No QR codes received yet.
+        </p>
+        `;
+
+      return;
+
+    }
+
+
+    snapshot.forEach(
+      qrDoc => {
+
+        const data =
+          qrDoc.data();
+
+
+        const item =
+          document.createElement(
+            "div"
+          );
+
+
+        item.className =
+          "received-item";
+
+
+        const qrId =
+          "received-" +
+          qrDoc.id;
+
+
+        item.innerHTML =
+          `
+          <strong>
+            📩 From:
+            ${escapeHTML(
+              data.senderName ||
+              "QRify User"
+            )}
+          </strong>
+
+          <br>
+
+          <span class="username">
+            @${escapeHTML(
+              data.senderUsername ||
+              ""
+            )}
+          </span>
+
+          <div
+            id="${qrId}"
+            class="received-qr">
+          </div>
+
+          <br>
+
+          <button
+            class="primary"
+            onclick="copyReceivedQR('${qrDoc.id}')">
+
+            📋 Copy Data
+
+          </button>
+          `;
+
+
+        container.prepend(
+          item
+        );
+
+
+        setTimeout(
+          () => {
+
+            const qrContainer =
+              document.getElementById(
+                qrId
+              );
+
+
+            if (
+              qrContainer &&
+              data.qrData
+            ) {
+
+              new QRCode(
+
+                qrContainer,
+
+                {
+
+                  text:
+                    data.qrData,
+
+                  width:
+                    180,
+
+                  height:
+                    180,
+
+                  correctLevel:
+                    QRCode.CorrectLevel.H
+
+                }
+
+              );
+
+            }
+
+          },
+
+          50
+
+        );
+
+      }
+    );
 
   }
 
 
-  history.forEach(item => {
+
+  // COPY RECEIVED QR DATA
+
+  window.copyReceivedQR =
+    async function(qrId) {
+
+      const qrRef =
+        doc(
+          db,
+          "shared_qr",
+          qrId
+        );
+
+
+      const snapshot =
+        await getDoc(
+          qrRef
+        );
+
+
+      if (!snapshot.exists()) {
+
+        alert(
+          "QR no longer exists."
+        );
+
+        return;
+
+      }
+
+
+      const data =
+        snapshot.data();
+
+
+      try {
+
+        await navigator.clipboard.writeText(
+          data.qrData
+        );
+
+
+        alert(
+          "✅ QR data copied!"
+        );
+
+      }
+
+      catch (error) {
+
+        alert(
+          "Could not copy QR data."
+        );
+
+      }
+
+    };
+
+
+
+  // ESCAPE HTML
+
+  function escapeHTML(value) {
 
     const div =
       document.createElement(
@@ -1271,297 +1944,916 @@ function displayHistory() {
       );
 
 
-    div.className =
-      "history-item";
-
-
     div.textContent =
-      item;
+      value || "";
 
 
-    container.appendChild(
-      div
-    );
+    return div.innerHTML;
 
-  });
+  }
 
-}
 
+</script>
 
-// DARK MODE
 
-function toggleDarkMode() {
 
-  document
-    .body
-    .classList
-    .toggle("dark");
+<script>
 
+  let scannedLink = "";
 
-  localStorage.setItem(
-    "qrifyDarkMode",
-    document.body.classList.contains(
-      "dark"
-    )
-  );
+  let qrCodeInstance = null;
 
-}
 
+  // GET QR DATA
 
-if (
-  localStorage.getItem(
-    "qrifyDarkMode"
-  ) === "true"
-) {
+  function getQRData() {
 
-  document
-    .body
-    .classList
-    .add("dark");
+    const type =
+      document
+        .getElementById(
+          "qrType"
+        )
+        .value;
 
-}
 
+    if (type === "text") {
 
-// CAMERA SCANNER
-
-let html5QrCode = null;
-
-
-function startCameraScan() {
-
-  document
-    .getElementById(
-      "reader"
-    )
-    .innerHTML = "";
-
-
-  html5QrCode =
-    new Html5Qrcode(
-      "reader"
-    );
-
-
-  html5QrCode.start(
-
-    {
-      facingMode:
-        "environment"
-    },
-
-    {
-      fps: 10,
-      qrbox: 250
-    },
-
-    qrCodeMessage => {
-
-      showScanResult(
-        qrCodeMessage
-      );
-
-
-      html5QrCode.stop();
-
-    },
-
-    errorMessage => {}
-
-  )
-  .catch(error => {
-
-    alert(
-      "Camera permission is required to scan QR codes."
-    );
-
-  });
-
-}
-
-
-// IMAGE SCAN
-
-function scanImage(event) {
-
-  const file =
-    event
-      .target
-      .files[0];
-
-
-  if (!file) return;
-
-
-  const scanner =
-    new Html5Qrcode(
-      "reader"
-    );
-
-
-  scanner
-    .scanFile(
-      file,
-      true
-    )
-
-    .then(
-      decodedText => {
-
-        showScanResult(
-          decodedText
-        );
-
-      }
-    )
-
-    .catch(
-      error => {
-
-        alert(
-          "Could not find a QR code in this image."
-        );
-
-      }
-    );
-
-}
-
-
-// SCAN RESULT
-
-function showScanResult(text) {
-
-  const result =
-    document.getElementById(
-      "scanResult"
-    );
-
-
-  const scanText =
-    document.getElementById(
-      "scanText"
-    );
-
-
-  const openButton =
-    document.getElementById(
-      "openLinkBtn"
-    );
-
-
-  scanText.textContent =
-    text;
-
-
-  result
-    .classList
-    .remove("hidden");
-
-
-  if (
-
-    text.startsWith(
-      "http://"
-    ) ||
-
-    text.startsWith(
-      "https://"
-    ) ||
-
-    text.startsWith(
-      "www."
-    )
-
-  ) {
-
-    scannedLink =
-      text;
-
-
-    if (
-      text.startsWith(
-        "www."
-      )
-    ) {
-
-      scannedLink =
-        "https://" + text;
+      return document
+        .getElementById(
+          "text"
+        )
+        .value;
 
     }
 
 
-    openButton
+    if (type === "website") {
+
+      let url =
+        document
+          .getElementById(
+            "website"
+          )
+          .value
+          .trim();
+
+
+      if (
+        url &&
+        !url.startsWith("http://") &&
+        !url.startsWith("https://")
+      ) {
+
+        url =
+          "https://" + url;
+
+      }
+
+
+      return url;
+
+    }
+
+
+    if (type === "phone") {
+
+      return "tel:" +
+        document
+          .getElementById(
+            "phone"
+          )
+          .value;
+
+    }
+
+
+    if (type === "email") {
+
+      const email =
+        document
+          .getElementById(
+            "email"
+          )
+          .value;
+
+
+      const subject =
+        encodeURIComponent(
+          document
+            .getElementById(
+              "emailSubject"
+            )
+            .value
+        );
+
+
+      const message =
+        encodeURIComponent(
+          document
+            .getElementById(
+              "emailMessage"
+            )
+            .value
+        );
+
+
+      return `mailto:${email}?subject=${subject}&body=${message}`;
+
+    }
+
+
+    if (type === "wifi") {
+
+      const ssid =
+        document
+          .getElementById(
+            "wifiSSID"
+          )
+          .value;
+
+
+      const password =
+        document
+          .getElementById(
+            "wifiPassword"
+          )
+          .value;
+
+
+      const security =
+        document
+          .getElementById(
+            "wifiSecurity"
+          )
+          .value;
+
+
+      return `WIFI:T:${security};S:${ssid};P:${password};;`;
+
+    }
+
+
+    if (type === "contact") {
+
+      const name =
+        document
+          .getElementById(
+            "contactName"
+          )
+          .value;
+
+
+      const phone =
+        document
+          .getElementById(
+            "contactPhone"
+          )
+          .value;
+
+
+      const email =
+        document
+          .getElementById(
+            "contactEmail"
+          )
+          .value;
+
+
+      const org =
+        document
+          .getElementById(
+            "contactOrg"
+          )
+          .value;
+
+
+      return `BEGIN:VCARD
+VERSION:3.0
+FN:${name}
+TEL:${phone}
+EMAIL:${email}
+ORG:${org}
+END:VCARD`;
+
+    }
+
+
+    if (type === "location") {
+
+      const lat =
+        document
+          .getElementById(
+            "latitude"
+          )
+          .value;
+
+
+      const lon =
+        document
+          .getElementById(
+            "longitude"
+          )
+          .value;
+
+
+      return `geo:${lat},${lon}`;
+
+    }
+
+  }
+
+
+
+  // GENERATE QR
+
+  function generateQR() {
+
+    const data =
+      getQRData();
+
+
+    if (!data || !data.trim()) {
+
+      alert(
+        "Please enter some information."
+      );
+
+      return;
+
+    }
+
+
+    latestQRData =
+      data;
+
+
+    const size =
+      parseInt(
+        document
+          .getElementById(
+            "qrSize"
+          )
+          .value
+      );
+
+
+    const color =
+      document
+        .getElementById(
+          "qrColor"
+        )
+        .value;
+
+
+    const background =
+      document
+        .getElementById(
+          "bgColor"
+        )
+        .value;
+
+
+    const qrContainer =
+      document
+        .getElementById(
+          "qrcode"
+        );
+
+
+    qrContainer.innerHTML = "";
+
+
+    qrCodeInstance =
+      new QRCode(
+
+        qrContainer,
+
+        {
+
+          text:
+            data,
+
+          width:
+            size,
+
+          height:
+            size,
+
+          colorDark:
+            color,
+
+          colorLight:
+            background,
+
+          correctLevel:
+            QRCode.CorrectLevel.H
+
+        }
+
+      );
+
+
+    document
+      .getElementById(
+        "downloadBtn"
+      )
+      .classList
+      .remove("hidden");
+
+
+    document
+      .getElementById(
+        "sendQRBtn"
+      )
+      .classList
+      .remove("hidden");
+
+
+    saveHistory(data);
+
+  }
+
+
+
+  // DOWNLOAD
+
+  function downloadQR() {
+
+    const canvas =
+      document.querySelector(
+        "#qrcode canvas"
+      );
+
+
+    if (!canvas) {
+
+      alert(
+        "Generate a QR code first."
+      );
+
+      return;
+
+    }
+
+
+    const border = 20;
+
+
+    const newCanvas =
+      document.createElement(
+        "canvas"
+      );
+
+
+    newCanvas.width =
+      canvas.width +
+      border * 2;
+
+
+    newCanvas.height =
+      canvas.height +
+      border * 2;
+
+
+    const ctx =
+      newCanvas.getContext(
+        "2d"
+      );
+
+
+    ctx.fillStyle =
+      "#ffffff";
+
+
+    ctx.fillRect(
+      0,
+      0,
+      newCanvas.width,
+      newCanvas.height
+    );
+
+
+    ctx.drawImage(
+      canvas,
+      border,
+      border
+    );
+
+
+    const link =
+      document.createElement(
+        "a"
+      );
+
+
+    link.download =
+      "QRify-QR.png";
+
+
+    link.href =
+      newCanvas.toDataURL(
+        "image/png"
+      );
+
+
+    link.click();
+
+  }
+
+
+
+  // CLEAR
+
+  function clearAll() {
+
+    document
+      .querySelectorAll(
+        "input, textarea"
+      )
+      .forEach(
+        element => {
+
+          if (
+            element.type ===
+            "color"
+          ) return;
+
+
+          element.value = "";
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "qrcode"
+      )
+      .innerHTML = "";
+
+
+    document
+      .getElementById(
+        "downloadBtn"
+      )
+      .classList
+      .add("hidden");
+
+
+    document
+      .getElementById(
+        "sendQRBtn"
+      )
+      .classList
+      .add("hidden");
+
+
+    latestQRData = "";
+
+  }
+
+
+
+  // HISTORY
+
+  function saveHistory(data) {
+
+    let history =
+      JSON.parse(
+        localStorage.getItem(
+          "qrifyHistory"
+        ) || "[]"
+      );
+
+
+    history.unshift(data);
+
+
+    history =
+      history.slice(
+        0,
+        5
+      );
+
+
+    localStorage.setItem(
+      "qrifyHistory",
+      JSON.stringify(
+        history
+      )
+    );
+
+
+    displayHistory();
+
+  }
+
+
+
+  function displayHistory() {
+
+    const history =
+      JSON.parse(
+        localStorage.getItem(
+          "qrifyHistory"
+        ) || "[]"
+      );
+
+
+    const container =
+      document.getElementById(
+        "history"
+      );
+
+
+    container.innerHTML = "";
+
+
+    if (
+      history.length === 0
+    ) {
+
+      container.innerHTML =
+        "<p>No recent QR codes.</p>";
+
+      return;
+
+    }
+
+
+    history.forEach(
+      item => {
+
+        const div =
+          document.createElement(
+            "div"
+          );
+
+
+        div.className =
+          "history-item";
+
+
+        div.textContent =
+          item;
+
+
+        container.appendChild(
+          div
+        );
+
+      }
+    );
+
+  }
+
+
+
+  // DARK MODE
+
+  function toggleDarkMode() {
+
+    document
+      .body
+      .classList
+      .toggle("dark");
+
+
+    localStorage.setItem(
+      "qrifyDarkMode",
+      document.body.classList.contains(
+        "dark"
+      )
+    );
+
+  }
+
+
+
+  if (
+    localStorage.getItem(
+      "qrifyDarkMode"
+    ) === "true"
+  ) {
+
+    document
+      .body
+      .classList
+      .add("dark");
+
+  }
+
+
+
+  // SHOW FIELDS
+
+  function showFields() {
+
+    const fields = [
+
+      "textFields",
+      "websiteFields",
+      "phoneFields",
+      "emailFields",
+      "wifiFields",
+      "contactFields",
+      "locationFields"
+
+    ];
+
+
+    fields.forEach(
+      id => {
+
+        document
+          .getElementById(
+            id
+          )
+          .classList
+          .add("hidden");
+
+      }
+    );
+
+
+    const type =
+      document
+        .getElementById(
+          "qrType"
+        )
+        .value;
+
+
+    document
+      .getElementById(
+        type + "Fields"
+      )
       .classList
       .remove("hidden");
 
   }
 
-  else {
-
-    openButton
-      .classList
-      .add("hidden");
-
-  }
-
-}
 
 
-// OPEN SCANNED LINK
+  // CAMERA SCANNER
 
-function openScannedLink() {
+  let html5QrCode = null;
 
-  if (scannedLink) {
 
-    window.open(
-      scannedLink,
-      "_blank"
+  function startCameraScan() {
+
+    document
+      .getElementById(
+        "reader"
+      )
+      .innerHTML = "";
+
+
+    html5QrCode =
+      new Html5Qrcode(
+        "reader"
+      );
+
+
+    html5QrCode.start(
+
+      {
+        facingMode:
+          "environment"
+      },
+
+      {
+        fps: 10,
+        qrbox: 250
+      },
+
+      qrCodeMessage => {
+
+        showScanResult(
+          qrCodeMessage
+        );
+
+
+        html5QrCode.stop();
+
+      },
+
+      errorMessage => {}
+
+    )
+
+    .catch(
+      error => {
+
+        console.error(
+          error
+        );
+
+
+        alert(
+          "Camera permission is required to scan QR codes."
+        );
+
+      }
     );
 
   }
 
-}
 
 
-// DISPLAY HISTORY
+  // IMAGE SCAN
 
-displayHistory();
+  function scanImage(event) {
+
+    const file =
+      event
+        .target
+        .files[0];
 
 
-// SHOW DEFAULT FIELDS
-
-showFields();
+    if (!file) return;
 
 
-// SERVICE WORKER
+    const scanner =
+      new Html5Qrcode(
+        "reader"
+      );
 
-if (
-  "serviceWorker" in navigator
-) {
 
-  window.addEventListener(
-    "load",
-    function() {
+    scanner
+      .scanFile(
+        file,
+        true
+      )
 
-      navigator.serviceWorker
-        .register("./sw.js")
-        .catch(
-          function(error) {
+      .then(
+        decodedText => {
 
-            console.log(
-              "Service Worker error:",
-              error
-            );
+          showScanResult(
+            decodedText
+          );
 
-          }
-        );
+        }
+      )
+
+      .catch(
+        error => {
+
+          console.error(
+            error
+          );
+
+
+          alert(
+            "Could not find a QR code in this image."
+          );
+
+        }
+      );
+
+  }
+
+
+
+  // SCAN RESULT
+
+  function showScanResult(text) {
+
+    const result =
+      document.getElementById(
+        "scanResult"
+      );
+
+
+    const scanText =
+      document.getElementById(
+        "scanText"
+      );
+
+
+    const openButton =
+      document.getElementById(
+        "openLinkBtn"
+      );
+
+
+    scanText.textContent =
+      text;
+
+
+    result
+      .classList
+      .remove("hidden");
+
+
+    if (
+
+      text.startsWith(
+        "http://"
+      ) ||
+
+      text.startsWith(
+        "https://"
+      ) ||
+
+      text.startsWith(
+        "www."
+      )
+
+    ) {
+
+      scannedLink =
+        text;
+
+
+      if (
+        text.startsWith(
+          "www."
+        )
+      ) {
+
+        scannedLink =
+          "https://" + text;
+
+      }
+
+
+      openButton
+        .classList
+        .remove("hidden");
 
     }
-  );
 
-}
+    else {
+
+      openButton
+        .classList
+        .add("hidden");
+
+    }
+
+  }
+
+
+
+  // OPEN LINK
+
+  function openScannedLink() {
+
+    if (scannedLink) {
+
+      window.open(
+        scannedLink,
+        "_blank"
+      );
+
+    }
+
+  }
+
+
+
+  // INITIALIZE
+
+  displayHistory();
+
+  showFields();
+
+
+
+  // SERVICE WORKER
+
+  if (
+    "serviceWorker" in navigator
+  ) {
+
+    window.addEventListener(
+      "load",
+      function() {
+
+        navigator.serviceWorker
+          .register(
+            "./sw.js"
+          )
+          .catch(
+            function(error) {
+
+              console.log(
+                "Service Worker error:",
+                error
+              );
+
+            }
+          );
+
+      }
+    );
+
+  }
 
 </script>
 
+
 </body>
+
   </html>
