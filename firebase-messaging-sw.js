@@ -18,14 +18,49 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-  const notification = payload.notification || {};
+
+  console.log(
+    "Background FCM message:",
+    payload
+  );
+
+  const notification =
+    payload.notification || {};
+
+  const title =
+    notification.title || "QRify";
+
+  const body =
+    notification.body ||
+    "You received a new message.";
+
+  /*
+    firebase-messaging-sw.js is in:
+
+    /QRify/firebase-messaging-sw.js
+
+    FCM scope is:
+
+    /QRify/firebase-messaging-scope/
+
+    So ../logo.png points to:
+
+    /QRify/logo.png
+  */
+
+  const iconUrl =
+    new URL(
+      "../logo.png",
+      self.registration.scope
+    ).href;
 
   self.registration.showNotification(
-    notification.title || "QRify",
+    title,
     {
-      body: notification.body || "You received a new message.",
-      icon: "./logo.png",
-      badge: "./logo.png"
+      body: body,
+      icon: iconUrl,
+      badge: iconUrl
     }
   );
+
 });
