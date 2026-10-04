@@ -238,6 +238,11 @@ button {
   margin: 6px 4px 0 0;
 }
 
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
 .primary {
   background: #2563eb;
   color: white;
@@ -585,11 +590,13 @@ footer {
 
   <button class="menu-item" onclick="showPage('friends')">
     👥 Friends
+
     <span
       id="friendRequestBadge"
       class="menu-badge hidden">
       0
     </span>
+
   </button>
 
   <button class="menu-item" onclick="showPage('chat')">
@@ -615,6 +622,8 @@ footer {
 </div>
 
 <div class="container">
+
+<!-- ================= HOME ================= -->
 
 <section id="home" class="page active">
 
@@ -713,6 +722,8 @@ footer {
 </section>
 
 
+<!-- ================= GENERATE ================= -->
+
 <section id="generate" class="page">
 
   <div class="card">
@@ -724,17 +735,11 @@ footer {
     <select id="qrType" onchange="showFields()">
 
       <option value="text">📝 Text</option>
-
       <option value="website">🌐 Website</option>
-
       <option value="phone">📞 Phone</option>
-
       <option value="email">📧 Email</option>
-
       <option value="wifi">📶 Wi-Fi</option>
-
       <option value="contact">👤 Contact</option>
-
       <option value="location">📍 Location</option>
 
     </select>
@@ -796,9 +801,7 @@ footer {
       <select id="wifiSecurity">
 
         <option value="WPA">WPA/WPA2</option>
-
         <option value="WEP">WEP</option>
-
         <option value="nopass">No Password</option>
 
       </select>
@@ -808,19 +811,15 @@ footer {
     <div id="contactFields" class="hidden">
 
       <label>Name</label>
-
       <input id="contactName">
 
       <label>Phone</label>
-
       <input id="contactPhone">
 
       <label>Email</label>
-
       <input id="contactEmail">
 
       <label>Organization</label>
-
       <input id="contactOrg">
 
     </div>
@@ -828,11 +827,9 @@ footer {
     <div id="locationFields" class="hidden">
 
       <label>Latitude</label>
-
       <input id="latitude" type="number" step="any">
 
       <label>Longitude</label>
-
       <input id="longitude" type="number" step="any">
 
     </div>
@@ -842,9 +839,7 @@ footer {
     <select id="qrSize">
 
       <option value="150">Small</option>
-
       <option value="220" selected>Medium</option>
-
       <option value="300">Large</option>
 
     </select>
@@ -926,6 +921,8 @@ footer {
 </section>
 
 
+<!-- ================= SCAN ================= -->
+
 <section id="scan" class="page">
 
   <div class="card">
@@ -982,6 +979,8 @@ footer {
 
 </section>
 
+
+<!-- ================= SEND ================= -->
 
 <section id="send" class="page">
 
@@ -1058,7 +1057,6 @@ footer {
 
   </div>
 
-
   <div id="friendsApp" class="hidden">
 
     <div class="card">
@@ -1107,9 +1105,7 @@ footer {
       <div id="friendRequestsList">
 
         <p class="small-text empty-message">
-
           No pending friend requests.
-
         </p>
 
       </div>
@@ -1136,9 +1132,7 @@ footer {
       <div id="friendsList">
 
         <p class="small-text empty-message">
-
           You have no friends yet.
-
         </p>
 
       </div>
@@ -1149,6 +1143,8 @@ footer {
 
 </section>
 
+
+<!-- ================= CHAT ================= -->
 
 <section id="chat" class="page">
 
@@ -1265,6 +1261,8 @@ footer {
 </section>
 
 
+<!-- ================= RECEIVED ================= -->
+
 <section id="received" class="page">
 
   <div id="inboxCard" class="card hidden">
@@ -1302,6 +1300,8 @@ footer {
 </section>
 
 
+<!-- ================= HISTORY ================= -->
+
 <section id="history" class="page">
 
   <div class="card">
@@ -1314,6 +1314,8 @@ footer {
 
 </section>
 
+
+<!-- ================= PROFILE ================= -->
 
 <section id="profile" class="page">
 
@@ -1379,6 +1381,8 @@ footer {
 
 </section>
 
+
+<!-- ================= SETTINGS ================= -->
 
 <section id="settings" class="page">
 
@@ -1457,11 +1461,12 @@ import {
   orderBy,
   addDoc,
   onSnapshot,
-  serverTimestamp,
-  deleteDoc
+  serverTimestamp
 } from
 "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
+
+/* ================= FIREBASE ================= */
 
 const firebaseConfig = {
 
@@ -1498,6 +1503,8 @@ const db =
 const provider =
   new GoogleAuthProvider();
 
+
+/* ================= GLOBAL STATE ================= */
 
 let currentUser = null;
 
@@ -1554,7 +1561,6 @@ async function() {
     if(unsubscribeChat) {
 
       unsubscribeChat();
-
       unsubscribeChat = null;
 
     }
@@ -1562,7 +1568,6 @@ async function() {
     if(unsubscribeInbox) {
 
       unsubscribeInbox();
-
       unsubscribeInbox = null;
 
     }
@@ -1570,7 +1575,6 @@ async function() {
     if(unsubscribeFriendRequests) {
 
       unsubscribeFriendRequests();
-
       unsubscribeFriendRequests = null;
 
     }
@@ -1578,7 +1582,6 @@ async function() {
     if(unsubscribeFriends) {
 
       unsubscribeFriends();
-
       unsubscribeFriends = null;
 
     }
@@ -1605,43 +1608,69 @@ onAuthStateChanged(
   async user => {
 
     const status =
-      document.getElementById("firebaseStatus");
+      document.getElementById(
+        "firebaseStatus"
+      );
 
     const loginButton =
-      document.getElementById("googleLoginBtn");
+      document.getElementById(
+        "googleLoginBtn"
+      );
 
     const logoutButton =
-      document.getElementById("logoutBtn");
+      document.getElementById(
+        "logoutBtn"
+      );
 
     const userInfo =
-      document.getElementById("userInfo");
+      document.getElementById(
+        "userInfo"
+      );
 
     const profileCard =
-      document.getElementById("profileCard");
+      document.getElementById(
+        "profileCard"
+      );
 
     const sendCard =
-      document.getElementById("sendCard");
+      document.getElementById(
+        "sendCard"
+      );
 
     const inboxCard =
-      document.getElementById("inboxCard");
+      document.getElementById(
+        "inboxCard"
+      );
 
     const accountRequired =
-      document.getElementById("accountRequired");
+      document.getElementById(
+        "accountRequired"
+      );
 
     const receivedLoginMessage =
-      document.getElementById("receivedLoginMessage");
+      document.getElementById(
+        "receivedLoginMessage"
+      );
 
     const chatLoginCard =
-      document.getElementById("chatLoginCard");
+      document.getElementById(
+        "chatLoginCard"
+      );
 
     const chatApp =
-      document.getElementById("chatApp");
+      document.getElementById(
+        "chatApp"
+      );
 
     const friendsLoginCard =
-      document.getElementById("friendsLoginCard");
+      document.getElementById(
+        "friendsLoginCard"
+      );
 
     const friendsApp =
-      document.getElementById("friendsApp");
+      document.getElementById(
+        "friendsApp"
+      );
 
 
     if(user) {
@@ -1651,48 +1680,66 @@ onAuthStateChanged(
       status.textContent =
         "✅ Connected to QRify";
 
-      loginButton.classList.add("hidden");
+      loginButton.classList.add(
+        "hidden"
+      );
 
-      logoutButton.classList.remove("hidden");
+      logoutButton.classList.remove(
+        "hidden"
+      );
 
       userInfo.innerHTML = `
 
         <p class="account-name">
-
           ${escapeHTML(
             user.displayName ||
             "QRify User"
           )}
-
         </p>
 
         <p>
-
           ${escapeHTML(
             user.email || ""
           )}
-
         </p>
 
       `;
 
-      profileCard.classList.remove("hidden");
+      profileCard.classList.remove(
+        "hidden"
+      );
 
-      sendCard.classList.remove("hidden");
+      sendCard.classList.remove(
+        "hidden"
+      );
 
-      inboxCard.classList.remove("hidden");
+      inboxCard.classList.remove(
+        "hidden"
+      );
 
-      accountRequired.classList.add("hidden");
+      accountRequired.classList.add(
+        "hidden"
+      );
 
-      receivedLoginMessage.classList.add("hidden");
+      receivedLoginMessage.classList.add(
+        "hidden"
+      );
 
-      chatLoginCard.classList.add("hidden");
+      chatLoginCard.classList.add(
+        "hidden"
+      );
 
-      chatApp.classList.remove("hidden");
+      chatApp.classList.remove(
+        "hidden"
+      );
 
-      friendsLoginCard.classList.add("hidden");
+      friendsLoginCard.classList.add(
+        "hidden"
+      );
 
-      friendsApp.classList.remove("hidden");
+      friendsApp.classList.remove(
+        "hidden"
+      );
 
 
       await loadUserProfile();
@@ -1716,29 +1763,51 @@ onAuthStateChanged(
       status.textContent =
         "Firebase connected. Please sign in.";
 
-      loginButton.classList.remove("hidden");
+      loginButton.classList.remove(
+        "hidden"
+      );
 
-      logoutButton.classList.add("hidden");
+      logoutButton.classList.add(
+        "hidden"
+      );
 
       userInfo.innerHTML = "";
 
-      profileCard.classList.add("hidden");
+      profileCard.classList.add(
+        "hidden"
+      );
 
-      sendCard.classList.add("hidden");
+      sendCard.classList.add(
+        "hidden"
+      );
 
-      inboxCard.classList.add("hidden");
+      inboxCard.classList.add(
+        "hidden"
+      );
 
-      accountRequired.classList.remove("hidden");
+      accountRequired.classList.remove(
+        "hidden"
+      );
 
-      receivedLoginMessage.classList.remove("hidden");
+      receivedLoginMessage.classList.remove(
+        "hidden"
+      );
 
-      chatLoginCard.classList.remove("hidden");
+      chatLoginCard.classList.remove(
+        "hidden"
+      );
 
-      chatApp.classList.add("hidden");
+      chatApp.classList.add(
+        "hidden"
+      );
 
-      friendsLoginCard.classList.remove("hidden");
+      friendsLoginCard.classList.remove(
+        "hidden"
+      );
 
-      friendsApp.classList.add("hidden");
+      friendsApp.classList.add(
+        "hidden"
+      );
 
       document
         .getElementById("sendQRBtn")
@@ -1749,7 +1818,6 @@ onAuthStateChanged(
       if(unsubscribeInbox) {
 
         unsubscribeInbox();
-
         unsubscribeInbox = null;
 
       }
@@ -1757,7 +1825,6 @@ onAuthStateChanged(
       if(unsubscribeChat) {
 
         unsubscribeChat();
-
         unsubscribeChat = null;
 
       }
@@ -1765,7 +1832,6 @@ onAuthStateChanged(
       if(unsubscribeFriendRequests) {
 
         unsubscribeFriendRequests();
-
         unsubscribeFriendRequests = null;
 
       }
@@ -1773,7 +1839,6 @@ onAuthStateChanged(
       if(unsubscribeFriends) {
 
         unsubscribeFriends();
-
         unsubscribeFriends = null;
 
       }
@@ -1803,7 +1868,9 @@ async function loadUserProfile() {
     await getDoc(userRef);
 
   const usernameInput =
-    document.getElementById("usernameInput");
+    document.getElementById(
+      "usernameInput"
+    );
 
   if(snapshot.exists()) {
 
@@ -1854,7 +1921,9 @@ async function() {
   }
 
   const input =
-    document.getElementById("usernameInput");
+    document.getElementById(
+      "usernameInput"
+    );
 
   const username =
     input.value
@@ -1878,7 +1947,11 @@ async function() {
     const searchQuery =
       query(
         collection(db, "users"),
-        where("username", "==", username)
+        where(
+          "username",
+          "==",
+          username
+        )
       );
 
     const existingUsers =
@@ -1890,7 +1963,8 @@ async function() {
       userDoc => {
 
         if(
-          userDoc.id !== currentUser.uid
+          userDoc.id !==
+          currentUser.uid
         ) {
 
           takenByOtherUser = true;
@@ -1943,12 +2017,14 @@ async function() {
 
     );
 
-    currentUsername = username;
+    currentUsername =
+      username;
 
     document.getElementById(
       "usernameStatus"
     ).textContent =
-      "✅ Username saved: @" + username;
+      "✅ Username saved: @" +
+      username;
 
     alert(
       "Username saved successfully!"
@@ -1975,9 +2051,9 @@ async function() {
    ===================================================== */
 
 
-/* ================= FRIENDSHIP ID ================= */
+/* ================= FRIEND ID ================= */
 
-function createFriendshipId(uid1, uid2) {
+function createFriendId(uid1, uid2) {
 
   return [
     uid1,
@@ -1991,9 +2067,119 @@ function createFriendshipId(uid1, uid2) {
 
 /* ================= REQUEST ID ================= */
 
-function createFriendRequestId(senderId, receiverId) {
+function createFriendRequestId(
+  senderId,
+  receiverId
+) {
 
-  return senderId + "_" + receiverId;
+  return (
+    senderId +
+    "_" +
+    receiverId
+  );
+
+}
+
+
+/* ================= GET FRIEND STATUS ================= */
+
+async function getFriendStatus(
+  otherUserId
+) {
+
+  if(!currentUser) {
+
+    return "none";
+
+  }
+
+
+  const friendId =
+    createFriendId(
+      currentUser.uid,
+      otherUserId
+    );
+
+
+  const friendRef =
+    doc(
+      db,
+      "friends",
+      friendId
+    );
+
+
+  const friendSnapshot =
+    await getDoc(friendRef);
+
+
+  if(friendSnapshot.exists()) {
+
+    return "friends";
+
+  }
+
+
+  const outgoingId =
+    createFriendRequestId(
+      currentUser.uid,
+      otherUserId
+    );
+
+  const incomingId =
+    createFriendRequestId(
+      otherUserId,
+      currentUser.uid
+    );
+
+
+  const outgoingSnapshot =
+    await getDoc(
+
+      doc(
+        db,
+        "friend_requests",
+        outgoingId
+      )
+
+    );
+
+
+  if(
+    outgoingSnapshot.exists() &&
+    outgoingSnapshot.data().status ===
+      "pending"
+  ) {
+
+    return "outgoing";
+
+  }
+
+
+  const incomingSnapshot =
+    await getDoc(
+
+      doc(
+        db,
+        "friend_requests",
+        incomingId
+      )
+
+    );
+
+
+  if(
+    incomingSnapshot.exists() &&
+    incomingSnapshot.data().status ===
+      "pending"
+  ) {
+
+    return "incoming";
+
+  }
+
+
+  return "none";
 
 }
 
@@ -2052,7 +2238,11 @@ async function() {
     const searchQuery =
       query(
         collection(db, "users"),
-        where("username", "==", username)
+        where(
+          "username",
+          "==",
+          username
+        )
       );
 
     const snapshot =
@@ -2065,9 +2255,7 @@ async function() {
       results.innerHTML = `
 
         <div class="user-result">
-
           ❌ User not found
-
         </div>
 
       `;
@@ -2076,6 +2264,7 @@ async function() {
 
     }
 
+
     for(
       const userDoc of snapshot.docs
     ) {
@@ -2083,16 +2272,16 @@ async function() {
       const data =
         userDoc.data();
 
+
       if(
-        userDoc.id === currentUser.uid
+        userDoc.id ===
+        currentUser.uid
       ) {
 
         results.innerHTML = `
 
           <div class="user-result">
-
             👤 This is your own username.
-
           </div>
 
         `;
@@ -2101,12 +2290,6 @@ async function() {
 
       }
 
-
-      const div =
-        document.createElement("div");
-
-      div.className =
-        "user-result";
 
       const status =
         await getFriendStatus(
@@ -2192,6 +2375,12 @@ async function() {
       }
 
 
+      const div =
+        document.createElement("div");
+
+      div.className =
+        "user-result";
+
       div.innerHTML = `
 
         <strong>
@@ -2244,106 +2433,6 @@ async function() {
 };
 
 
-/* ================= GET FRIEND STATUS ================= */
-
-async function getFriendStatus(otherUserId) {
-
-  if(!currentUser) {
-
-    return "none";
-
-  }
-
-
-  const friendshipId =
-    createFriendshipId(
-      currentUser.uid,
-      otherUserId
-    );
-
-
-  const friendshipRef =
-    doc(
-      db,
-      "friendships",
-      friendshipId
-    );
-
-
-  const friendshipSnapshot =
-    await getDoc(friendshipRef);
-
-
-  if(friendshipSnapshot.exists()) {
-
-    return "friends";
-
-  }
-
-
-  const outgoingId =
-    createFriendRequestId(
-      currentUser.uid,
-      otherUserId
-    );
-
-
-  const incomingId =
-    createFriendRequestId(
-      otherUserId,
-      currentUser.uid
-    );
-
-
-  const outgoingRef =
-    doc(
-      db,
-      "friend_requests",
-      outgoingId
-    );
-
-
-  const incomingRef =
-    doc(
-      db,
-      "friend_requests",
-      incomingId
-    );
-
-
-  const outgoingSnapshot =
-    await getDoc(outgoingRef);
-
-
-  if(
-    outgoingSnapshot.exists() &&
-    outgoingSnapshot.data().status === "pending"
-  ) {
-
-    return "outgoing";
-
-  }
-
-
-  const incomingSnapshot =
-    await getDoc(incomingRef);
-
-
-  if(
-    incomingSnapshot.exists() &&
-    incomingSnapshot.data().status === "pending"
-  ) {
-
-    return "incoming";
-
-  }
-
-
-  return "none";
-
-}
-
-
 /* ================= SEND FRIEND REQUEST ================= */
 
 window.sendFriendRequest =
@@ -2373,7 +2462,8 @@ async function(
 
 
   if(
-    receiverId === currentUser.uid
+    receiverId ===
+    currentUser.uid
   ) {
 
     alert(
@@ -2514,6 +2604,12 @@ function startFriendRequestListener() {
   }
 
 
+  /*
+    Only receiverId is queried.
+    Status is filtered in JavaScript.
+    This avoids a composite index requirement.
+  */
+
   const requestsQuery =
     query(
 
@@ -2526,12 +2622,6 @@ function startFriendRequestListener() {
         "receiverId",
         "==",
         currentUser.uid
-      ),
-
-      where(
-        "status",
-        "==",
-        "pending"
       )
 
     );
@@ -2544,12 +2634,21 @@ function startFriendRequestListener() {
 
       snapshot => {
 
+        const pendingRequests =
+          snapshot.docs.filter(
+            requestDoc =>
+              requestDoc.data().status ===
+              "pending"
+          );
+
+
         displayFriendRequests(
-          snapshot
+          pendingRequests
         );
 
+
         updateFriendRequestBadge(
-          snapshot.size
+          pendingRequests.length
         );
 
       },
@@ -2570,7 +2669,9 @@ function startFriendRequestListener() {
 
 /* ================= DISPLAY REQUESTS ================= */
 
-function displayFriendRequests(snapshot) {
+function displayFriendRequests(
+  requests
+) {
 
   const container =
     document.getElementById(
@@ -2581,14 +2682,12 @@ function displayFriendRequests(snapshot) {
   container.innerHTML = "";
 
 
-  if(snapshot.empty) {
+  if(requests.length === 0) {
 
     container.innerHTML = `
 
       <p class="small-text empty-message">
-
         No pending friend requests.
-
       </p>
 
     `;
@@ -2598,7 +2697,7 @@ function displayFriendRequests(snapshot) {
   }
 
 
-  snapshot.forEach(
+  requests.forEach(
     requestDoc => {
 
       const data =
@@ -2674,9 +2773,11 @@ function displayFriendRequests(snapshot) {
 }
 
 
-/* ================= UPDATE BADGE ================= */
+/* ================= BADGE ================= */
 
-function updateFriendRequestBadge(count) {
+function updateFriendRequestBadge(
+  count
+) {
 
   const badge =
     document.getElementById(
@@ -2695,6 +2796,9 @@ function updateFriendRequestBadge(count) {
       count;
 
   }
+
+
+  if(!badge) return;
 
 
   if(count > 0) {
@@ -2724,7 +2828,11 @@ function updateFriendRequestBadge(count) {
 window.acceptFriendRequest =
 async function(requestId) {
 
-  if(!currentUser) return;
+  if(!currentUser) {
+
+    return;
+
+  }
 
 
   try {
@@ -2773,7 +2881,8 @@ async function(requestId) {
 
 
     if(
-      data.status !== "pending"
+      data.status !==
+      "pending"
     ) {
 
       alert(
@@ -2785,61 +2894,51 @@ async function(requestId) {
     }
 
 
-    const friendshipId =
-      createFriendshipId(
+    const friendId =
+      createFriendId(
         data.senderId,
         data.receiverId
       );
 
 
+    /*
+      IMPORTANT:
+      Uses "friends" collection.
+      This matches the Firestore rules.
+    */
+
     await setDoc(
 
       doc(
         db,
-        "friendships",
-        friendshipId
+        "friends",
+        friendId
       ),
 
       {
 
-        users: [
+        members: [
           data.senderId,
           data.receiverId
         ],
 
-        userInfo: {
+        memberUsernames: [
+          data.senderUsername,
+          data.receiverUsername
+        ],
 
-          [data.senderId]: {
-
-            uid:
-              data.senderId,
-
-            username:
-              data.senderUsername,
-
-            displayName:
-              data.senderName
-
-          },
-
-          [data.receiverId]: {
-
-            uid:
-              data.receiverId,
-
-            username:
-              data.receiverUsername,
-
-            displayName:
-              data.receiverName
-
-          }
-
-        },
+        memberNames: [
+          data.senderName,
+          data.receiverName
+        ],
 
         createdAt:
           serverTimestamp()
 
+      },
+
+      {
+        merge: true
       }
 
     );
@@ -2892,7 +2991,9 @@ async function(requestId) {
 /* ================= ACCEPT FROM SEARCH ================= */
 
 window.acceptFriendRequestByUser =
-async function(senderId) {
+async function(
+  senderId
+) {
 
   if(!currentUser) return;
 
@@ -2909,6 +3010,7 @@ async function(senderId) {
     await acceptFriendRequest(
       requestId
     );
+
 
     await searchFriendUser();
 
@@ -3031,11 +3133,11 @@ function startFriendsListener() {
 
       collection(
         db,
-        "friendships"
+        "friends"
       ),
 
       where(
-        "users",
+        "members",
         "array-contains",
         currentUser.uid
       )
@@ -3079,7 +3181,6 @@ function displayFriends(snapshot) {
       "friendsList"
     );
 
-
   const count =
     document.getElementById(
       "friendsCount"
@@ -3087,7 +3188,6 @@ function displayFriends(snapshot) {
 
 
   container.innerHTML = "";
-
 
   count.textContent =
     snapshot.size;
@@ -3098,9 +3198,7 @@ function displayFriends(snapshot) {
     container.innerHTML = `
 
       <p class="small-text empty-message">
-
         You have no friends yet.
-
       </p>
 
     `;
@@ -3111,25 +3209,49 @@ function displayFriends(snapshot) {
 
 
   snapshot.forEach(
-    friendshipDoc => {
+    friendDoc => {
 
       const data =
-        friendshipDoc.data();
+        friendDoc.data();
 
 
-      const userInfo =
-        data.userInfo || {};
+      const members =
+        data.members || [];
 
 
-      const friendId =
-        data.users.find(
+      const usernames =
+        data.memberUsernames || [];
+
+
+      const names =
+        data.memberNames || [];
+
+
+      const friendIndex =
+        members.findIndex(
           uid =>
             uid !== currentUser.uid
         );
 
 
-      const friend =
-        userInfo[friendId] || {};
+      if(friendIndex === -1) {
+
+        return;
+
+      }
+
+
+      const friendId =
+        members[friendIndex];
+
+
+      const friendUsername =
+        usernames[friendIndex] ||
+        "";
+
+      const friendName =
+        names[friendIndex] ||
+        "QRify User";
 
 
       const item =
@@ -3144,8 +3266,7 @@ function displayFriends(snapshot) {
         <strong>
 
           ${escapeHTML(
-            friend.displayName ||
-            "QRify User"
+            friendName
           )}
 
         </strong>
@@ -3155,7 +3276,7 @@ function displayFriends(snapshot) {
         <span class="username">
 
           @${escapeHTML(
-            friend.username || ""
+            friendUsername
           )}
 
         </span>
@@ -3165,9 +3286,9 @@ function displayFriends(snapshot) {
           <button
             class="primary"
             onclick="openChatFromFriend(
-              '${escapeJS(friend.uid || friendId)}',
-              '${escapeJS(friend.username || "")}',
-              '${escapeJS(friend.displayName || "QRify User")}'
+              '${escapeJS(friendId)}',
+              '${escapeJS(friendUsername)}',
+              '${escapeJS(friendName)}'
             )">
 
             💬 Chat
@@ -3216,11 +3337,8 @@ function(
 
 
 /* =====================================================
-   EXISTING SEND QR SYSTEM
+   SEND QR
    ===================================================== */
-
-
-/* ================= SEARCH USER ================= */
 
 window.searchUser =
 async function() {
@@ -3244,7 +3362,9 @@ async function() {
   }
 
   const searchInput =
-    document.getElementById("searchUsername");
+    document.getElementById(
+      "searchUsername"
+    );
 
   const username =
     searchInput.value
@@ -3260,7 +3380,9 @@ async function() {
   }
 
   const results =
-    document.getElementById("searchResults");
+    document.getElementById(
+      "searchResults"
+    );
 
   results.innerHTML =
     "<p>Searching...</p>";
@@ -3270,7 +3392,11 @@ async function() {
     const searchQuery =
       query(
         collection(db, "users"),
-        where("username", "==", username)
+        where(
+          "username",
+          "==",
+          username
+        )
       );
 
     const snapshot =
@@ -3283,9 +3409,7 @@ async function() {
       results.innerHTML = `
 
         <div class="user-result">
-
           ❌ User not found
-
         </div>
 
       `;
@@ -3294,22 +3418,23 @@ async function() {
 
     }
 
+
     snapshot.forEach(
       userDoc => {
 
         const data =
           userDoc.data();
 
+
         if(
-          userDoc.id === currentUser.uid
+          userDoc.id ===
+          currentUser.uid
         ) {
 
           results.innerHTML = `
 
             <div class="user-result">
-
               👤 This is your own username.
-
             </div>
 
           `;
@@ -3317,6 +3442,7 @@ async function() {
           return;
 
         }
+
 
         const div =
           document.createElement("div");
@@ -3349,7 +3475,9 @@ async function() {
 
           <button
             class="success"
-            onclick="sendQRToUser('${userDoc.id}')">
+            onclick="sendQRToUser(
+              '${escapeJS(userDoc.id)}'
+            )">
 
             📤 Send Current QR
 
@@ -3371,9 +3499,7 @@ async function() {
     results.innerHTML = `
 
       <div class="user-result">
-
         ❌ Search failed.
-
       </div>
 
     `;
@@ -3420,7 +3546,10 @@ async function(receiverId) {
 
     await addDoc(
 
-      collection(db, "shared_qr"),
+      collection(
+        db,
+        "shared_qr"
+      ),
 
       {
 
@@ -3473,16 +3602,21 @@ function startInboxListener() {
 
   if(!currentUser) return;
 
+
   if(unsubscribeInbox) {
 
     unsubscribeInbox();
 
   }
 
+
   const inboxQuery =
     query(
 
-      collection(db, "shared_qr"),
+      collection(
+        db,
+        "shared_qr"
+      ),
 
       where(
         "receiverId",
@@ -3492,6 +3626,7 @@ function startInboxListener() {
 
     );
 
+
   unsubscribeInbox =
     onSnapshot(
 
@@ -3499,7 +3634,9 @@ function startInboxListener() {
 
       snapshot => {
 
-        displayReceivedQRs(snapshot);
+        displayReceivedQRs(
+          snapshot
+        );
 
       },
 
@@ -3522,18 +3659,19 @@ function startInboxListener() {
 function displayReceivedQRs(snapshot) {
 
   const container =
-    document.getElementById("receivedQRs");
+    document.getElementById(
+      "receivedQRs"
+    );
 
   container.innerHTML = "";
+
 
   if(snapshot.empty) {
 
     container.innerHTML = `
 
       <p class="small-text">
-
         No QR codes received yet.
-
       </p>
 
     `;
@@ -3541,6 +3679,7 @@ function displayReceivedQRs(snapshot) {
     return;
 
   }
+
 
   snapshot.forEach(
     qrDoc => {
@@ -3555,14 +3694,14 @@ function displayReceivedQRs(snapshot) {
         "received-item";
 
       const qrId =
-        "received-" + qrDoc.id;
+        "received-" +
+        qrDoc.id;
 
       item.innerHTML = `
 
         <strong>
 
           📩 From:
-
           ${escapeHTML(
             data.senderName ||
             "QRify User"
@@ -3589,7 +3728,9 @@ function displayReceivedQRs(snapshot) {
 
         <button
           class="primary"
-          onclick="copyReceivedQR('${qrDoc.id}')">
+          onclick="copyReceivedQR(
+            '${escapeJS(qrDoc.id)}'
+          )">
 
           📋 Copy Data
 
@@ -3599,11 +3740,15 @@ function displayReceivedQRs(snapshot) {
 
       container.prepend(item);
 
+
       setTimeout(
         () => {
 
           const qrContainer =
-            document.getElementById(qrId);
+            document.getElementById(
+              qrId
+            );
+
 
           if(
             qrContainer &&
@@ -3663,22 +3808,30 @@ async function(qrId) {
     const snapshot =
       await getDoc(qrRef);
 
+
     if(!snapshot.exists()) {
 
-      alert("QR no longer exists.");
+      alert(
+        "QR no longer exists."
+      );
 
       return;
 
     }
 
+
     const data =
       snapshot.data();
+
 
     await navigator.clipboard.writeText(
       data.qrData
     );
 
-    alert("✅ QR data copied!");
+
+    alert(
+      "✅ QR data copied!"
+    );
 
   }
 
@@ -3686,7 +3839,9 @@ async function(qrId) {
 
     console.error(error);
 
-    alert("Could not copy QR data.");
+    alert(
+      "Could not copy QR data."
+    );
 
   }
 
@@ -3767,14 +3922,13 @@ async function() {
 
     results.innerHTML = "";
 
+
     if(snapshot.empty) {
 
       results.innerHTML = `
 
         <div class="chat-user-result">
-
           ❌ User not found
-
         </div>
 
       `;
@@ -3783,22 +3937,23 @@ async function() {
 
     }
 
+
     snapshot.forEach(
       userDoc => {
 
         const data =
           userDoc.data();
 
+
         if(
-          userDoc.id === currentUser.uid
+          userDoc.id ===
+          currentUser.uid
         ) {
 
           results.innerHTML = `
 
             <div class="chat-user-result">
-
               👤 This is your own username.
-
             </div>
 
           `;
@@ -3807,11 +3962,13 @@ async function() {
 
         }
 
+
         const div =
           document.createElement("div");
 
         div.className =
           "chat-user-result";
+
 
         div.innerHTML = `
 
@@ -3850,6 +4007,7 @@ async function() {
 
         `;
 
+
         results.appendChild(div);
 
       }
@@ -3864,9 +4022,7 @@ async function() {
     results.innerHTML = `
 
       <div class="chat-user-result">
-
         ❌ Could not search users.
-
       </div>
 
     `;
@@ -3874,6 +4030,23 @@ async function() {
   }
 
 };
+
+
+/* ================= CHAT ID ================= */
+
+function createChatId(
+  uid1,
+  uid2
+) {
+
+  return [
+    uid1,
+    uid2
+  ]
+  .sort()
+  .join("_");
+
+}
 
 
 /* ================= CREATE CHAT ROOM ================= */
@@ -3889,11 +4062,13 @@ async function ensureChatRoom() {
 
   }
 
+
   const chatId =
     createChatId(
       currentUser.uid,
       activeChatUser.uid
     );
+
 
   const chatRef =
     doc(
@@ -3902,6 +4077,7 @@ async function ensureChatRoom() {
       chatId
     );
 
+
   await setDoc(
 
     chatRef,
@@ -3909,21 +4085,29 @@ async function ensureChatRoom() {
     {
 
       members: [
+
         currentUser.uid,
+
         activeChatUser.uid
+
       ],
 
       memberUsernames: [
+
         currentUsername,
+
         activeChatUser.username
+
       ],
 
       memberNames: [
+
         currentUser.displayName ||
         "QRify User",
 
         activeChatUser.displayName ||
         "QRify User"
+
       ],
 
       updatedAt:
@@ -3936,6 +4120,7 @@ async function ensureChatRoom() {
     }
 
   );
+
 
   return chatId;
 
@@ -3953,11 +4138,14 @@ async function(
 
   if(!currentUser) {
 
-    alert("Please sign in first.");
+    alert(
+      "Please sign in first."
+    );
 
     return;
 
   }
+
 
   activeChatUser = {
 
@@ -3972,32 +4160,45 @@ async function(
 
   };
 
+
   document
-    .getElementById("chatWindow")
+    .getElementById(
+      "chatWindow"
+    )
     .classList
     .remove("hidden");
 
-  document
-    .getElementById("chatUserName")
-    .textContent =
-      "💬 " + displayName;
 
   document
-    .getElementById("chatUsername")
+    .getElementById(
+      "chatUserName"
+    )
     .textContent =
-      "@" + username;
+      "💬 " +
+      displayName;
+
 
   document
-    .getElementById("chatMessages")
+    .getElementById(
+      "chatUsername"
+    )
+    .textContent =
+      "@" +
+      username;
+
+
+  document
+    .getElementById(
+      "chatMessages"
+    )
     .innerHTML = `
 
       <p class="small-text">
-
         Connecting to chat...
-
       </p>
 
     `;
+
 
   try {
 
@@ -4014,17 +4215,19 @@ async function(
       error
     );
 
+
     document
-      .getElementById("chatMessages")
+      .getElementById(
+        "chatMessages"
+      )
       .innerHTML = `
 
         <p class="small-text">
-
           ❌ Could not open chat.
-
         </p>
 
       `;
+
 
     alert(
       "Could not open chat: " +
@@ -4035,11 +4238,14 @@ async function(
 
   }
 
+
   setTimeout(
     () => {
 
       document
-        .getElementById("chatInput")
+        .getElementById(
+          "chatInput"
+        )
         .focus();
 
     },
@@ -4049,20 +4255,6 @@ async function(
   );
 
 };
-
-
-/* ================= CHAT ID ================= */
-
-function createChatId(uid1, uid2) {
-
-  return [
-    uid1,
-    uid2
-  ]
-  .sort()
-  .join("_");
-
-}
 
 
 /* ================= CHAT LISTENER ================= */
@@ -4078,6 +4270,7 @@ function startChatListener() {
 
   }
 
+
   if(unsubscribeChat) {
 
     unsubscribeChat();
@@ -4086,11 +4279,13 @@ function startChatListener() {
 
   }
 
+
   const chatId =
     createChatId(
       currentUser.uid,
       activeChatUser.uid
     );
+
 
   const messagesRef =
     collection(
@@ -4099,6 +4294,7 @@ function startChatListener() {
       chatId,
       "messages"
     );
+
 
   const messagesQuery =
     query(
@@ -4109,6 +4305,7 @@ function startChatListener() {
       )
     );
 
+
   unsubscribeChat =
     onSnapshot(
 
@@ -4116,7 +4313,9 @@ function startChatListener() {
 
       snapshot => {
 
-        displayChatMessages(snapshot);
+        displayChatMessages(
+          snapshot
+        );
 
       },
 
@@ -4127,17 +4326,17 @@ function startChatListener() {
           error
         );
 
+
         const container =
           document.getElementById(
             "chatMessages"
           );
 
+
         container.innerHTML = `
 
           <p class="small-text">
-
             ❌ Could not load messages.
-
           </p>
 
         `;
@@ -4151,14 +4350,18 @@ function startChatListener() {
 
 /* ================= DISPLAY CHAT ================= */
 
-function displayChatMessages(snapshot) {
+function displayChatMessages(
+  snapshot
+) {
 
   const container =
     document.getElementById(
       "chatMessages"
     );
 
+
   container.innerHTML = "";
+
 
   if(snapshot.empty) {
 
@@ -4179,18 +4382,22 @@ function displayChatMessages(snapshot) {
 
   }
 
+
   snapshot.forEach(
     messageDoc => {
 
       const data =
         messageDoc.data();
 
+
       const div =
         document.createElement("div");
+
 
       const isMine =
         data.senderId ===
         currentUser.uid;
+
 
       div.className =
         "chat-message " +
@@ -4200,7 +4407,9 @@ function displayChatMessages(snapshot) {
             : "received"
         );
 
+
       let timeText = "";
+
 
       if(data.createdAt) {
 
@@ -4212,8 +4421,11 @@ function displayChatMessages(snapshot) {
               .toLocaleTimeString(
                 [],
                 {
-                  hour: "2-digit",
-                  minute: "2-digit"
+                  hour:
+                    "2-digit",
+
+                  minute:
+                    "2-digit"
                 }
               );
 
@@ -4226,6 +4438,7 @@ function displayChatMessages(snapshot) {
         }
 
       }
+
 
       div.innerHTML = `
 
@@ -4241,10 +4454,12 @@ function displayChatMessages(snapshot) {
 
       `;
 
+
       container.appendChild(div);
 
     }
   );
+
 
   container.scrollTop =
     container.scrollHeight;
@@ -4259,11 +4474,14 @@ async function() {
 
   if(!currentUser) {
 
-    alert("Please sign in first.");
+    alert(
+      "Please sign in first."
+    );
 
     return;
 
   }
+
 
   if(!activeChatUser) {
 
@@ -4275,20 +4493,25 @@ async function() {
 
   }
 
+
   const input =
     document.getElementById(
       "chatInput"
     );
 
+
   const text =
     input.value.trim();
 
+
   if(!text) return;
+
 
   try {
 
     const chatId =
       await ensureChatRoom();
+
 
     if(!chatId) {
 
@@ -4300,12 +4523,14 @@ async function() {
 
     }
 
+
     const chatRef =
       doc(
         db,
         "chats",
         chatId
       );
+
 
     await addDoc(
 
@@ -4338,6 +4563,7 @@ async function() {
 
     );
 
+
     await setDoc(
 
       chatRef,
@@ -4358,6 +4584,7 @@ async function() {
 
     );
 
+
     input.value = "";
 
     input.focus();
@@ -4370,6 +4597,7 @@ async function() {
       "Chat send error:",
       error
     );
+
 
     alert(
       "Could not send message: " +
@@ -4415,21 +4643,38 @@ function escapeHTML(value) {
 }
 
 
-/* ================= ESCAPE JAVASCRIPT ================= */
+/* ================= ESCAPE JS ================= */
 
 function escapeJS(value) {
 
-  return String(value || "")
+  return String(
+    value || ""
+  )
 
-    .replace(/\\/g, "\\\\")
+    .replace(
+      /\\/g,
+      "\\\\"
+    )
 
-    .replace(/'/g, "\\'")
+    .replace(
+      /'/g,
+      "\\'"
+    )
 
-    .replace(/"/g, '\\"')
+    .replace(
+      /"/g,
+      '\\"'
+    )
 
-    .replace(/\n/g, "\\n")
+    .replace(
+      /\n/g,
+      "\\n"
+    )
 
-    .replace(/\r/g, "\\r");
+    .replace(
+      /\r/g,
+      "\\r"
+    );
 
 }
 
@@ -4455,7 +4700,10 @@ let html5QrCode = null;
 function getHashPage() {
 
   const id =
-    location.hash.replace("#", "");
+    location.hash.replace(
+      "#",
+      ""
+    );
 
   return document.getElementById(id)
     ? id
@@ -4466,7 +4714,9 @@ function getHashPage() {
 
 /* ================= SET ACTIVE PAGE ================= */
 
-function setActivePage(pageId) {
+function setActivePage(
+  pageId
+) {
 
   document
     .querySelectorAll(".page")
@@ -4482,7 +4732,9 @@ function setActivePage(pageId) {
 
 
   const page =
-    document.getElementById(pageId);
+    document.getElementById(
+      pageId
+    );
 
 
   if(page) {
@@ -4490,6 +4742,7 @@ function setActivePage(pageId) {
     page
       .classList
       .add("active");
+
 
     window.scrollTo({
 
@@ -4512,7 +4765,9 @@ function showPage(
 ) {
 
   const page =
-    document.getElementById(pageId);
+    document.getElementById(
+      pageId
+    );
 
 
   if(!page) {
@@ -4524,12 +4779,15 @@ function showPage(
 
   const currentPageId =
     document
-      .querySelector(".page.active")
+      .querySelector(
+        ".page.active"
+      )
       ?.id || "";
 
 
   if(
-    currentPageId === pageId
+    currentPageId ===
+    pageId
   ) {
 
     closeMenu();
@@ -4554,7 +4812,8 @@ function showPage(
 
       "",
 
-      "#" + pageId
+      "#" +
+      pageId
 
     );
 
@@ -4597,14 +4856,15 @@ function initializePageHistory() {
 
     "",
 
-    "#" + initialPage
+    "#" +
+    initialPage
 
   );
 
 }
 
 
-/* ================= ANDROID / BROWSER BACK ================= */
+/* ================= ANDROID BACK ================= */
 
 window.addEventListener(
   "popstate",
@@ -4647,7 +4907,8 @@ window.addEventListener(
 
       !history.state.qrify ||
 
-      history.state.page !== pageId
+      history.state.page !==
+      pageId
 
     ) {
 
@@ -4664,7 +4925,8 @@ window.addEventListener(
 
         "",
 
-        "#" + pageId
+        "#" +
+        pageId
 
       );
 
@@ -4687,12 +4949,17 @@ window.addEventListener(
 function openMenu() {
 
   document
-    .getElementById("sideMenu")
+    .getElementById(
+      "sideMenu"
+    )
     .classList
     .add("open");
 
+
   document
-    .getElementById("menuOverlay")
+    .getElementById(
+      "menuOverlay"
+    )
     .classList
     .add("show");
 
@@ -4702,12 +4969,17 @@ function openMenu() {
 function closeMenu() {
 
   document
-    .getElementById("sideMenu")
+    .getElementById(
+      "sideMenu"
+    )
     .classList
     .remove("open");
 
+
   document
-    .getElementById("menuOverlay")
+    .getElementById(
+      "menuOverlay"
+    )
     .classList
     .remove("show");
 
@@ -4720,14 +4992,18 @@ function getQRData() {
 
   const type =
     document
-      .getElementById("qrType")
+      .getElementById(
+        "qrType"
+      )
       .value;
 
 
   if(type === "text") {
 
     return document
-      .getElementById("text")
+      .getElementById(
+        "text"
+      )
       .value;
 
   }
@@ -4737,7 +5013,9 @@ function getQRData() {
 
     let url =
       document
-        .getElementById("website")
+        .getElementById(
+          "website"
+        )
         .value
         .trim();
 
@@ -4746,14 +5024,19 @@ function getQRData() {
 
       url &&
 
-      !url.startsWith("http://") &&
+      !url.startsWith(
+        "http://"
+      ) &&
 
-      !url.startsWith("https://")
+      !url.startsWith(
+        "https://"
+      )
 
     ) {
 
       url =
-        "https://" + url;
+        "https://" +
+        url;
 
     }
 
@@ -4768,7 +5051,9 @@ function getQRData() {
     return "tel:" +
 
       document
-        .getElementById("phone")
+        .getElementById(
+          "phone"
+        )
         .value;
 
   }
@@ -4778,23 +5063,31 @@ function getQRData() {
 
     const email =
       document
-        .getElementById("email")
+        .getElementById(
+          "email"
+        )
         .value;
+
 
     const subject =
       encodeURIComponent(
 
         document
-          .getElementById("emailSubject")
+          .getElementById(
+            "emailSubject"
+          )
           .value
 
       );
+
 
     const message =
       encodeURIComponent(
 
         document
-          .getElementById("emailMessage")
+          .getElementById(
+            "emailMessage"
+          )
           .value
 
       );
@@ -4811,17 +5104,25 @@ function getQRData() {
 
     const ssid =
       document
-        .getElementById("wifiSSID")
+        .getElementById(
+          "wifiSSID"
+        )
         .value;
+
 
     const password =
       document
-        .getElementById("wifiPassword")
+        .getElementById(
+          "wifiPassword"
+        )
         .value;
+
 
     const security =
       document
-        .getElementById("wifiSecurity")
+        .getElementById(
+          "wifiSecurity"
+        )
         .value;
 
 
@@ -4836,22 +5137,33 @@ function getQRData() {
 
     const name =
       document
-        .getElementById("contactName")
+        .getElementById(
+          "contactName"
+        )
         .value;
+
 
     const phone =
       document
-        .getElementById("contactPhone")
+        .getElementById(
+          "contactPhone"
+        )
         .value;
+
 
     const email =
       document
-        .getElementById("contactEmail")
+        .getElementById(
+          "contactEmail"
+        )
         .value;
+
 
     const org =
       document
-        .getElementById("contactOrg")
+        .getElementById(
+          "contactOrg"
+        )
         .value;
 
 
@@ -4870,12 +5182,17 @@ END:VCARD`;
 
     const lat =
       document
-        .getElementById("latitude")
+        .getElementById(
+          "latitude"
+        )
         .value;
+
 
     const lon =
       document
-        .getElementById("longitude")
+        .getElementById(
+          "longitude"
+        )
         .value;
 
 
@@ -4916,7 +5233,9 @@ function generateQR() {
     parseInt(
 
       document
-        .getElementById("qrSize")
+        .getElementById(
+          "qrSize"
+        )
         .value
 
     );
@@ -4924,21 +5243,28 @@ function generateQR() {
 
   const color =
     document
-      .getElementById("qrColor")
+      .getElementById(
+        "qrColor"
+      )
       .value;
 
 
   const background =
     document
-      .getElementById("bgColor")
+      .getElementById(
+        "bgColor"
+      )
       .value;
 
 
   const qrContainer =
-    document.getElementById("qrcode");
+    document.getElementById(
+      "qrcode"
+    );
 
 
-  qrContainer.innerHTML = "";
+  qrContainer.innerHTML =
+    "";
 
 
   qrCodeInstance =
@@ -4972,13 +5298,17 @@ function generateQR() {
 
 
   document
-    .getElementById("downloadBtn")
+    .getElementById(
+      "downloadBtn"
+    )
     .classList
     .remove("hidden");
 
 
   document
-    .getElementById("sendQRBtn")
+    .getElementById(
+      "sendQRBtn"
+    )
     .classList
     .remove("hidden");
 
@@ -5027,7 +5357,9 @@ function downloadQR() {
 
 
   const newCanvas =
-    document.createElement("canvas");
+    document.createElement(
+      "canvas"
+    );
 
 
   newCanvas.width =
@@ -5041,7 +5373,9 @@ function downloadQR() {
 
 
   const ctx =
-    newCanvas.getContext("2d");
+    newCanvas.getContext(
+      "2d"
+    );
 
 
   ctx.fillStyle =
@@ -5064,7 +5398,9 @@ function downloadQR() {
 
 
   const link =
-    document.createElement("a");
+    document.createElement(
+      "a"
+    );
 
 
   link.download =
@@ -5072,7 +5408,9 @@ function downloadQR() {
 
 
   link.href =
-    newCanvas.toDataURL("image/png");
+    newCanvas.toDataURL(
+      "image/png"
+    );
 
 
   link.click();
@@ -5092,7 +5430,8 @@ function clearAll() {
       element => {
 
         if(
-          element.type === "color"
+          element.type ===
+          "color"
         ) {
 
           return;
@@ -5106,23 +5445,30 @@ function clearAll() {
 
 
   document
-    .getElementById("qrcode")
+    .getElementById(
+      "qrcode"
+    )
     .innerHTML = "";
 
 
   document
-    .getElementById("downloadBtn")
+    .getElementById(
+      "downloadBtn"
+    )
     .classList
     .add("hidden");
 
 
   document
-    .getElementById("sendQRBtn")
+    .getElementById(
+      "sendQRBtn"
+    )
     .classList
     .add("hidden");
 
 
-  window.latestQRData = "";
+  window.latestQRData =
+    "";
 
 
   const sendStatus =
@@ -5159,7 +5505,10 @@ function saveHistory(data) {
 
 
   history =
-    history.slice(0, 5);
+    history.slice(
+      0,
+      5
+    );
 
 
   localStorage.setItem(
@@ -5211,7 +5560,9 @@ function displayHistory() {
     item => {
 
       const div =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
 
       div.className =
@@ -5222,7 +5573,9 @@ function displayHistory() {
         item;
 
 
-      container.appendChild(div);
+      container.appendChild(
+        div
+      );
 
     }
   );
@@ -5301,7 +5654,9 @@ function showFields() {
 
   const type =
     document
-      .getElementById("qrType")
+      .getElementById(
+        "qrType"
+      )
       .value;
 
 
@@ -5320,7 +5675,9 @@ function showFields() {
 function startCameraScan() {
 
   document
-    .getElementById("reader")
+    .getElementById(
+      "reader"
+    )
     .innerHTML = "";
 
 
@@ -5330,7 +5687,9 @@ function startCameraScan() {
 
       html5QrCode
         .stop()
-        .catch(() => {});
+        .catch(
+          () => {}
+        );
 
     }
 
@@ -5340,18 +5699,25 @@ function startCameraScan() {
 
 
   html5QrCode =
-    new Html5Qrcode("reader");
+    new Html5Qrcode(
+      "reader"
+    );
 
 
   html5QrCode.start(
 
     {
-      facingMode: "environment"
+      facingMode:
+        "environment"
     },
 
     {
-      fps: 10,
-      qrbox: 250
+      fps:
+        10,
+
+      qrbox:
+        250
+
     },
 
     qrCodeMessage => {
@@ -5365,7 +5731,9 @@ function startCameraScan() {
 
         html5QrCode
           .stop()
-          .catch(() => {});
+          .catch(
+            () => {}
+          );
 
       }
 
@@ -5402,11 +5770,16 @@ function scanImage(event) {
 
 
   const scanner =
-    new Html5Qrcode("reader");
+    new Html5Qrcode(
+      "reader"
+    );
 
 
   scanner
-    .scanFile(file, true)
+    .scanFile(
+      file,
+      true
+    )
 
     .then(
       decodedText => {
@@ -5466,11 +5839,17 @@ function showScanResult(text) {
 
   if(
 
-    text.startsWith("http://") ||
+    text.startsWith(
+      "http://"
+    ) ||
 
-    text.startsWith("https://") ||
+    text.startsWith(
+      "https://"
+    ) ||
 
-    text.startsWith("www.")
+    text.startsWith(
+      "www."
+    )
 
   ) {
 
@@ -5479,11 +5858,14 @@ function showScanResult(text) {
 
 
     if(
-      text.startsWith("www.")
+      text.startsWith(
+        "www."
+      )
     ) {
 
       scannedLink =
-        "https://" + text;
+        "https://" +
+        text;
 
     }
 
@@ -5542,7 +5924,9 @@ if(
 
       navigator.serviceWorker
 
-        .register("./sw.js")
+        .register(
+          "./sw.js"
+        )
 
         .catch(
           function(error) {
@@ -5564,4 +5948,4 @@ if(
 
 </body>
 
-            </html>
+        </html>
