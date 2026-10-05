@@ -467,6 +467,129 @@ body.dark .chat-user-result{
  margin-top:10px
 }
 
+
+/* =====================================================
+   SAVED CHAT CONTACTS
+===================================================== */
+
+.chat-contact-item{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ background:#f3f4f6;
+ padding:13px;
+ border-radius:13px;
+ margin-top:10px;
+ cursor:pointer;
+ transition:.15s
+}
+
+.chat-contact-item:hover{
+ transform:translateY(-1px);
+ background:#e5e7eb
+}
+
+body.dark .chat-contact-item{
+ background:#374151
+}
+
+body.dark .chat-contact-item:hover{
+ background:#4b5563
+}
+
+.chat-contact-avatar{
+ width:48px;
+ height:48px;
+ min-width:48px;
+ border-radius:50%;
+ background:#2563eb;
+ color:white;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:21px;
+ font-weight:bold
+}
+
+.chat-contact-info{
+ flex:1;
+ min-width:0
+}
+
+.chat-contact-name{
+ font-weight:bold;
+ font-size:16px;
+ margin-bottom:3px
+}
+
+.chat-contact-username{
+ color:#2563eb;
+ font-size:12px;
+ font-weight:bold;
+ margin-bottom:4px
+}
+
+.chat-contact-preview{
+ color:#6b7280;
+ font-size:13px;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis
+}
+
+body.dark .chat-contact-preview{
+ color:#d1d5db
+}
+
+.chat-contact-arrow{
+ font-size:20px;
+ color:#6b7280
+}
+
+body.dark .chat-contact-arrow{
+ color:#d1d5db
+}
+
+
+/* =====================================================
+   CHAT ROOM
+===================================================== */
+
+.chat-room-top{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ padding-bottom:12px;
+ border-bottom:1px solid #d1d5db
+}
+
+body.dark .chat-room-top{
+ border-bottom-color:#4b5563
+}
+
+.chat-back-btn{
+ width:auto;
+ padding:8px 12px;
+ margin:0
+}
+
+.chat-room-user{
+ flex:1;
+ min-width:0
+}
+
+.chat-room-name{
+ margin:0;
+ font-size:18px;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis
+}
+
+.chat-room-username{
+ margin:3px 0 0 0
+}
+
 .chat-message{
  max-width:80%;
  padding:10px 13px;
@@ -770,6 +893,16 @@ footer{
 
  .qr-result-actions{
   flex-direction:column
+ }
+
+ .chat-contact-item{
+  padding:12px
+ }
+
+ .chat-contact-avatar{
+  width:44px;
+  height:44px;
+  min-width:44px
  }
 
 }
@@ -1717,7 +1850,7 @@ You have no friends yet.
 
 
 <!-- =====================================================
-     CHAT
+     CHAT LIST
 ===================================================== -->
 
 <section
@@ -1734,7 +1867,7 @@ class="card">
 </h2>
 
 <p>
-Sign in to chat privately with your QRify friends.
+Sign in to chat privately with QRify users.
 </p>
 
 
@@ -1757,11 +1890,11 @@ class="hidden">
 <div class="card">
 
 <h2>
-💬 Start a Chat
+💬 Find User
 </h2>
 
 <p class="small-text">
-Search for a QRify username.
+Search a QRify username to start or continue a chat.
 </p>
 
 
@@ -1790,19 +1923,63 @@ onclick="searchChatUser()">
 </div>
 
 
-<div
-id="chatWindow"
-class="card hidden">
+<div class="card">
+
+<h2>
+💬 My Chats
+</h2>
+
+<p class="small-text">
+Your saved chats will appear here.
+</p>
+
+
+<div id="chatContactsList">
+
+<p class="small-text empty-message">
+No chats yet. Search for a user above.
+</p>
+
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SEPARATE CHAT ROOM
+===================================================== -->
+
+<section
+id="chatRoom"
+class="page">
 
 
 <div
-style="
-padding-bottom:12px;
-border-bottom:1px solid #d1d5db">
+class="card">
+
+
+<div class="chat-room-top">
+
+
+<button
+class="secondary chat-back-btn"
+onclick="closeChatRoom()">
+
+⬅️
+
+</button>
+
+
+<div class="chat-room-user">
 
 <h3
 id="chatUserName"
-style="margin:0">
+class="chat-room-name">
 
 💬 Select a user
 
@@ -1811,9 +1988,13 @@ style="margin:0">
 
 <p
 id="chatUsername"
-class="small-text"
-style="margin:4px 0 8px">
+class="small-text chat-room-username">
 </p>
+
+</div>
+
+
+</div>
 
 
 <div class="chat-header-actions">
@@ -1836,8 +2017,6 @@ onclick="deleteCurrentChat()">
 
 </button>
 
-
-</div>
 
 </div>
 
@@ -1917,7 +2096,6 @@ onclick="sendChatMessage()">
 
 </div>
 
-</div>
 
 </div>
 
@@ -2383,6 +2561,8 @@ let unsubscribeInbox=null;
 let activeChatUser=null;
 
 let unsubscribeChat=null;
+
+let unsubscribeChatContacts=null;
 
 let unsubscribeFriendRequests=null;
 
@@ -2889,6 +3069,14 @@ unsubscribeChat=null;
 
 }
 
+if(unsubscribeChatContacts){
+
+unsubscribeChatContacts();
+
+unsubscribeChatContacts=null;
+
+}
+
 if(unsubscribeInbox){
 
 unsubscribeInbox();
@@ -2916,6 +3104,8 @@ unsubscribeFriends=null;
 selectedMessageIds.clear();
 
 updateSelectionBar();
+
+activeChatUser=null;
 
 await signOut(auth);
 
@@ -3083,6 +3273,8 @@ startFriendRequestListener();
 
 startFriendsListener();
 
+startChatContactsListener();
+
 }else{
 
 currentUser=null;
@@ -3162,6 +3354,14 @@ if(unsubscribeChat){
 unsubscribeChat();
 
 unsubscribeChat=null;
+
+}
+
+if(unsubscribeChatContacts){
+
+unsubscribeChatContacts();
+
+unsubscribeChatContacts=null;
 
 }
 
@@ -4472,19 +4672,10 @@ username,
 displayName
 ){
 
-showPage("chat");
-
-setTimeout(
-()=>{
-
 openChatWithUser(
 userId,
 username,
 displayName
-);
-
-},
-100
 );
 
 };
@@ -4863,10 +5054,6 @@ class="received-qr">
 <br>
 
 
-<!-- =================================================
-     VIEW RESULT BUTTON
-================================================== -->
-
 <button
 class="primary"
 onclick="viewReceivedResult(
@@ -4877,10 +5064,6 @@ onclick="viewReceivedResult(
 
 </button>
 
-
-<!-- =================================================
-     COPY BUTTON
-================================================== -->
 
 <button
 class="secondary"
@@ -5046,13 +5229,6 @@ return;
 const data=
 snapshot.data();
 
-
-/*
- IMPORTANT SECURITY CHECK
-
- Only the sender or receiver
- should be able to view the QR.
-*/
 
 if(
 data.receiverId!==currentUser.uid &&
@@ -5352,7 +5528,7 @@ onclick="openChatWithUser(
 '${escapeJS(data.displayName||"QRify User")}'
 )">
 
-💬 Start Chat
+💬 Open Chat
 
 </button>
 
@@ -5388,6 +5564,329 @@ error.message
 }
 
 };
+
+
+/* =====================================================
+   CHAT CONTACT SAVE
+===================================================== */
+
+async function saveChatContact(
+userId,
+username,
+displayName
+){
+
+if(
+!currentUser||
+!userId||
+userId===currentUser.uid
+)
+return;
+
+const cleanUsername=
+normalizeUsername(username);
+
+if(!cleanUsername)
+return;
+
+try{
+
+const contactRef=
+doc(
+db,
+"chat_contacts",
+currentUser.uid,
+"users",
+userId
+);
+
+const existing=
+await getDoc(contactRef);
+
+const contactData={
+
+uid:userId,
+
+username:cleanUsername,
+
+name:
+displayName||
+"QRify User",
+
+chatId:
+createChatId(
+currentUser.uid,
+userId
+),
+
+updatedAt:
+serverTimestamp()
+
+};
+
+if(!existing.exists()){
+
+contactData.savedAt=
+serverTimestamp();
+
+contactData.lastMessage="";
+
+}
+
+await setDoc(
+contactRef,
+contactData,
+{
+merge:true
+}
+);
+
+}catch(error){
+
+console.error(
+"Save chat contact error:",
+error
+);
+
+}
+
+}
+
+
+/* =====================================================
+   CHAT CONTACT LISTENER
+===================================================== */
+
+function startChatContactsListener(){
+
+if(!currentUser)
+return;
+
+if(unsubscribeChatContacts){
+
+unsubscribeChatContacts();
+
+unsubscribeChatContacts=null;
+
+}
+
+const contactsRef=
+collection(
+db,
+"chat_contacts",
+currentUser.uid,
+"users"
+);
+
+unsubscribeChatContacts=
+onSnapshot(
+contactsRef,
+snapshot=>{
+
+displayChatContacts(
+snapshot
+);
+
+},
+error=>{
+
+console.error(
+"Chat contacts listener error:",
+error
+);
+
+const container=
+document.getElementById(
+"chatContactsList"
+);
+
+if(container){
+
+container.innerHTML=`
+
+<p class="small-text">
+❌ Could not load saved chats.
+</p>
+
+`;
+
+}
+
+}
+);
+
+}
+
+
+/* =====================================================
+   DISPLAY SAVED CHAT CONTACTS
+===================================================== */
+
+function displayChatContacts(
+snapshot
+){
+
+const container=
+document.getElementById(
+"chatContactsList"
+);
+
+if(!container)
+return;
+
+container.innerHTML="";
+
+if(snapshot.empty){
+
+container.innerHTML=`
+
+<p class="small-text empty-message">
+No chats yet. Search for a user above.
+</p>
+
+`;
+
+return;
+
+}
+
+const contacts=
+snapshot.docs.map(
+contactDoc=>({
+
+id:contactDoc.id,
+
+data:contactDoc.data()
+
+})
+);
+
+
+contacts.sort(
+(a,b)=>{
+
+const aData=a.data||{};
+
+const bData=b.data||{};
+
+const aTime=
+aData.updatedAt?.toMillis?.()||
+aData.savedAt?.toMillis?.()||
+0;
+
+const bTime=
+bData.updatedAt?.toMillis?.()||
+bData.savedAt?.toMillis?.()||
+0;
+
+return bTime-aTime;
+
+}
+);
+
+
+contacts.forEach(
+contact=>{
+
+const data=
+contact.data;
+
+const uid=
+data.uid||
+contact.id;
+
+const username=
+normalizeUsername(
+data.username||""
+);
+
+const name=
+data.name||
+"QRify User";
+
+const lastMessage=
+data.lastMessage||
+"No messages yet";
+
+const avatarLetter=
+(name.charAt(0)||"Q")
+.toUpperCase();
+
+
+const item=
+document.createElement(
+"div"
+);
+
+item.className=
+"chat-contact-item";
+
+
+item.innerHTML=`
+
+<div class="chat-contact-avatar">
+
+${escapeHTML(
+avatarLetter
+)}
+
+</div>
+
+
+<div class="chat-contact-info">
+
+<div class="chat-contact-name">
+
+${escapeHTML(name)}
+
+</div>
+
+
+<div class="chat-contact-username">
+
+@${escapeHTML(username)}
+
+</div>
+
+
+<div class="chat-contact-preview">
+
+${escapeHTML(lastMessage)}
+
+</div>
+
+</div>
+
+
+<div class="chat-contact-arrow">
+
+›
+
+</div>
+
+`;
+
+
+item.addEventListener(
+"click",
+function(){
+
+openChatWithUser(
+uid,
+username,
+name
+);
+
+}
+);
+
+
+container.appendChild(item);
+
+}
+);
+
+}
 
 
 /* =====================================================
@@ -5468,7 +5967,7 @@ return chatId;
 
 
 /* =====================================================
-   OPEN CHAT
+   OPEN CHAT ROOM
 ===================================================== */
 
 window.openChatWithUser=
@@ -5488,6 +5987,19 @@ return;
 
 }
 
+if(
+!userId||
+userId===currentUser.uid
+){
+
+alert(
+"You cannot chat with yourself."
+);
+
+return;
+
+}
+
 activeChatUser={
 
 uid:userId,
@@ -5498,7 +6010,8 @@ username
 ),
 
 displayName:
-displayName
+displayName||
+"QRify User"
 
 };
 
@@ -5507,18 +6020,16 @@ selectedMessageIds.clear();
 
 updateSelectionBar();
 
+cancelReply();
 
-document.getElementById(
-"chatWindow"
-).classList.remove(
-"hidden"
-);
+closeMessageMenu();
 
 
 document.getElementById(
 "chatUserName"
 ).textContent=
-"💬 "+displayName;
+"💬 "+
+activeChatUser.displayName;
 
 
 document.getElementById(
@@ -5539,18 +6050,45 @@ Connecting to chat...
 `;
 
 
-cancelReply();
+showPage(
+"chatRoom"
+);
 
 
 try{
+
+await saveChatContact(
+activeChatUser.uid,
+activeChatUser.username,
+activeChatUser.displayName
+);
+
 
 await ensureChatRoom();
 
 startChatListener();
 
+
+setTimeout(
+()=>{
+
+const input=
+document.getElementById(
+"chatInput"
+);
+
+if(input)
+input.focus();
+
+},
+150
+);
+
 }catch(error){
 
-console.error(error);
+console.error(
+error
+);
 
 document.getElementById(
 "chatMessages"
@@ -5567,20 +6105,38 @@ alert(
 error.message
 );
 
-return;
+}
+
+};
+
+
+/* =====================================================
+   CLOSE CHAT ROOM
+===================================================== */
+
+window.closeChatRoom=
+function(){
+
+if(unsubscribeChat){
+
+unsubscribeChat();
+
+unsubscribeChat=null;
 
 }
 
+selectedMessageIds.clear();
 
-setTimeout(
-()=>{
+updateSelectionBar();
 
-document.getElementById(
-"chatInput"
-).focus();
+cancelReply();
 
-},
-100
+closeMessageMenu();
+
+activeChatUser=null;
+
+showPage(
+"chat"
 );
 
 };
@@ -6025,6 +6581,7 @@ Say hello!
 </p>
 
 `;
+
 
 }
 
@@ -6678,6 +7235,44 @@ merge:true
 );
 
 
+/* SAVE / UPDATE CHAT CONTACT */
+
+await setDoc(
+doc(
+db,
+"chat_contacts",
+currentUser.uid,
+"users",
+activeChatUser.uid
+),
+{
+
+uid:
+activeChatUser.uid,
+
+username:
+activeChatUser.username,
+
+name:
+activeChatUser.displayName||
+"QRify User",
+
+chatId:
+chatId,
+
+lastMessage:
+text,
+
+updatedAt:
+serverTimestamp()
+
+},
+{
+merge:true
+}
+);
+
+
 input.value="";
 
 cancelReply();
@@ -7004,6 +7599,27 @@ await batch.commit();
 }
 
 
+/* CLEAR CHAT PREVIEW FOR CURRENT USER */
+
+await setDoc(
+doc(
+db,
+"chat_contacts",
+currentUser.uid,
+"users",
+activeChatUser.uid
+),
+{
+lastMessage:"",
+updatedAt:
+serverTimestamp()
+},
+{
+merge:true
+}
+);
+
+
 selectedMessageIds.clear();
 
 updateSelectionBar();
@@ -7145,6 +7761,27 @@ await batch.commit();
 }
 
 
+/* KEEP SAVED USER BUT CLEAR CHAT PREVIEW */
+
+await setDoc(
+doc(
+db,
+"chat_contacts",
+currentUser.uid,
+"users",
+activeChatUser.uid
+),
+{
+lastMessage:"",
+updatedAt:
+serverTimestamp()
+},
+{
+merge:true
+}
+);
+
+
 if(unsubscribeChat){
 
 unsubscribeChat();
@@ -7162,43 +7799,16 @@ updateSelectionBar();
 
 cancelReply();
 
-
-document.getElementById(
-"chatWindow"
-).classList.add(
-"hidden"
-);
-
-
-document.getElementById(
-"chatMessages"
-).innerHTML=`
-
-<p class="small-text">
-Select a user to start chatting.
-</p>
-
-`;
-
-
-document.getElementById(
-"chatUserName"
-).textContent=
-"💬 Select a user";
-
-
-document.getElementById(
-"chatUsername"
-).textContent="";
-
-
-document.getElementById(
-"chatInput"
-).value="";
+closeMessageMenu();
 
 
 alert(
 "🗑️ Chat deleted from your view."
+);
+
+
+showPage(
+"chat"
 );
 
 
