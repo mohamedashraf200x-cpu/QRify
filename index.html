@@ -2565,6 +2565,11 @@ let unsubscribeChat=null;
 
 let unsubscribeChatContacts=null;
 
+let chatUnreadCounts={};
+let chatContactsCache=[];
+let unsubscribeUnreadChats={};
+let suppressNextChatContactClick=false;
+ 
 let unsubscribeFriendRequests=null;
 
 let unsubscribeFriends=null;
