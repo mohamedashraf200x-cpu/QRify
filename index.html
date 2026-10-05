@@ -550,6 +550,8 @@ body.dark .chat-contact-arrow{
  color:#d1d5db
 }
 
+.chat-contact-meta{display:flex;flex-direction:column;align-items:flex-end;gap:7px;min-width:28px}.chat-contact-unread{min-width:22px;height:22px;padding:0 7px;border-radius:20px;background:#16a34a;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold}.chat-contact-pin{font-size:14px}.chat-contact-action-menu{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9999;width:min(330px,90vw);background:white;border-radius:16px;padding:14px;box-shadow:0 15px 45px rgba(0,0,0,.25)}body.dark .chat-contact-action-menu{background:#1f2937;color:white}.chat-contact-action-menu h3{margin:4px 0 12px}.chat-contact-action-menu button{width:100%;margin-top:8px;padding:12px;border:0;border-radius:10px;background:#f3f4f6;cursor:pointer;text-align:left;font-size:15px}body.dark .chat-contact-action-menu button{background:#374151;color:white}
+
 
 /* =====================================================
    CHAT ROOM
@@ -3075,6 +3077,10 @@ unsubscribeChat=null;
 
 }
 
+clearUnreadChatListeners();
+chatContactsCache=[];
+chatUnreadCounts={};
+
 if(unsubscribeChatContacts){
 
 unsubscribeChatContacts();
@@ -3362,6 +3368,10 @@ unsubscribeChat();
 unsubscribeChat=null;
 
 }
+
+clearUnreadChatListeners();
+chatContactsCache=[];
+chatUnreadCounts={};
 
 if(unsubscribeChatContacts){
 
@@ -5728,172 +5738,46 @@ container.innerHTML=`
    DISPLAY SAVED CHAT CONTACTS
 ===================================================== */
 
-function displayChatContacts(
-snapshot
-){
+function displayChatContacts(snapshot){
 
-const container=
-document.getElementById(
-"chatContactsList"
-);
-
-if(!container)
-return;
-
-container.innerHTML="";
-
-if(snapshot.empty){
-
-container.innerHTML=`
-
-<p class="small-text empty-message">
-No chats yet. Search for a user above.
-</p>
-
-`;
-
-return;
-
+ chatContactsCache=snapshot.docs.map(contactDoc=>({id:contactDoc.id,data:contactDoc.data()}));
+ syncUnreadChatListeners(chatContactsCache);
+ renderChatContacts();
 }
 
-const contacts=
-snapshot.docs.map(
-contactDoc=>({
-
-id:contactDoc.id,
-
-data:contactDoc.data()
-
-})
-);
-
-
-contacts.sort(
-(a,b)=>{
-
-const aData=a.data||{};
-
-const bData=b.data||{};
-
-const aTime=
-aData.updatedAt?.toMillis?.()||
-aData.savedAt?.toMillis?.()||
-0;
-
-const bTime=
-bData.updatedAt?.toMillis?.()||
-bData.savedAt?.toMillis?.()||
-0;
-
-return bTime-aTime;
-
-}
-);
-
-
-contacts.forEach(
-contact=>{
-
-const data=
-contact.data;
-
-const uid=
-data.uid||
-contact.id;
-
-const username=
-normalizeUsername(
-data.username||""
-);
-
-const name=
-data.name||
-"QRify User";
-
-const lastMessage=
-data.lastMessage||
-"No messages yet";
-
-const avatarLetter=
-(name.charAt(0)||"Q")
-.toUpperCase();
-
-
-const item=
-document.createElement(
-"div"
-);
-
-item.className=
-"chat-contact-item";
-
-
-item.innerHTML=`
-
-<div class="chat-contact-avatar">
-
-${escapeHTML(
-avatarLetter
-)}
-
-</div>
-
-
-<div class="chat-contact-info">
-
-<div class="chat-contact-name">
-
-${escapeHTML(name)}
-
-</div>
-
-
-<div class="chat-contact-username">
-
-@${escapeHTML(username)}
-
-</div>
-
-
-<div class="chat-contact-preview">
-
-${escapeHTML(lastMessage)}
-
-</div>
-
-</div>
-
-
-<div class="chat-contact-arrow">
-
-›
-
-</div>
-
-`;
-
-
-item.addEventListener(
-"click",
-function(){
-
-openChatWithUser(
-uid,
-username,
-name
-);
-
-}
-);
-
-
-container.appendChild(item);
-
-}
-);
-
+function renderChatContacts(){
+ const container=document.getElementById("chatContactsList");
+ if(!container)return;
+ if(!chatContactsCache.length){container.innerHTML=`<p class="small-text empty-message">No chats yet. Search for a user above.</p>`;return;}
+ const contacts=[...chatContactsCache];
+ contacts.sort((a,b)=>{const ap=!!a.data?.pinned,bp=!!b.data?.pinned;if(ap!==bp)return ap?-1:1;const at=a.data?.updatedAt?.toMillis?.()||a.data?.savedAt?.toMillis?.()||0;const bt=b.data?.updatedAt?.toMillis?.()||b.data?.savedAt?.toMillis?.()||0;return bt-at;});
+ container.innerHTML="";
+ contacts.forEach(contact=>{
+  const data=contact.data||{},uid=data.uid||contact.id,username=normalizeUsername(data.username||""),name=data.name||"QRify User",lastMessage=data.lastMessage||"No messages yet",unread=Number(chatUnreadCounts[uid]||0),pinned=!!data.pinned,avatarLetter=(name.charAt(0)||"Q").toUpperCase();
+  const item=document.createElement("div"); item.className="chat-contact-item";
+  item.innerHTML=`<div class="chat-contact-avatar">${escapeHTML(avatarLetter)}</div><div class="chat-contact-info"><div class="chat-contact-name">${escapeHTML(name)}</div><div class="chat-contact-username">@${escapeHTML(username)}</div><div class="chat-contact-preview">${escapeHTML(lastMessage)}</div></div><div class="chat-contact-meta">${pinned?`<span class="chat-contact-pin">📌</span>`:""}${unread>0?`<span class="chat-contact-unread">${unread>99?"99+":unread}</span>`:""}<div class="chat-contact-arrow">›</div></div>`;
+  item.addEventListener("click",()=>{if(suppressNextChatContactClick){suppressNextChatContactClick=false;return;}openChatWithUser(uid,username,name);});
+  let timer=null; item.addEventListener("touchstart",()=>{timer=setTimeout(()=>{suppressNextChatContactClick=true;showChatContactMenu(uid,username,name,pinned);},600);},{passive:true}); item.addEventListener("touchmove",()=>clearTimeout(timer),{passive:true}); item.addEventListener("touchend",()=>clearTimeout(timer),{passive:true}); item.addEventListener("touchcancel",()=>clearTimeout(timer),{passive:true}); item.addEventListener("contextmenu",e=>{e.preventDefault();showChatContactMenu(uid,username,name,pinned);});
+  container.appendChild(item);
+ });
 }
 
+function clearUnreadChatListeners(){Object.values(unsubscribeUnreadChats).forEach(unsub=>{try{unsub();}catch(e){}});unsubscribeUnreadChats={};chatUnreadCounts={};}
+
+function syncUnreadChatListeners(contacts){
+ if(!currentUser)return; const wanted={};
+ contacts.forEach(contact=>{const data=contact.data||{},uid=data.uid||contact.id,chatId=data.chatId||createChatId(currentUser.uid,uid);if(uid&&uid!==currentUser.uid)wanted[uid]=chatId;});
+ Object.keys(unsubscribeUnreadChats).forEach(uid=>{if(!wanted[uid]){try{unsubscribeUnreadChats[uid]();}catch(e){} delete unsubscribeUnreadChats[uid];delete chatUnreadCounts[uid];}});
+ Object.entries(wanted).forEach(([uid,chatId])=>{if(unsubscribeUnreadChats[uid])return;unsubscribeUnreadChats[uid]=onSnapshot(doc(db,"chats",chatId),snap=>{const data=snap.exists()?snap.data():{};chatUnreadCounts[uid]=Number(data.unreadCounts?.[currentUser.uid]||0);renderChatContacts();},()=>{chatUnreadCounts[uid]=0;renderChatContacts();});});
+}
+
+async function markChatAsRead(userId){if(!currentUser||!userId)return;try{await updateDoc(doc(db,"chats",createChatId(currentUser.uid,userId)),{[`unreadCounts.${currentUser.uid}`]:0});chatUnreadCounts[userId]=0;renderChatContacts();}catch(e){console.error("Mark chat read error:",e);}}
+
+window.togglePinChat=async function(userId,currentPinned){if(!currentUser||!userId)return;try{await setDoc(doc(db,"chat_contacts",currentUser.uid,"users",userId),{pinned:!currentPinned},{merge:true});}catch(e){console.error(e);alert("Could not update pin.");}};
+
+window.deleteChatContact=async function(userId){if(!currentUser||!userId)return;if(!confirm("Delete this User ID from your chat list?\n\nChat messages will remain saved."))return;try{await deleteDoc(doc(db,"chat_contacts",currentUser.uid,"users",userId));if(unsubscribeUnreadChats[userId]){try{unsubscribeUnreadChats[userId]();}catch(e){}delete unsubscribeUnreadChats[userId];}delete chatUnreadCounts[userId];}catch(e){console.error(e);alert("Could not delete User ID.");}};
+
+window.showChatContactMenu=function(userId,username,name,pinned){const old=document.getElementById("chatContactActionMenu");if(old)old.remove();const menu=document.createElement("div");menu.id="chatContactActionMenu";menu.className="chat-contact-action-menu";const title=document.createElement("h3");title.textContent=name+"  @"+username;menu.appendChild(title);const pinBtn=document.createElement("button");pinBtn.textContent=pinned?"📌 Unpin Chat":"📌 Pin Chat";pinBtn.onclick=async()=>{menu.remove();await togglePinChat(userId,pinned);};menu.appendChild(pinBtn);const del=document.createElement("button");del.textContent="🗑️ Delete User ID";del.onclick=async()=>{menu.remove();await deleteChatContact(userId);};menu.appendChild(del);const cancel=document.createElement("button");cancel.textContent="Cancel";cancel.onclick=()=>menu.remove();menu.appendChild(cancel);document.body.appendChild(menu);};
 
 /* =====================================================
    CHAT ID
@@ -5939,33 +5823,12 @@ db,
 chatId
 );
 
-await setDoc(
-chatRef,
-{
-members:[
-currentUser.uid,
-activeChatUser.uid
-],
-
-memberUsernames:[
-currentUsername,
-activeChatUser.username
-],
-
-memberNames:[
-currentUser.displayName||
-"QRify User",
-activeChatUser.displayName||
-"QRify User"
-],
-
-updatedAt:
-serverTimestamp()
-},
-{
-merge:true
+const existing=await getDoc(chatRef);
+if(!existing.exists()){
+ await setDoc(chatRef,{members:[currentUser.uid,activeChatUser.uid],memberUsernames:[currentUsername,activeChatUser.username],memberNames:[currentUser.displayName||"QRify User",activeChatUser.displayName||"QRify User"],updatedAt:serverTimestamp(),lastMessage:"",unreadCounts:{[currentUser.uid]:0,[activeChatUser.uid]:0}});
+}else{
+ await setDoc(chatRef,{members:[currentUser.uid,activeChatUser.uid],memberUsernames:[currentUsername,activeChatUser.username],memberNames:[currentUser.displayName||"QRify User",activeChatUser.displayName||"QRify User"]},{merge:true});
 }
-);
 
 return chatId;
 
@@ -6071,6 +5934,8 @@ activeChatUser.displayName
 
 
 await ensureChatRoom();
+
+await markChatAsRead(activeChatUser.uid);
 
 startChatListener();
 
@@ -7188,95 +7053,19 @@ input.dataset.replyToText||
 }
 
 
-await addDoc(
-collection(
-chatRef,
-"messages"
-),
-{
+const messageRef=doc(collection(chatRef,"messages"));
 
-senderId:
-currentUser.uid,
+await runTransaction(db,async transaction=>{
+ const chatSnapshot=await transaction.get(chatRef);
+ const chatData=chatSnapshot.exists()?chatSnapshot.data():{};
+ const unreadCounts={...(chatData.unreadCounts||{})};
+ unreadCounts[currentUser.uid]=0;
+ unreadCounts[activeChatUser.uid]=(Number(unreadCounts[activeChatUser.uid])||0)+1;
+ transaction.set(messageRef,{senderId:currentUser.uid,receiverId:activeChatUser.uid,senderUsername:currentUsername,receiverUsername:activeChatUser.username,text:text,replyTo:replyTo,deletedFor:[],unsent:false,createdAt:serverTimestamp()});
+ transaction.set(chatRef,{members:[currentUser.uid,activeChatUser.uid],updatedAt:serverTimestamp(),lastMessage:text,unreadCounts:unreadCounts},{merge:true});
+});
 
-receiverId:
-activeChatUser.uid,
-
-senderUsername:
-currentUsername,
-
-receiverUsername:
-activeChatUser.username,
-
-text:
-text,
-
-replyTo:
-replyTo,
-
-deletedFor:[],
-
-unsent:false,
-
-createdAt:
-serverTimestamp()
-
-}
-);
-
-
-await setDoc(
-chatRef,
-{
-
-updatedAt:
-serverTimestamp(),
-
-lastMessage:
-text
-
-},
-{
-merge:true
-}
-);
-
-
-/* SAVE / UPDATE CHAT CONTACT */
-
-await setDoc(
-doc(
-db,
-"chat_contacts",
-currentUser.uid,
-"users",
-activeChatUser.uid
-),
-{
-
-uid:
-activeChatUser.uid,
-
-username:
-activeChatUser.username,
-
-name:
-activeChatUser.displayName||
-"QRify User",
-
-chatId:
-chatId,
-
-lastMessage:
-text,
-
-updatedAt:
-serverTimestamp()
-
-},
-{
-merge:true
-}
-);
+await setDoc(doc(db,"chat_contacts",currentUser.uid,"users",activeChatUser.uid),{uid:activeChatUser.uid,username:activeChatUser.username,name:activeChatUser.displayName||"QRify User",chatId:chatId,lastMessage:text,updatedAt:serverTimestamp()},{merge:true});
 
 
 input.value="";
