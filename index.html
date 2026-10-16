@@ -943,6 +943,8 @@ body.dark .app-lock-panel{background:#1f2937;color:#f9fafb}
 
 
 /* QRify themes and custom app colours */
+#qrifyThemeSettingsCard{display:block!important;visibility:visible!important;margin:16px 0;padding:18px;border:2px solid var(--qrify-accent,#2563eb);border-radius:14px}
+#qrifyThemeSettingsCard label{display:block;margin:8px 0 4px}
 :root{--qrify-accent:#2563eb;--qrify-app-bg:#f3f4f6;--qrify-header-bg:#111827}
 body{background:var(--qrify-app-bg)}
 header{background:var(--qrify-header-bg)}
@@ -2290,12 +2292,35 @@ id="settings"
 class="page">
 
 
+<div class="card" id="qrifyThemeSettingsCard">
+  <h2>🎨 Themes & App Colours</h2>
+  <p><strong>Personalize QRify here</strong> — choose a preset or pick your own colours.</p>
+  <p class="small-text">Choose a ready-made theme or customize QRify's accent and page background colours. Your choice is saved on this browser.</p>
+  <label for="qrifyThemePreset">Theme preset</label>
+  <select id="qrifyThemePreset" style="width:100%;margin:8px 0 12px;padding:12px;border-radius:10px" onchange="applyQRifyThemePreset(this.value)">
+    <option value="ocean">Ocean Blue</option>
+    <option value="forest">Forest Green</option>
+    <option value="sunset">Sunset Orange</option>
+    <option value="lavender">Lavender</option>
+    <option value="rose">Rose Pink</option>
+    <option value="midnight">Midnight</option>
+    <option value="custom">Custom Colours</option>
+  </select>
+  <div class="theme-colour-grid">
+    <div><label for="qrifyAccentColour">Accent colour</label><input type="color" id="qrifyAccentColour" value="#2563eb" onchange="applyQRifyCustomColours()"></div>
+    <div><label for="qrifyBackgroundColour">Page background</label><input type="color" id="qrifyBackgroundColour" value="#f3f4f6" onchange="applyQRifyCustomColours()"></div>
+  </div>
+  <p id="qrifyThemeStatus" class="small-text" aria-live="polite">Ocean Blue theme selected.</p>
+  <button class="secondary" type="button" onclick="resetQRifyTheme()">↩️ Reset Theme</button>
+</div>
+
 <div class="card">
 
 <h2>
 ⚙️ Settings
 </h2>
 
+<button class="primary" type="button" onclick="document.getElementById('qrifyThemeSettingsCard')?.scrollIntoView({behavior:'smooth',block:'start'})">🎨 Open Themes & App Colours</button>
 
 <button
 class="secondary"
@@ -2339,26 +2364,7 @@ onclick="togglePushNotifications()">
 
 </div>
 
-<div class="card" id="qrifyThemeSettingsCard">
-  <h2>🎨 Themes & App Colours</h2>
-  <p class="small-text">Choose a ready-made theme or customize QRify's accent and page background colours. Your choice is saved on this browser.</p>
-  <label for="qrifyThemePreset">Theme preset</label>
-  <select id="qrifyThemePreset" style="width:100%;margin:8px 0 12px;padding:12px;border-radius:10px" onchange="applyQRifyThemePreset(this.value)">
-    <option value="ocean">Ocean Blue</option>
-    <option value="forest">Forest Green</option>
-    <option value="sunset">Sunset Orange</option>
-    <option value="lavender">Lavender</option>
-    <option value="rose">Rose Pink</option>
-    <option value="midnight">Midnight</option>
-    <option value="custom">Custom Colours</option>
-  </select>
-  <div class="theme-colour-grid">
-    <div><label for="qrifyAccentColour">Accent colour</label><input type="color" id="qrifyAccentColour" value="#2563eb" onchange="applyQRifyCustomColours()"></div>
-    <div><label for="qrifyBackgroundColour">Page background</label><input type="color" id="qrifyBackgroundColour" value="#f3f4f6" onchange="applyQRifyCustomColours()"></div>
-  </div>
-  <p id="qrifyThemeStatus" class="small-text" aria-live="polite">Ocean Blue theme selected.</p>
-  <button class="secondary" type="button" onclick="resetQRifyTheme()">↩️ Reset Theme</button>
-</div>
+
 
 <div class="card" id="appLockSettingsCard">
 
