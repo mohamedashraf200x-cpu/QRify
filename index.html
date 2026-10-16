@@ -909,6 +909,19 @@ footer{
 
 }
 
+
+/* Home shortcuts: pin/unpin controls */
+.menu-pin-control{
+ display:inline-flex;align-items:center;justify-content:center;float:right;
+ margin:-5px -5px -5px 8px;padding:6px 8px;width:auto;border-radius:8px;
+ background:#e5e7eb;color:#111827;font-size:14px;cursor:pointer;
+}
+body.dark .menu-pin-control{background:#374151;color:white}
+.menu-pin-control.is-pinned{background:#dbeafe;color:#1d4ed8}
+body.dark .menu-pin-control.is-pinned{background:#1e3a8a;color:white}
+.home-pinned-empty{grid-column:1/-1;padding:18px;border-radius:12px;text-align:center;background:#f3f4f6}
+body.dark .home-pinned-empty{background:#374151}
+
 </style>
 
 </head>
@@ -1068,124 +1081,7 @@ What do you want to do?
 </h2>
 
 
-<div class="feature-grid">
-
-
-<div
-class="feature"
-onclick="showPage('generate')">
-
-<span class="feature-icon">
-⚡
-</span>
-
-<strong>
-Generate QR
-</strong>
-
-<p class="small-text">
-Create your own QR code
-</p>
-
-</div>
-
-
-<div
-class="feature"
-onclick="showPage('scan')">
-
-<span class="feature-icon">
-📷
-</span>
-
-<strong>
-Scan QR
-</strong>
-
-<p class="small-text">
-Scan camera or image
-</p>
-
-</div>
-
-
-<div
-class="feature"
-onclick="showPage('send')">
-
-<span class="feature-icon">
-📤
-</span>
-
-<strong>
-Send QR
-</strong>
-
-<p class="small-text">
-Send to QRify users
-</p>
-
-</div>
-
-
-<div
-class="feature"
-onclick="showPage('friends')">
-
-<span class="feature-icon">
-👥
-</span>
-
-<strong>
-Friends
-</strong>
-
-<p class="small-text">
-Add and manage friends
-</p>
-
-</div>
-
-
-<div
-class="feature"
-onclick="showPage('chat')">
-
-<span class="feature-icon">
-💬
-</span>
-
-<strong>
-Chat
-</strong>
-
-<p class="small-text">
-Chat with QRify users
-</p>
-
-</div>
-
-
-<div
-class="feature"
-onclick="showPage('received')">
-
-<span class="feature-icon">
-📥
-</span>
-
-<strong>
-Received
-</strong>
-
-<p class="small-text">
-View received QR codes
-</p>
-
-</div>
-
-
-</div>
+<div class="feature-grid" id="homePinnedFeatures"></div>
 
 </div>
 
@@ -7941,6 +7837,126 @@ document.getElementById(
 );
 
 }
+
+
+/* =====================================================
+   HOME MENU PIN / UNPIN
+===================================================== */
+
+const HOME_PIN_STORAGE_KEY = "qrifyHomePinnedMenuItems";
+const HOME_MENU_ITEMS = [
+ {id:"generate", label:"Generate QR", icon:"⚡", description:"Create your own QR code"},
+ {id:"scan", label:"Scan QR", icon:"📷", description:"Scan camera or image"},
+ {id:"send", label:"Send QR", icon:"📤", description:"Send to QRify users"},
+ {id:"friends", label:"Friends", icon:"👥", description:"Add and manage friends"},
+ {id:"chat", label:"Chat", icon:"💬", description:"Chat with QRify users"},
+ {id:"received", label:"Received", icon:"📥", description:"View received QR codes"},
+ {id:"history", label:"History", icon:"🕘", description:"View recent QR history"},
+ {id:"profile", label:"Profile", icon:"👤", description:"Manage your QRify account"},
+ {id:"settings", label:"Settings", icon:"⚙️", description:"Customize QRify"}
+];
+
+function getPinnedHomeItems(){
+ try{
+  const saved=localStorage.getItem(HOME_PIN_STORAGE_KEY);
+  if(saved===null)return ["generate","scan","send","friends","chat","received"];
+  const parsed=JSON.parse(saved);
+  return Array.isArray(parsed)?parsed.filter(id=>HOME_MENU_ITEMS.some(item=>item.id===id)):[];
+ }catch(error){
+  console.error("Could not read pinned home items:",error);
+  return ["generate","scan","send","friends","chat","received"];
+ }
+}
+
+function savePinnedHomeItems(items){
+ localStorage.setItem(HOME_PIN_STORAGE_KEY,JSON.stringify(items));
+}
+
+function renderPinnedHomeItems(){
+ const container=document.getElementById("homePinnedFeatures");
+ if(!container)return;
+ const pinned=getPinnedHomeItems();
+ const items=HOME_MENU_ITEMS.filter(item=>pinned.includes(item.id));
+ if(!items.length){
+  container.innerHTML='<div class="home-pinned-empty small-text">No shortcuts pinned yet. Open ☰ Menu and tap 📌 beside an option to pin it here.</div>';
+  return;
+ }
+ container.innerHTML="";
+ items.forEach(item=>{
+  const card=document.createElement("div");
+  card.className="feature";
+  card.tabIndex=0;
+  card.setAttribute("role","button");
+  const icon=document.createElement("span");
+  icon.className="feature-icon";
+  icon.textContent=item.icon;
+  const title=document.createElement("strong");
+  title.textContent=item.label;
+  const description=document.createElement("p");
+  description.className="small-text";
+  description.textContent=item.description;
+  card.append(icon,title,description);
+  card.addEventListener("click",()=>showPage(item.id));
+  card.addEventListener("keydown",event=>{
+   if(event.key==="Enter"||event.key===" "){
+    event.preventDefault();
+    showPage(item.id);
+   }
+  });
+  container.appendChild(card);
+ });
+}
+
+function updateMenuPinButtons(){
+ const pinned=getPinnedHomeItems();
+ document.querySelectorAll(".side-menu .menu-item[data-page-id]").forEach(button=>{
+  let control=button.querySelector(".menu-pin-control");
+  if(!control){
+   control=document.createElement("span");
+   control.className="menu-pin-control";
+   control.setAttribute("role","button");
+   control.setAttribute("tabindex","0");
+   control.addEventListener("click",event=>{
+    event.preventDefault();
+    event.stopPropagation();
+    toggleHomePin(button.dataset.pageId);
+   });
+   control.addEventListener("keydown",event=>{
+    if(event.key==="Enter"||event.key===" "){
+     event.preventDefault();
+     event.stopPropagation();
+     toggleHomePin(button.dataset.pageId);
+    }
+   });
+   button.appendChild(control);
+  }
+  const isPinned=pinned.includes(button.dataset.pageId);
+  control.textContent=isPinned?"📌":"＋";
+  control.classList.toggle("is-pinned",isPinned);
+  control.setAttribute("aria-label",isPinned?"Unpin from Home":"Pin to Home");
+  control.title=isPinned?"Unpin from Home":"Pin to Home";
+ });
+}
+
+function toggleHomePin(pageId){
+ if(!HOME_MENU_ITEMS.some(item=>item.id===pageId))return;
+ let pinned=getPinnedHomeItems();
+ pinned=pinned.includes(pageId)?pinned.filter(id=>id!==pageId):[...pinned,pageId];
+ savePinnedHomeItems(pinned);
+ renderPinnedHomeItems();
+ updateMenuPinButtons();
+}
+
+function initializeHomePins(){
+ document.querySelectorAll(".side-menu .menu-item").forEach(button=>{
+  const match=button.getAttribute("onclick")?.match(/showPage\(['"]([^'"]+)['"]\)/);
+  if(match&&match[1]!=="home")button.dataset.pageId=match[1];
+ });
+ renderPinnedHomeItems();
+ updateMenuPinButtons();
+}
+
+initializeHomePins();
 
 
 /* =====================================================
