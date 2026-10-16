@@ -2338,6 +2338,7 @@ onclick="togglePushNotifications()">
   <option value="pattern">Pattern Lock</option>
   <option value="password">Alphabet / Number Password</option>
 </select>
+<p class="small-text">To switch lock type, choose an option above and tap “Change / Set Up App Lock”. The unlock screen shows only the currently active lock type.</p>
 <button id="enableAppLockBtn" class="primary" onclick="enableQRifyAppLock()">🔐 Set Up App Lock</button>
 <button id="disableAppLockBtn" class="danger hidden" onclick="disableQRifyAppLock()">🔓 Disable App Lock</button>
 <button id="lockNowBtn" class="secondary hidden" onclick="lockQRifyNow()">🔒 Lock Now</button>
@@ -9059,10 +9060,15 @@ function updateQRifyAppLockSettingsUI(){
   const selector = document.getElementById("appLockTypeSelect");
   const labels = {pin:"4-digit PIN", pattern:"Pattern Lock", password:"Alphabet / Number Password"};
   if(status) status.textContent = enabled ? "🔐 App Lock is ON — " + (labels[getQRifyLockMode()] || labels.pin) : "App Lock is OFF.";
-  if(enable) enable.classList.toggle("hidden", enabled);
+  // Keep lock type selectable even when a lock is already enabled, so users can
+  // switch from PIN to Pattern or Password without getting stuck on the PIN option.
+  if(enable){
+    enable.classList.remove("hidden");
+    enable.textContent = enabled ? "🔁 Change / Set Up App Lock" : "🔐 Set Up App Lock";
+  }
   if(disable) disable.classList.toggle("hidden", !enabled);
   if(lockNow) lockNow.classList.toggle("hidden", !enabled);
-  if(selector){ selector.disabled = enabled; selector.value = getQRifyLockMode(); }
+  if(selector){ selector.disabled = false; selector.value = getQRifyLockMode(); }
 }
 function makeQRifyPatternGrid(gridId, mode){
   const grid = document.getElementById(gridId); if(!grid) return;
@@ -9151,7 +9157,7 @@ async function enableQRifyAppLock(){
     // Keep the legacy key populated so existing versions can detect the lock.
     localStorage.setItem(QRIFY_APP_LOCK_HASH_KEY,hash);
     updateQRifyAppLockSettingsUI();
-    alert("App Lock enabled. QRify will ask for your " + (mode==="password"?"password":"PIN") + " when opened again.");
+    alert("App Lock enabled. QRify will ask for your " + (mode==="password"?"password":mode==="pattern"?"pattern":"4-digit PIN") + " when opened again.");
   }catch(error){ console.error("Could not enable QRify App Lock:",error); alert("Could not enable App Lock in this browser."); }
 }
 async function disableQRifyAppLock(){
