@@ -922,6 +922,19 @@ body.dark .menu-pin-control.is-pinned{background:#1e3a8a;color:white}
 .home-pinned-empty{grid-column:1/-1;padding:18px;border-radius:12px;text-align:center;background:#f3f4f6}
 body.dark .home-pinned-empty{background:#374151}
 
+
+
+/* QRify App Lock */
+.app-lock-overlay{position:fixed;inset:0;z-index:20000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(15,23,42,.96);backdrop-filter:blur(8px)}
+.app-lock-overlay.show{display:flex}
+.app-lock-panel{width:min(390px,100%);background:#fff;color:#111827;border-radius:20px;padding:26px;box-shadow:0 20px 70px rgba(0,0,0,.4);text-align:center}
+.app-lock-panel .lock-icon{font-size:44px;margin-bottom:8px}
+.app-lock-panel h2{margin:8px 0}
+.app-lock-panel p{line-height:1.5}
+.app-lock-panel input{letter-spacing:8px;text-align:center;font-size:24px;font-weight:bold;max-width:230px;margin:10px auto}
+.app-lock-error{min-height:20px;color:#dc2626;font-size:13px}
+body.dark .app-lock-panel{background:#1f2937;color:#f9fafb}
+
 </style>
 
 </head>
@@ -2308,6 +2321,19 @@ onclick="togglePushNotifications()">
 </div>
 
 
+<div class="card" id="appLockSettingsCard">
+
+<h2>🔐 App Lock</h2>
+<p class="small-text">Protect QRify on this browser with a 4-digit PIN. The PIN is stored as a hash on this device.</p>
+<p id="appLockStatus" class="status">App Lock is OFF.</p>
+<button id="enableAppLockBtn" class="primary" onclick="enableQRifyAppLock()">🔐 Enable App Lock</button>
+<button id="disableAppLockBtn" class="danger hidden" onclick="disableQRifyAppLock()">🔓 Disable App Lock</button>
+<button id="lockNowBtn" class="secondary hidden" onclick="lockQRifyNow()">🔒 Lock Now</button>
+<p class="small-text">Note: This is an in-app privacy lock, not device-level encryption. Anyone with access to browser developer tools or site storage may be able to bypass it.</p>
+
+</div>
+
+
 <div class="card">
 
 <h2>
@@ -2348,6 +2374,19 @@ By Ashraf
 
 </footer>
 
+<div id="qrifyAppLockOverlay" class="app-lock-overlay" role="dialog" aria-modal="true" aria-labelledby="appLockHeading">
+  <div class="app-lock-panel">
+    <div class="lock-icon">🔐</div>
+    <h2 id="appLockHeading">QRify is Locked</h2>
+    <p>Enter your 4-digit PIN to continue.</p>
+    <form id="appLockUnlockForm">
+      <label for="appLockPinInput">4-digit PIN</label>
+      <input id="appLockPinInput" type="password" inputmode="numeric" autocomplete="current-password" maxlength="4" pattern="[0-9]{4}" aria-label="4-digit PIN" required>
+      <p id="appLockError" class="app-lock-error" aria-live="polite"></p>
+      <button type="submit" class="primary">Unlock QRify</button>
+    </form>
+  </div>
+</div>
 
 <script type="module">
 
@@ -8953,6 +8992,129 @@ error
 }
 );
 
+}
+
+
+/* =====================================================
+   QRIFY APP LOCK (4-digit PIN)
+   ===================================================== */
+const QRIFY_APP_LOCK_HASH_KEY = "qrifyAppLockPinHash";
+const QRIFY_APP_LOCK_ENABLED_KEY = "qrifyAppLockEnabled";
+
+async function hashQRifyPin(pin){
+  const bytes = new TextEncoder().encode(String(pin));
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+function updateQRifyAppLockSettingsUI(){
+  const enabled = localStorage.getItem(QRIFY_APP_LOCK_ENABLED_KEY) === "true" && !!localStorage.getItem(QRIFY_APP_LOCK_HASH_KEY);
+  const status = document.getElementById("appLockStatus");
+  const enable = document.getElementById("enableAppLockBtn");
+  const disable = document.getElementById("disableAppLockBtn");
+  const lockNow = document.getElementById("lockNowBtn");
+  if(status) status.textContent = enabled ? "🔐 App Lock is ON." : "App Lock is OFF.";
+  if(enable) enable.classList.toggle("hidden", enabled);
+  if(disable) disable.classList.toggle("hidden", !enabled);
+  if(lockNow) lockNow.classList.toggle("hidden", !enabled);
+}
+
+async function enableQRifyAppLock(){
+  if(!window.crypto || !crypto.subtle){
+    alert("App Lock needs a secure browser connection (HTTPS). Please open QRify using its GitHub Pages HTTPS website.");
+    return;
+  }
+  const pin = prompt("Create a 4-digit PIN for QRify:");
+  if(pin === null) return;
+  if(!/^\d{4}$/.test(pin)){
+    alert("Please enter exactly 4 digits.");
+    return;
+  }
+  const confirmPin = prompt("Enter the same 4-digit PIN again to confirm:");
+  if(confirmPin === null) return;
+  if(pin !== confirmPin){
+    alert("PINs do not match. App Lock was not enabled.");
+    return;
+  }
+  try{
+    const hash = await hashQRifyPin(pin);
+    localStorage.setItem(QRIFY_APP_LOCK_HASH_KEY, hash);
+    localStorage.setItem(QRIFY_APP_LOCK_ENABLED_KEY, "true");
+    updateQRifyAppLockSettingsUI();
+    alert("App Lock enabled. QRify will ask for your PIN when it is opened again.");
+  }catch(error){
+    console.error("Could not enable QRify App Lock:", error);
+    alert("Could not enable App Lock in this browser.");
+  }
+}
+
+async function disableQRifyAppLock(){
+  const pin = prompt("Enter your current 4-digit PIN to disable App Lock:");
+  if(pin === null) return;
+  try{
+    const savedHash = localStorage.getItem(QRIFY_APP_LOCK_HASH_KEY);
+    if(!savedHash || await hashQRifyPin(pin) !== savedHash){
+      alert("Incorrect PIN. App Lock is still enabled.");
+      return;
+    }
+    localStorage.removeItem(QRIFY_APP_LOCK_HASH_KEY);
+    localStorage.removeItem(QRIFY_APP_LOCK_ENABLED_KEY);
+    updateQRifyAppLockSettingsUI();
+    alert("App Lock disabled.");
+  }catch(error){
+    console.error("Could not disable QRify App Lock:", error);
+    alert("Could not disable App Lock.");
+  }
+}
+
+function lockQRifyNow(){
+  const overlay = document.getElementById("qrifyAppLockOverlay");
+  const input = document.getElementById("appLockPinInput");
+  const error = document.getElementById("appLockError");
+  if(!overlay || localStorage.getItem(QRIFY_APP_LOCK_ENABLED_KEY) !== "true") return;
+  if(input) input.value = "";
+  if(error) error.textContent = "";
+  overlay.classList.add("show");
+  document.body.style.overflow = "hidden";
+  if(input) input.focus();
+}
+
+async function handleQRifyUnlock(event){
+  event.preventDefault();
+  const input = document.getElementById("appLockPinInput");
+  const error = document.getElementById("appLockError");
+  const overlay = document.getElementById("qrifyAppLockOverlay");
+  const pin = input ? input.value : "";
+  if(!/^\d{4}$/.test(pin)){
+    if(error) error.textContent = "Enter all 4 digits.";
+    return;
+  }
+  try{
+    const savedHash = localStorage.getItem(QRIFY_APP_LOCK_HASH_KEY);
+    const enteredHash = await hashQRifyPin(pin);
+    if(savedHash && enteredHash === savedHash){
+      if(overlay) overlay.classList.remove("show");
+      document.body.style.overflow = "";
+      if(input) input.value = "";
+      if(error) error.textContent = "";
+    }else{
+      if(error) error.textContent = "Incorrect PIN. Try again.";
+      if(input){ input.value = ""; input.focus(); }
+    }
+  }catch(err){
+    console.error("QRify unlock error:", err);
+    if(error) error.textContent = "Could not verify PIN in this browser.";
+  }
+}
+
+window.enableQRifyAppLock = enableQRifyAppLock;
+window.disableQRifyAppLock = disableQRifyAppLock;
+window.lockQRifyNow = lockQRifyNow;
+const qrifyUnlockForm = document.getElementById("appLockUnlockForm");
+if(qrifyUnlockForm) qrifyUnlockForm.addEventListener("submit", handleQRifyUnlock);
+updateQRifyAppLockSettingsUI();
+if(localStorage.getItem(QRIFY_APP_LOCK_ENABLED_KEY) === "true" && localStorage.getItem(QRIFY_APP_LOCK_HASH_KEY)){
+  lockQRifyNow();
 }
 
 </script>
