@@ -941,6 +941,19 @@ body.dark .qrify-pattern-dot{background:#374151;color:#fff;border-color:#9ca3af}
 body.dark .qrify-pattern-dot.selected{background:#2563eb;border-color:#60a5fa}
 body.dark .app-lock-panel{background:#1f2937;color:#f9fafb}
 
+
+/* QRify themes and custom app colours */
+:root{--qrify-accent:#2563eb;--qrify-app-bg:#f3f4f6;--qrify-header-bg:#111827}
+body{background:var(--qrify-app-bg)}
+header{background:var(--qrify-header-bg)}
+.primary,.menu-btn{background:var(--qrify-accent)}
+.qrify-pattern-dot.selected{background:var(--qrify-accent);border-color:var(--qrify-accent)}
+.theme-colour-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.theme-colour-grid input[type=color]{height:48px;padding:4px;cursor:pointer}
+body.dark{background:var(--qrify-app-bg,#111827)}
+body.dark .qrify-pattern-dot.selected{background:var(--qrify-accent);border-color:var(--qrify-accent)}
+@media(max-width:420px){.theme-colour-grid{grid-template-columns:1fr}}
+
 </style>
 
 </head>
@@ -2326,6 +2339,26 @@ onclick="togglePushNotifications()">
 
 </div>
 
+<div class="card" id="qrifyThemeSettingsCard">
+  <h2>🎨 Themes & App Colours</h2>
+  <p class="small-text">Choose a ready-made theme or customize QRify's accent and page background colours. Your choice is saved on this browser.</p>
+  <label for="qrifyThemePreset">Theme preset</label>
+  <select id="qrifyThemePreset" style="width:100%;margin:8px 0 12px;padding:12px;border-radius:10px" onchange="applyQRifyThemePreset(this.value)">
+    <option value="ocean">Ocean Blue</option>
+    <option value="forest">Forest Green</option>
+    <option value="sunset">Sunset Orange</option>
+    <option value="lavender">Lavender</option>
+    <option value="rose">Rose Pink</option>
+    <option value="midnight">Midnight</option>
+    <option value="custom">Custom Colours</option>
+  </select>
+  <div class="theme-colour-grid">
+    <div><label for="qrifyAccentColour">Accent colour</label><input type="color" id="qrifyAccentColour" value="#2563eb" onchange="applyQRifyCustomColours()"></div>
+    <div><label for="qrifyBackgroundColour">Page background</label><input type="color" id="qrifyBackgroundColour" value="#f3f4f6" onchange="applyQRifyCustomColours()"></div>
+  </div>
+  <p id="qrifyThemeStatus" class="small-text" aria-live="polite">Ocean Blue theme selected.</p>
+  <button class="secondary" type="button" onclick="resetQRifyTheme()">↩️ Reset Theme</button>
+</div>
 
 <div class="card" id="appLockSettingsCard">
 
@@ -8681,19 +8714,18 @@ alert(
 ===================================================== */
 
 function toggleDarkMode(){
-
-document.body.classList.toggle(
-"dark"
-);
-
-
-localStorage.setItem(
-"qrifyDarkMode",
-document.body.classList.contains(
-"dark"
-)
-);
-
+  document.body.classList.toggle("dark");
+  const isDark = document.body.classList.contains("dark");
+  localStorage.setItem("qrifyDarkMode", isDark);
+  // Keep the current theme settings in sync so the selected appearance survives reloads.
+  try {
+    const raw = localStorage.getItem("qrifyThemeSettings");
+    if (raw) {
+      const saved = JSON.parse(raw);
+      saved.darkMode = isDark;
+      localStorage.setItem("qrifyThemeSettings", JSON.stringify(saved));
+    }
+  } catch (e) { console.warn("Could not save theme appearance.", e); }
 }
 
 
@@ -8709,6 +8741,79 @@ document.body.classList.add(
 
 }
 
+
+
+/* =====================================================
+   QRIFY THEMES & CUSTOM APP COLOURS
+===================================================== */
+const QRIFY_THEMES = {
+  ocean:    { accent: '#2563eb', background: '#f3f4f6', header: '#111827', label: 'Ocean Blue' },
+  forest:   { accent: '#15803d', background: '#f0fdf4', header: '#14532d', label: 'Forest Green' },
+  sunset:   { accent: '#ea580c', background: '#fff7ed', header: '#7c2d12', label: 'Sunset Orange' },
+  lavender: { accent: '#7c3aed', background: '#f5f3ff', header: '#2e1065', label: 'Lavender' },
+  rose:     { accent: '#e11d48', background: '#fff1f2', header: '#881337', label: 'Rose Pink' },
+  midnight: { accent: '#38bdf8', background: '#0f172a', header: '#020617', label: 'Midnight', dark: true }
+};
+
+function setQRifyThemeColours(accent, background, header, label, darkMode) {
+  if (!/^#[0-9a-f]{6}$/i.test(accent) || !/^#[0-9a-f]{6}$/i.test(background) || !/^#[0-9a-f]{6}$/i.test(header)) return;
+  document.documentElement.style.setProperty('--qrify-accent', accent);
+  document.documentElement.style.setProperty('--qrify-app-bg', background);
+  document.documentElement.style.setProperty('--qrify-header-bg', header);
+  document.body.classList.toggle('dark', !!darkMode);
+  localStorage.setItem('qrifyThemeSettings', JSON.stringify({ accent, background, header, label, darkMode: !!darkMode }));
+  const accentInput = document.getElementById('qrifyAccentColour');
+  const bgInput = document.getElementById('qrifyBackgroundColour');
+  const status = document.getElementById('qrifyThemeStatus');
+  if (accentInput) accentInput.value = accent;
+  if (bgInput) bgInput.value = background;
+  if (status) status.textContent = label + ' theme applied.';
+}
+
+function applyQRifyThemePreset(name) {
+  const theme = QRIFY_THEMES[name];
+  if (!theme) {
+    const saved = { accent: document.getElementById('qrifyAccentColour')?.value || '#2563eb', background: document.getElementById('qrifyBackgroundColour')?.value || '#f3f4f6', header: getComputedStyle(document.documentElement).getPropertyValue('--qrify-header-bg').trim() || '#111827', label: 'Custom Colours', darkMode: document.body.classList.contains('dark') };
+    setQRifyThemeColours(saved.accent, saved.background, saved.header, saved.label, saved.darkMode);
+    return;
+  }
+  setQRifyThemeColours(theme.accent, theme.background, theme.header, theme.label, !!theme.dark);
+}
+
+function applyQRifyCustomColours() {
+  const accent = document.getElementById('qrifyAccentColour')?.value || '#2563eb';
+  const background = document.getElementById('qrifyBackgroundColour')?.value || '#f3f4f6';
+  const header = getComputedStyle(document.documentElement).getPropertyValue('--qrify-header-bg').trim() || '#111827';
+  const preset = document.getElementById('qrifyThemePreset');
+  if (preset) preset.value = 'custom';
+  setQRifyThemeColours(accent, background, header, 'Custom Colours', document.body.classList.contains('dark'));
+}
+
+function resetQRifyTheme() {
+  const preset = document.getElementById('qrifyThemePreset');
+  if (preset) preset.value = 'ocean';
+  applyQRifyThemePreset('ocean');
+}
+
+function loadQRifyTheme() {
+  try {
+    const raw = localStorage.getItem('qrifyThemeSettings');
+    if (raw) {
+      const saved = JSON.parse(raw);
+      setQRifyThemeColours(saved.accent || '#2563eb', saved.background || '#f3f4f6', saved.header || '#111827', saved.label || 'Custom Colours', !!saved.darkMode);
+      const preset = document.getElementById('qrifyThemePreset');
+      if (preset) {
+        const match = Object.entries(QRIFY_THEMES).find(([, t]) => t.accent === saved.accent && t.background === saved.background && t.header === saved.header);
+        preset.value = match ? match[0] : 'custom';
+      }
+    } else {
+      const preset = document.getElementById('qrifyThemePreset');
+      if (preset) preset.value = 'ocean';
+    }
+  } catch (e) { console.warn('Could not load QRify theme settings.', e); }
+}
+
+document.addEventListener('DOMContentLoaded', loadQRifyTheme);
 
 /* =====================================================
    QR FIELDS
